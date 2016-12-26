@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- td可配置的属性：
+	1. property ： 取数据的属性
+	2. text     : 表头部分的名称
+	3. dataType : 数据类型 （默认为变长文本）
+	   3.1 INTEGER  整型，默认格式"0"，默认居右显示
+	   3.2 DECIMAL  实型，默认格式"#,##0.00"，默认居右显示
+	   3.3 PERCENTAG 百分数，默认格式"0.00%"，默认居右显示
+	   3.4 CHAR      定长文本，默认居中显示
+	   3.5 VARCHAR   变长文本，默认居左显示
+	4. dataFormat ： 数据显示格式，可以覆盖由dataType确定的默认格式
+	5. alignType  : 对齐方式，可以覆盖由dataType确定的对齐方式
+	6. showType   ： 显示方式（默认为普通区域显示）
+	   6.1 INIT_SHOW    普通区域显示
+	   6.2 INIT_HIDDEN  普通区域隐藏
+	   6.3 LOCK_SHOW    左边冻结区域显示
+	   6.4 LOCK_HIDDEN  左边冻结区域隐藏
+	7. width      ： 列宽
+	8. render     ： 渲染方法
+	   8.1 含点号"."，作为渲染接口的实现类
+	   8.2 符合"enum:paramCode"形式，作为枚举渲染
+	   8.3 其它情形，作为Spring容器中的bean名称
+	9. memo       ： 注释
+ -->
+<grid-config xmlns="http://www.formssi.com/schema/beneform4j/excel"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd">
+	
+	<!--  EXCEL导出配置示例	 -->
+	<grid id="example" name="EXCEL导出配置示例">
+		<td text="定长文本，如客户号" property="charData" showType="LOCK_SHOW" memo="冻结区域显示" dataType="CHAR"/>
+		<td text="变长文本，如客户名称" property="varcharData" showType="LOCK_SHOW" memo="冻结区域显示"/>
+		<td text="隐藏文本，如区域" property="hiddenData" showType="LOCK_HIDDEN" memo="冻结区域隐藏"/>
+		<td text="整型" property="intData" dataType="INTEGER"/>
+		<td text="实型" property="doubleData" dataType="DECIMAL"/>
+		<td text="实型，保留四位小数" property="doubleData" dataType="DECIMAL" dataFormat="#,##0.0000"/>
+		<td text="百分数" property="percentagData" dataType="PERCENTAG"/>
+		<td text="普通隐藏" property="normalHiddenData" showType="INIT_HIDDEN" memo="普通区域隐藏"/>
+		<td text="跨多列">
+			<td text="子列1" property="subData1"/>
+			<td text="子列2" property="subData2"/>
+			<td text="子列3" property="subData3"/>
+		</td>
+	</grid>
+	<!--  用户列表	 -->
+	<grid id="userList" name="用户查询列表">
+		<td text="用户名称" property="userName" showType="LOCK_SHOW"/>
+		<td text="用户昵称" property="nickName"/>
+		<td text="状态" property="userStatus"/>
+		<td text="机构号" property="orgId"/>
+		<td text="证件类型" property="certType" render="enum:CERT_TYPE"/>
+		<td text="证件号码" property="certNo"/>
+		<td text="移动电话" property="mobilePhone"/>
+		<td text="电话号码" property="telephone"/>
+		<td text="电子邮箱" property="email"/>
+		<td text="受限IP" property="limitIp"/>
+		<td text="最大会话数" property="onlineSessionNum" dataType="INTEGER"/>
+		<td text="锁定标志" property="lockFlag" render="enum:BOOLEAN"/>
+		<td text="锁定日期" property="lockDate" dataType="CHAR"/>
+		<td text="锁定时间" property="lockTime" dataType="CHAR"/>
+		<td text="已尝试登录次数" property="loginNum" dataType="INTEGER"/>
+		<td text="最后登录IP" property="lastLoginIp"/>
+		<td text="最后登录日期" property="lastLoginDate" dataType="CHAR"/>
+		<td text="最后登录时间" property="lastLoginTime" dataType="CHAR"/>
+		<td text="最后修改密码日期" property="modiPwdDate" dataType="CHAR"/>
+		<td text="最后修改密码时间" property="modiPwdTime" dataType="CHAR"/>
+	</grid>
+	
+</grid-config>

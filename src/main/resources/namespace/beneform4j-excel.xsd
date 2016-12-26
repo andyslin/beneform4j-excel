@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.formssi.com/schema/beneform4j/excel"
+	targetNamespace="http://www.formssi.com/schema/beneform4j/excel"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified" version="1.0">
+	
+   	<xsd:element name="grid-config">
+   		<xsd:annotation><xsd:documentation><![CDATA[
+			定义表格模型配置根元素
+		]]></xsd:documentation></xsd:annotation>
+   		<xsd:complexType>
+   			<xsd:sequence>
+   				<xsd:element minOccurs="1" maxOccurs="unbounded" name="grid">
+   					<xsd:annotation><xsd:documentation><![CDATA[
+						定义表格模型Grid元素
+					]]></xsd:documentation></xsd:annotation>
+   					<xsd:complexType>
+	   					<xsd:sequence>
+	   						<xsd:element ref="td" minOccurs="1" maxOccurs="unbounded"/>
+						</xsd:sequence>
+   						<xsd:attribute name="id" use="required" type="xsd:ID">
+			        		<xsd:annotation><xsd:documentation><![CDATA[
+								模型ID
+							]]></xsd:documentation></xsd:annotation>
+			            </xsd:attribute>
+			            <xsd:attribute name="name" use="required" type="xsd:string">
+			        		<xsd:annotation><xsd:documentation><![CDATA[
+								模型名称
+							]]></xsd:documentation></xsd:annotation>
+			            </xsd:attribute>
+   					</xsd:complexType>
+   				</xsd:element>
+   			</xsd:sequence>
+        </xsd:complexType>
+   	</xsd:element>
+   	
+   	<xsd:element name="td">
+		<xsd:annotation><xsd:documentation><![CDATA[
+			定义Td元素
+		]]></xsd:documentation></xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+ 				<xsd:element ref="td" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+			<xsd:attribute name="property" use="optional" type="xsd:string">
+            	<xsd:annotation><xsd:documentation><![CDATA[
+					取数据的属性，对于子元素，该属性是必须属性
+				]]></xsd:documentation></xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="text" use="required" type="xsd:string">
+            	<xsd:annotation><xsd:documentation><![CDATA[
+					表头部分的名称
+				]]></xsd:documentation></xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="dataType" use="optional" default="VARCHAR">
+            	<xsd:annotation><xsd:documentation><![CDATA[
+					数据类型 （默认为变长文本）
+				]]></xsd:documentation></xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="INTEGER">
+							<xsd:annotation><xsd:documentation><![CDATA[
+								整型，默认格式"0"，默认居右显示
+							]]></xsd:documentation></xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="DECIMAL">
+							<xsd:annotation><xsd:documentation><![CDATA[
+								实型，默认格式"#,##0.00"，默认居右显示
+							]]></xsd:documentation></xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="PERCENTAG">
+							<xsd:annotation><xsd:documentation><![CDATA[
+								百分数，默认格式"0.00%"，默认居右显示
+							]]></xsd:documentation></xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="CHAR">
+							<xsd:annotation><xsd:documentation><![CDATA[
+								定长文本，默认居中显示
+							]]></xsd:documentation></xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="VARCHAR">
+							<xsd:annotation><xsd:documentation><![CDATA[
+								变长文本，默认居左显示
+							]]></xsd:documentation></xsd:annotation>
+						</xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="dataFormat" use="optional" type="xsd:string">
+            	<xsd:annotation><xsd:documentation><![CDATA[
+					数据显示格式，可以覆盖由dataType确定的默认格式
+				]]></xsd:documentation></xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="alignType" use="optional" default="LEFT">
+            	<xsd:annotation><xsd:documentation><![CDATA[
+					对齐方式，可以覆盖由dataType确定的对齐方式
+				]]></xsd:documentation></xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="LEFT"/>
+						<xsd:enumeration value="CENTER"/>
+						<xsd:enumeration value="RIGHT"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="showType" use="optional" default="INIT_SHOW">
+            	<xsd:annotation><xsd:documentation><![CDATA[
+					显示方式（默认为普通区域显示）
+				]]></xsd:documentation></xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="INIT_SHOW">
+							<xsd:annotation><xsd:documentation><![CDATA[
+								普通区域显示
+							]]></xsd:documentation></xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="INIT_HIDDEN">
+							<xsd:annotation><xsd:documentation><![CDATA[
+								 普通区域隐藏
+							]]></xsd:documentation></xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="LOCK_SHOW">
+							<xsd:annotation><xsd:documentation><![CDATA[
+								左边冻结区域显示
+							]]></xsd:documentation></xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="LOCK_HIDDEN">
+							<xsd:annotation><xsd:documentation><![CDATA[
+								左边冻结区域隐藏
+							]]></xsd:documentation></xsd:annotation>
+						</xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="width" use="optional">
+            	<xsd:annotation><xsd:documentation><![CDATA[
+					列宽，最小值为100
+				]]></xsd:documentation></xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:positiveInteger">
+						<xsd:minInclusive value="100"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="render" use="optional" type="xsd:string">
+            	<xsd:annotation><xsd:documentation><![CDATA[
+					内容渲染类
+					   1、含点号"."，作为渲染接口的实现类
+					   2、符合"enum:paramCode"形式，作为枚举渲染
+					   3、其它情形，作为Spring容器中的bean名称
+				]]></xsd:documentation></xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="memo" use="optional" type="xsd:string">
+            	<xsd:annotation><xsd:documentation><![CDATA[
+					注释，会作为Excel表头部分的注释显示
+				]]></xsd:documentation></xsd:annotation>
+            </xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

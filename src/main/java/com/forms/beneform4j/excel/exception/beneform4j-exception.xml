@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<exception-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://www.formssi.com/schema/beneform4j/exception"
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/exception beneform4j-exception.xsd">
+	
+	<exception code="BF110000" description="Excel组件异常" messageKey="beneform4j.excel">
+	
+	</exception>
+</exception-config>

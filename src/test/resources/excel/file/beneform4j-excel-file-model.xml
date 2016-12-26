@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excel-file-model-config xmlns="http://www.formssi.com/schema/beneform4j/excel-file-model"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel-file-model http://www.formssi.com/schema/beneform4j/excel-file-model.xsd">
+	
+	<file id="testFile1" path="D:/excel-file-model/formulas_demo.xlsx" />
+	<file id="testFile2" path="D:/excel-file-model/formulas_demo.xlsx" />
+	
+	<folder dir="D:/excel-file-model">
+		<file id="testFolder1" path="formulas_demo.xlsx" />
+		<file id="testFolder2" path="formulas_demo.xlsx" />
+	</folder>
+	
+	<resource id="testResource1" location="classpath:excel/file/formula_copy_template.xls"/>
+	
+</excel-file-model-config>
