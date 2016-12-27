@@ -2,54 +2,54 @@ package com.forms.beneform4j.excel.model.base.em;
 
 import com.forms.beneform4j.excel.model.base.IEM;
 
-public class BaseEM implements IEM{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 557919262701734009L;
+public class BaseEM implements IEM {
 
-	private String id;
-	
-	private String name;
-	
-	private String desc;
-	
-	private int prior;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 557919262701734009L;
 
-	@Override
-	public String getId() {
-		return this.id;
-	}
+    private String id;
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    private String name;
 
-	@Override
-	public String getDesc() {
-		return this.desc;
-	}
+    private String desc;
 
-	@Override
-	public int getPrior() {
-		return this.prior;
-	}
+    private int prior;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    @Override
+    public String getId() {
+        return this.id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Override
+    public String getName() {
+        return this.name;
+    }
 
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
+    @Override
+    public String getDesc() {
+        return this.desc;
+    }
 
-	public void setPrior(int prior) {
-		this.prior = prior;
-	}
+    @Override
+    public int getPrior() {
+        return this.prior;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public void setPrior(int prior) {
+        this.prior = prior;
+    }
 }

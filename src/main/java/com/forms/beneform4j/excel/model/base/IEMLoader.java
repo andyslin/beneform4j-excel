@@ -10,28 +10,30 @@ package com.forms.beneform4j.excel.model.base;
  * Date : 2016-12-22<br>
  */
 public interface IEMLoader {
-	
-	/**
-	 * 加载Excel模型
-	 * @param modelId
-	 * @return
-	 */
-	public IEM load(String modelId);
-	
-//	/**
-//	 * 获取所有的模型ID集合
-//	 * @return
-//	 */
-//	public Set<String> keys();
-	
-	/**
-	 * 移除Excel模型
-	 * @param modelId
-	 */
-	public void remove(String modelId);
-	
-	/**
-	 * 清空Excel模型
-	 */
-	public void clear();
+
+    /**
+     * 加载Excel模型
+     * 
+     * @param modelId
+     * @return
+     */
+    public IEM load(String modelId);
+
+    // /**
+    // * 获取所有的模型ID集合
+    // * @return
+    // */
+    // public Set<String> keys();
+
+    /**
+     * 移除Excel模型
+     * 
+     * @param modelId
+     */
+    public void remove(String modelId);
+
+    /**
+     * 清空Excel模型
+     */
+    public void clear();
 }

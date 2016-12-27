@@ -13,17 +13,19 @@ import java.util.List;
  */
 public interface IDataStreamHandler {
 
-	/**
-	 * 获取处理结果
-	 * @return
-	 */
-	public Object getResult();
-	
-	/**
-	 * 处理当前批次数据
-	 * @param datas      当前批次的数据集
-	 * @param startIndex 当前批次的开始索引
-	 * @param batchSeqno 当前批次序号
-	 */
-	public void handler(List<Object> datas, long startIndex, int batchSeqno);
+    /**
+     * 获取处理结果
+     * 
+     * @return
+     */
+    public Object getResult();
+
+    /**
+     * 处理当前批次数据
+     * 
+     * @param datas 当前批次的数据集
+     * @param startIndex 当前批次的开始索引
+     * @param batchSeqno 当前批次序号
+     */
+    public void handler(List<Object> datas, long startIndex, int batchSeqno);
 }

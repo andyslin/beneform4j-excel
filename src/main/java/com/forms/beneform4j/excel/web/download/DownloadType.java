@@ -10,16 +10,16 @@ package com.forms.beneform4j.excel.web.download;
  * Date : 2013-10-6<br>
  */
 public enum DownloadType {
-	MODEL,			// 下载模型
-	DATA_EXPORT,	// 先查询数据，然后生成文件下载
-	OBJECT;			// 先生成对象，然后下载对象
-	
-	public static DownloadType instance(String code){
-		for(DownloadType type : values()){
-			if(type.name().equalsIgnoreCase(code)){
-				return type;
-			}
-		}
-		return OBJECT;
-	}
+    MODEL, // 下载模型
+    DATA_EXPORT, // 先查询数据，然后生成文件下载
+    OBJECT; // 先生成对象，然后下载对象
+
+    public static DownloadType instance(String code) {
+        for (DownloadType type : values()) {
+            if (type.name().equalsIgnoreCase(code)) {
+                return type;
+            }
+        }
+        return OBJECT;
+    }
 }

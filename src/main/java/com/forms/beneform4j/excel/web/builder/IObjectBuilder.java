@@ -15,12 +15,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface IObjectBuilder {
 
-	/**
-	 * 创建对象
-	 * @param request	请求对象	
-	 * @param model		控制层返回的数据模型
-	 * @param suffix	文件后缀
-	 * @return
-	 */
-	public Object build(HttpServletRequest request, Map<String, Object> model, String suffix);
+    /**
+     * 创建对象
+     * 
+     * @param request 请求对象
+     * @param model 控制层返回的数据模型
+     * @param suffix 文件后缀
+     * @return
+     */
+    public Object build(HttpServletRequest request, Map<String, Object> model, String suffix);
 }

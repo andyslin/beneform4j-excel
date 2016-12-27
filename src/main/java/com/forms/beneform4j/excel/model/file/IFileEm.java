@@ -14,11 +14,12 @@ import com.forms.beneform4j.excel.model.base.IEM;
  * Since : 1.0.0 <br>
  * Date : 2016-12-22<br>
  */
-public interface IFileEm extends IEM{
+public interface IFileEm extends IEM {
 
-	/**
-	 * 获取文件输入流
-	 * @return
-	 */
-	public InputStream getInputStream() throws IOException;
+    /**
+     * 获取文件输入流
+     * 
+     * @return
+     */
+    public InputStream getInputStream() throws IOException;
 }

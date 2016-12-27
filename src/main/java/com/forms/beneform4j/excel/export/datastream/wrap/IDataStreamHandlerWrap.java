@@ -12,11 +12,12 @@ import com.forms.beneform4j.excel.export.datastream.handler.IDataStreamHandler;
  * Date : 2013-10-2<br>
  */
 public interface IDataStreamHandlerWrap {
-	
-	/**
-	 * 处理
-	 * @return
-	 */
-	public Object handler(IDataStreamHandler handler);
+
+    /**
+     * 处理
+     * 
+     * @return
+     */
+    public Object handler(IDataStreamHandler handler);
 
 }

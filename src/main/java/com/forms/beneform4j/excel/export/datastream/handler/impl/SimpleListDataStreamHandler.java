@@ -15,14 +15,14 @@ import com.forms.beneform4j.excel.export.datastream.handler.IDataStreamHandler;
  * Date : 2013-10-2<br>
  */
 public class SimpleListDataStreamHandler implements IDataStreamHandler {
-	
-	private final List<Object> list = new ArrayList<Object>();
-	
-	public Object getResult() {
-		return list;
-	}
 
-	public void handler(List<Object> datas, long startIndex, int batchSeqno) {
-		list.addAll(datas);
-	}
+    private final List<Object> list = new ArrayList<Object>();
+
+    public Object getResult() {
+        return list;
+    }
+
+    public void handler(List<Object> datas, long startIndex, int batchSeqno) {
+        list.addAll(datas);
+    }
 }

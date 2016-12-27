@@ -14,85 +14,85 @@ import com.forms.beneform4j.excel.export.grid.Grid;
  */
 public class ModelExcelBuilderParam {
 
-	//Excel模型
-	private Grid grid;
-	
-	//流式数据处理器包装对象
-	private IDataStreamHandlerWrap wrap;
-	
-	//标题
-	private String title;
-	
-	//是否在Excel文件中写标题
-	private boolean writeTitle = true;
-	
-	//是否生成数据透视表
-	private boolean writePivotTable = true;
-	
-	//是否设置自动筛选
-	private boolean autoFilter = true;
-	
-	public ModelExcelBuilderParam validate(){
-		if(null == grid){
-			throw new RuntimeException("Excel构建模型不能为空");
-		}
-		if(null == wrap){
-			throw new RuntimeException("数据处理器不能为空");
-		}
-		return this;
-	}
+    // Excel模型
+    private Grid grid;
 
-	public Grid getGrid() {
-		return grid;
-	}
+    // 流式数据处理器包装对象
+    private IDataStreamHandlerWrap wrap;
 
-	public ModelExcelBuilderParam setGrid(Grid grid) {
-		this.grid = grid;
-		return this;
-	}
+    // 标题
+    private String title;
 
-	public IDataStreamHandlerWrap getWrap() {
-		return wrap;
-	}
+    // 是否在Excel文件中写标题
+    private boolean writeTitle = true;
 
-	public ModelExcelBuilderParam setWrap(IDataStreamHandlerWrap wrap) {
-		this.wrap = wrap;
-		return this;
-	}
+    // 是否生成数据透视表
+    private boolean writePivotTable = true;
 
-	public String getTitle() {
-		return title==null?grid.getModelName():title;
-	}
+    // 是否设置自动筛选
+    private boolean autoFilter = true;
 
-	public ModelExcelBuilderParam setTitle(String title) {
-		this.title = title;
-		return this;
-	}
+    public ModelExcelBuilderParam validate() {
+        if (null == grid) {
+            throw new RuntimeException("Excel构建模型不能为空");
+        }
+        if (null == wrap) {
+            throw new RuntimeException("数据处理器不能为空");
+        }
+        return this;
+    }
 
-	public boolean isWriteTitle() {
-		return writeTitle;
-	}
+    public Grid getGrid() {
+        return grid;
+    }
 
-	public ModelExcelBuilderParam setWriteTitle(boolean writeTitle) {
-		this.writeTitle = writeTitle;
-		return this;
-	}
+    public ModelExcelBuilderParam setGrid(Grid grid) {
+        this.grid = grid;
+        return this;
+    }
 
-	public boolean isWritePivotTable() {
-		return writePivotTable;
-	}
+    public IDataStreamHandlerWrap getWrap() {
+        return wrap;
+    }
 
-	public ModelExcelBuilderParam setWritePivotTable(boolean writePivotTable) {
-		this.writePivotTable = writePivotTable;
-		return this;
-	}
+    public ModelExcelBuilderParam setWrap(IDataStreamHandlerWrap wrap) {
+        this.wrap = wrap;
+        return this;
+    }
 
-	public boolean isAutoFilter() {
-		return autoFilter;
-	}
+    public String getTitle() {
+        return title == null ? grid.getModelName() : title;
+    }
 
-	public ModelExcelBuilderParam setAutoFilter(boolean autoFilter) {
-		this.autoFilter = autoFilter;
-		return this;
-	}
+    public ModelExcelBuilderParam setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public boolean isWriteTitle() {
+        return writeTitle;
+    }
+
+    public ModelExcelBuilderParam setWriteTitle(boolean writeTitle) {
+        this.writeTitle = writeTitle;
+        return this;
+    }
+
+    public boolean isWritePivotTable() {
+        return writePivotTable;
+    }
+
+    public ModelExcelBuilderParam setWritePivotTable(boolean writePivotTable) {
+        this.writePivotTable = writePivotTable;
+        return this;
+    }
+
+    public boolean isAutoFilter() {
+        return autoFilter;
+    }
+
+    public ModelExcelBuilderParam setAutoFilter(boolean autoFilter) {
+        this.autoFilter = autoFilter;
+        return this;
+    }
 }

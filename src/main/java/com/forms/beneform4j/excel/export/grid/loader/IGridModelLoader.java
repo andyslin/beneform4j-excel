@@ -12,17 +12,18 @@ import com.forms.beneform4j.excel.export.grid.Grid;
  * Date : 2014-6-16<br>
  */
 public interface IGridModelLoader {
-	
-	/**
-	 * 初始化
-	 */
-	public void init();
 
-	/**
-	 * 加载模型
-	 * @param modelId
-	 * @return
-	 */
-	public Grid loadGridModel(String modelId);
-	
+    /**
+     * 初始化
+     */
+    public void init();
+
+    /**
+     * 加载模型
+     * 
+     * @param modelId
+     * @return
+     */
+    public Grid loadGridModel(String modelId);
+
 }

@@ -15,16 +15,16 @@ import com.forms.beneform4j.excel.model.file.em.ResourceFileEM;
  * Since : 1.0.0 <br>
  * Date : 2016-12-22<br>
  */
-public class FilenameAsModelIdFileEMLoader extends AbstractResourceEMLoader{
+public class FilenameAsModelIdFileEMLoader extends AbstractResourceEMLoader {
 
-	@Override
-	protected void registerExcelModel(Resource resource, boolean force) {
-		ResourceFileEM em = new ResourceFileEM(resource);
-		String filename = resource.getFilename();
-		String id = FilenameUtils.getBaseName(filename);
-		em.setId(id);
-		em.setName(id);
-		em.setDesc(resource.getDescription());
-		addEM(em, force);
-	}
+    @Override
+    protected void registerExcelModel(Resource resource, boolean force) {
+        ResourceFileEM em = new ResourceFileEM(resource);
+        String filename = resource.getFilename();
+        String id = FilenameUtils.getBaseName(filename);
+        em.setId(id);
+        em.setName(id);
+        em.setDesc(resource.getDescription());
+        addEM(em, force);
+    }
 }
