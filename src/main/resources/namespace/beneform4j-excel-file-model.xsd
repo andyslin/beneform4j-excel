@@ -90,4 +90,66 @@
             </xsd:attribute>
    		</xsd:complexType>
    	</xsd:element>
+<<<<<<< HEAD
+=======
+   	
+   	<xsd:element name="file">
+   		<xsd:annotation><xsd:documentation><![CDATA[
+			文件元素，可以直接使用，也可以作为<folder>元素的子节点使用，此时相对路径名（不包括后缀）作为模型ID
+		]]></xsd:documentation></xsd:annotation>
+   		<xsd:complexType>
+   			<xsd:attributeGroup ref="modelAttributes"/>
+   			<xsd:attribute name="path" use="required" type="xsd:string">
+        		<xsd:annotation><xsd:documentation><![CDATA[
+					文件名称，如果是<folder>元素的子节点，则视作相对于<folder>元素属性dir的相对路径，否则视为绝对路径
+				]]></xsd:documentation></xsd:annotation>
+            </xsd:attribute>
+   		</xsd:complexType>
+   	</xsd:element>
+   	
+   	<xsd:attributeGroup name="modelAttributes">
+   		<xsd:annotation><xsd:documentation><![CDATA[
+			模型属性组
+		]]></xsd:documentation></xsd:annotation>
+		<xsd:attribute name="id" use="required" type="xsd:ID">
+       		<xsd:annotation><xsd:documentation><![CDATA[
+				模型ID
+			]]></xsd:documentation></xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="name" use="optional" type="xsd:string">
+       		<xsd:annotation><xsd:documentation><![CDATA[
+				模型名称
+			]]></xsd:documentation></xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="type" use="optional">
+       		<xsd:annotation><xsd:documentation><![CDATA[
+				模型类别，默认根据文件后缀判断，如果是Excel文件，作为IFileEM，否则作为IDynamicTreeEM
+			]]></xsd:documentation></xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Excel">
+						<xsd:annotation><xsd:documentation><![CDATA[
+							Excel文件模板，直接作为Excel模型
+						]]></xsd:documentation></xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="Freemarker">
+						<xsd:annotation><xsd:documentation><![CDATA[
+							Freemarker文件模板，用于生成XML配置的Excel模型
+						]]></xsd:documentation></xsd:annotation>
+					</xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="desc" use="optional" type="xsd:string">
+       		<xsd:annotation><xsd:documentation><![CDATA[
+				模型描述
+			]]></xsd:documentation></xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="prior" use="optional" type="xsd:integer">
+       		<xsd:annotation><xsd:documentation><![CDATA[
+				模型优先级，用于处理相同id多个模型时的冲突
+			]]></xsd:documentation></xsd:annotation>
+        </xsd:attribute>
+   	</xsd:attributeGroup>
+>>>>>>> branch 'master' of http://192.168.22.190:8090/beneform4j/beneform4j-excel.git
 </xsd:schema>

@@ -10,6 +10,7 @@
 		<property name="emLoaders">
 			<list>
 				<!-- 使用单独的XML文件来配置Excel文件模型路径的加载器，适用于手工指定模型ID的情况 -->
+<<<<<<< HEAD
 				<bean p:name="resources" class="com.forms.beneform4j.excel.model.file.loader.xml.XmlFileEMLoader">
 					<property name="locationPatterns" value="classpath:excel/*/beneform4j-excel-file-model.xml"/>
 				</bean>
@@ -17,6 +18,25 @@
 				<!-- 使用XML配置的树型Excel模型 -->
 				<bean p:name="xml-tree" p:validation="true" class="com.forms.beneform4j.excel.model.tree.loader.xml.XmlTreeEMLoader">
 					<property name="locationPatterns" value="classpath:excel/tree/beneform4j-excel-tree-model*.xml"></property>
+=======
+				<bean p:name="resources" class="com.forms.beneform4j.excel.model.file.loader.XmlFileEMLoader">
+					<property name="locationPatterns" value="classpath:excel/*/beneform4j-excel-file-model.xml"/>
+				</bean>
+				
+				<!-- 使用XML配置的树型Excel模型 -->
+				<bean p:name="xml-tree" class="com.forms.beneform4j.excel.model.tree.loader.xml.XmlTreeEMLoader">
+					<property name="locationPatterns" value="classpath:excel/tree/beneform4j-excel-tree-model*.xml"></property>
+				</bean>
+				
+				<!-- 直接将文件名称作为模型ID的Excel文件模型加载器 -->
+				<bean p:name="xls-filename" class="com.forms.beneform4j.excel.model.file.loader.FilenameAsModelIdFileEMLoader">
+					<property name="locationPatterns" value="classpath:excel/file/*.xls"/>
+				</bean>
+				
+				<!-- 指定根目录的Excel文件模型加载器，模型ID为各文件对目录的相对路径 -->
+				<bean p:name="excel-file-model" class="com.forms.beneform4j.excel.model.file.loader.FolderFileEMLoader">
+					<property name="folders" value="D:/excel-file-model"/>
+>>>>>>> branch 'master' of http://192.168.22.190:8090/beneform4j/beneform4j-excel.git
 				</bean>
 			</list>
 		</property>

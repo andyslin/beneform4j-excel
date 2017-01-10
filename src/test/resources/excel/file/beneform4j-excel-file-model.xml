@@ -6,9 +6,19 @@
 	<!-- 类路径excel/file下的Excel文件，直接使用文件名作为ID -->
 	<group locationPatterns="classpath*:excel/file/**" suffixs="xls xlsx"/>
 	
+<<<<<<< HEAD
 	<!-- D盘excel-file-model下的Excel文件，使用d-和文件名一起作为ID -->
 	<group idPrefix="d-" locationPatterns="file:/D:/excel-file-model/**" suffixs="xls xlsx"/>
 
 	<!-- 使用model元素指定文件路径，直接指定ID -->
 	<model id="testResource1" location="classpath:excel/file/two_inner_loops_demo.xls"/>
+=======
+	<folder dir="D:/excel-file-model">
+		<file id="testFolder1" path="formulas_demo.xlsx" />
+		<file id="testFolder2" path="formulas_demo.xlsx" />
+	</folder>
+	
+	<resource id="echo_if_demo" location="classpath:excel/file/each.xls"/>
+	
+>>>>>>> branch 'master' of http://192.168.22.190:8090/beneform4j/beneform4j-excel.git
 </excel-file-model-config>

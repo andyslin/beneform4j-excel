@@ -6,7 +6,10 @@ import java.util.Map;
 
 import com.forms.beneform4j.core.util.config.ConfigHelper;
 import com.forms.beneform4j.excel.data.accessor.IDataAccessorFactory;
+<<<<<<< HEAD
 import com.forms.beneform4j.excel.exports.IExcelExporter;
+=======
+>>>>>>> branch 'master' of http://192.168.22.190:8090/beneform4j/beneform4j-excel.git
 import com.forms.beneform4j.excel.exports.tree.painter.ITreeEMComponentXlsxPainter;
 import com.forms.beneform4j.excel.exports.tree.painter.impl.GridXlsxPainter;
 import com.forms.beneform4j.excel.exports.tree.painter.impl.NestedRegionXlsxPainter;
@@ -61,6 +64,7 @@ public class ExcelComponentConfig {
     private static String paramObjectVarName;
 
     /**
+<<<<<<< HEAD
      * 数据对象变量名称
      */
     private static String dataObjectVarName;
@@ -223,5 +227,123 @@ public class ExcelComponentConfig {
      */
     public void setExcelExporter(IExcelExporter excelExporter) {
         ExcelComponentConfig.excelExporter = excelExporter;
+=======
+     * 获取模型加载器列表
+     * 
+     * @return
+     */
+    public static List<IEMLoader> getEmLoaders() {
+        return emLoaders;
+    }
+
+    /**
+     * 注入模型加载器类别
+     * 
+     * @param emLoaders
+     */
+    public void setEmLoaders(List<IEMLoader> emLoaders) {
+        ExcelComponentConfig.emLoaders = emLoaders;
+    }
+
+    /**
+     * 根据组件类型获取解析器
+     * 
+     * @param type
+     * @return
+     */
+    public static ITreeEMComponentParser getTreeEMComponentParser(String type) {
+        return componentParserMapping.get(type);
+    }
+
+    /**
+     * 注册组件类型及其相应的解析器
+     * 
+     * @param type
+     * @param parser
+     */
+    public static void registerComponentParser(String type, ITreeEMComponentParser parser) {
+        componentParserMapping.put(type, parser);
+    }
+
+    /**
+     * 注入组件解析器
+     * 
+     * @param componentParserMapping
+     */
+    public void setComponentParserMapping(Map<String, ITreeEMComponentParser> componentParserMapping) {
+        if (null != componentParserMapping) {
+            ExcelComponentConfig.componentParserMapping.putAll(componentParserMapping);
+        }
+    }
+
+    /**
+     * 获取Xlsx组件绘制器
+     * 
+     * @param component
+     * @return
+     */
+    public static ITreeEMComponentXlsxPainter getXlsxPainter(ITreeEMComponent component) {
+        if (null == component) {
+            return null;
+        }
+        return xlsxPainters.get(component.getClass());
+    }
+
+    /**
+     * 注册Xlsx组件绘制器
+     * 
+     * @param cls
+     * @param painter
+     */
+    public static void registerXlsxPainter(Class<? extends ITreeEMComponent> cls, ITreeEMComponentXlsxPainter painter) {
+        xlsxPainters.put(cls, painter);
+    }
+
+    /**
+     * 注入Xlsx组件绘制器
+     * 
+     * @param xlsxPainters
+     */
+    public void setXlsxPainters(Map<Class<? extends ITreeEMComponent>, ITreeEMComponentXlsxPainter> xlsxPainters) {
+        if (null != xlsxPainters) {
+            ExcelComponentConfig.xlsxPainters.putAll(xlsxPainters);
+        }
+    }
+
+    /**
+     * 获取数据访问器工厂
+     * 
+     * @return
+     */
+    public static IDataAccessorFactory getDataAccessorFactory() {
+        return ConfigHelper.getComponent(dataAccessorFactory, IDataAccessorFactory.class);
+    }
+
+    /**
+     * 注入数据访问器工厂
+     * 
+     * @param dataAccessorFactory
+     */
+    public void setDataAccessorFactory(IDataAccessorFactory dataAccessorFactory) {
+        ExcelComponentConfig.dataAccessorFactory = dataAccessorFactory;
+    }
+
+    /**
+     * 获取参数对象变量名称
+     * 
+     * @return
+     */
+    public static String getParamObjectVarName() {
+        return ConfigHelper.getValue(paramObjectVarName, "param_object_var_name");
+    }
+
+    /**
+     * 注入参数对象变量名称
+     * 
+     * @param paramObjectVarName
+     */
+    public void setParamObjectVarName(String paramObjectVarName) {
+        ExcelComponentConfig.paramObjectVarName = paramObjectVarName;
+>>>>>>> branch 'master' of http://192.168.22.190:8090/beneform4j/beneform4j-excel.git
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.forms.beneform4j.excel.data.loader.impl.ImmutableDataDataLoader;
+<<<<<<< HEAD
 import com.forms.beneform4j.excel.exports.base.BaseExcelExporter;
 import com.forms.beneform4j.excel.model.EMManager;
 import com.forms.beneform4j.excel.model.base.IEM;
@@ -42,6 +43,36 @@ public class BaseExcelExporterTest {
     private void test(String modelId) {
         try {
             String filename = "D:/excel-test/base/" + modelId + ".xlsx";
+=======
+import com.forms.beneform4j.excel.model.EMManager;
+import com.forms.beneform4j.excel.model.base.IEM;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
+public class BaseExcelExporterTest {
+
+    private IExcelExporter exporter = new BaseExcelExporter();
+
+    @Test
+    public void testExport() throws Exception {
+        test("testDyanmicResource1");
+
+        //        test("oneRegion1");
+        //        test("oneRegion2");
+        //        test("oneRegion3");
+        //
+        //        test("multiRegion1");
+        //        test("multiRegion2");
+        //        test("multiRegion3");
+        //        test("multiRegion4");
+        //        test("multiRegion5");
+        //        test("multiRegion6");
+    }
+
+    private void test(String modelId) {
+        try {
+            String filename = "D:/excel-test/tree/" + modelId + ".xlsx";
+>>>>>>> branch 'master' of http://192.168.22.190:8090/beneform4j/beneform4j-excel.git
             IEM model = EMManager.load(modelId);
             Object param = getParam();
             Object data = getTestData();

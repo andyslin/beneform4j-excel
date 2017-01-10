@@ -8,6 +8,7 @@ public class XmlTreeEMConsts {
     public static final String WORKBOOK = "workbook";
 
     /**
+<<<<<<< HEAD
      * 表示Excel模型ID属性
      */
     public static final String WORKBOOK_ID = "id";
@@ -18,6 +19,8 @@ public class XmlTreeEMConsts {
     public static final String WORKBOOK_DYNAMIC = "dynamic";
 
     /**
+=======
+>>>>>>> branch 'master' of http://192.168.22.190:8090/beneform4j/beneform4j-excel.git
      * 表示一个表单配置的元素
      */
     public static final String SHEET = "sheet";
