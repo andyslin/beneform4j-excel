@@ -2,6 +2,7 @@ package com.forms.beneform4j.excel.model.tree.em;
 
 import java.util.List;
 
+import com.forms.beneform4j.excel.model.base.EMType;
 import com.forms.beneform4j.excel.model.base.em.BaseEM;
 import com.forms.beneform4j.excel.model.tree.ITreeEM;
 import com.forms.beneform4j.excel.model.tree.ITreeEMSheet;
@@ -22,5 +23,10 @@ public class TreeEM extends BaseEM implements ITreeEM {
 
     public void setSheets(List<ITreeEMSheet> sheets) {
         this.sheets = sheets;
+    }
+
+    @Override
+    public String getType() {
+        return EMType.MODEL_TYPE_XML_TREE;
     }
 }

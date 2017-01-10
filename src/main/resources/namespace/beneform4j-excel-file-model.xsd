@@ -10,25 +10,45 @@
 		]]></xsd:documentation></xsd:annotation>
    		<xsd:complexType>
    			<xsd:choice minOccurs="0" maxOccurs="unbounded">
-   				<xsd:element ref="folder"/>
-   				<xsd:element ref="file"/>
-   				<xsd:element ref="resource"/>
+   				<xsd:element ref="group"/>
+   				<xsd:element ref="model"/>
    			</xsd:choice>
         </xsd:complexType>
    	</xsd:element>
    	
-   	<xsd:element name="folder">
+   	<xsd:element name="group">
    		<xsd:annotation><xsd:documentation><![CDATA[
-			文件夹元素，用于定义一组本地文件模型
+			group元素，用于定义一组文件模型
 		]]></xsd:documentation></xsd:annotation>
    		<xsd:complexType>
-   			<xsd:sequence>
-   				<xsd:element ref="file" minOccurs="1" maxOccurs="unbounded"/>
-   			</xsd:sequence>
-   			<xsd:attribute name="dir" use="required" type="xsd:string">
+   			<xsd:attribute name="idPrefix" use="optional" type="xsd:string">
 	       		<xsd:annotation><xsd:documentation><![CDATA[
-					目录路径
+					ID前缀，和资源名称一起组成ID
 				]]></xsd:documentation></xsd:annotation>
+	        </xsd:attribute>
+   			<xsd:attribute name="locationPatterns" use="required">
+	       		<xsd:annotation><xsd:documentation><![CDATA[
+					资源模式，ID前缀和资源名称一起组成ID，使用Spring的ResourcePatternResolver加载资源，支持classpath,url,file等格式
+				]]></xsd:documentation></xsd:annotation>
+				<xsd:simpleType>
+					<xsd:list itemType="xsd:string"/>
+				</xsd:simpleType>
+	        </xsd:attribute>
+	        <xsd:attribute name="suffixs" use="optional">
+	       		<xsd:annotation><xsd:documentation><![CDATA[
+					后缀
+				]]></xsd:documentation></xsd:annotation>
+				<xsd:simpleType>
+					<xsd:list itemType="xsd:string"/>
+				</xsd:simpleType>
+	        </xsd:attribute>
+	        <xsd:attribute name="excludes" use="optional">
+	       		<xsd:annotation><xsd:documentation><![CDATA[
+					需要排除的匹配模式
+				]]></xsd:documentation></xsd:annotation>
+				<xsd:simpleType>
+					<xsd:list itemType="xsd:string"/>
+				</xsd:simpleType>
 	        </xsd:attribute>
    			<xsd:attribute name="prior" use="optional" type="xsd:integer">
 	       		<xsd:annotation><xsd:documentation><![CDATA[
@@ -38,57 +58,36 @@
    		</xsd:complexType>
    	</xsd:element>
    	
-   	<xsd:element name="resource">
+   	<xsd:element name="model">
    		<xsd:annotation><xsd:documentation><![CDATA[
-			资源元素，使用Spring的ResourcePatternResolver加载资源，支持classpath,url,file等格式，资源名作为模型ID
+			model元素，用于定义单个文件模型
 		]]></xsd:documentation></xsd:annotation>
-   		<xsd:complexType>
-   			<xsd:attributeGroup ref="modelAttributes"/>
+	   		<xsd:complexType>
+	   			<xsd:attribute name="id" use="optional" type="xsd:ID">
+	       		<xsd:annotation><xsd:documentation><![CDATA[
+					模型ID，如果未配置ID，使用资源名称作为ID
+				]]></xsd:documentation></xsd:annotation>
+	        </xsd:attribute>
+	        <xsd:attribute name="name" use="optional" type="xsd:string">
+	       		<xsd:annotation><xsd:documentation><![CDATA[
+					模型名称，默认为资源名称
+				]]></xsd:documentation></xsd:annotation>
+	        </xsd:attribute>
+	        <xsd:attribute name="desc" use="optional" type="xsd:string">
+	       		<xsd:annotation><xsd:documentation><![CDATA[
+					模型描述
+				]]></xsd:documentation></xsd:annotation>
+	        </xsd:attribute>
+	        <xsd:attribute name="prior" use="optional" type="xsd:integer">
+	       		<xsd:annotation><xsd:documentation><![CDATA[
+					模型优先级，用于处理相同id多个模型时的冲突
+				]]></xsd:documentation></xsd:annotation>
+	        </xsd:attribute>
    			<xsd:attribute name="location" use="required" type="xsd:string">
         		<xsd:annotation><xsd:documentation><![CDATA[
-					资源位置
+					资源位置，使用Spring的ResourcePatternResolver加载资源，支持classpath,url,file等格式
 				]]></xsd:documentation></xsd:annotation>
             </xsd:attribute>
    		</xsd:complexType>
    	</xsd:element>
-   	
-   	<xsd:element name="file">
-   		<xsd:annotation><xsd:documentation><![CDATA[
-			文件元素，可以直接使用，也可以作为<folder>元素的子节点使用，此时相对路径名（不包括后缀）作为模型ID
-		]]></xsd:documentation></xsd:annotation>
-   		<xsd:complexType>
-   			<xsd:attributeGroup ref="modelAttributes"/>
-   			<xsd:attribute name="path" use="required" type="xsd:string">
-        		<xsd:annotation><xsd:documentation><![CDATA[
-					文件名称，如果是<folder>元素的子节点，则视作相对于<folder>元素属性dir的相对路径，否则视为绝对路径
-				]]></xsd:documentation></xsd:annotation>
-            </xsd:attribute>
-   		</xsd:complexType>
-   	</xsd:element>
-   	
-   	<xsd:attributeGroup name="modelAttributes">
-   		<xsd:annotation><xsd:documentation><![CDATA[
-			模型属性组
-		]]></xsd:documentation></xsd:annotation>
-		<xsd:attribute name="id" use="required" type="xsd:ID">
-       		<xsd:annotation><xsd:documentation><![CDATA[
-				模型ID
-			]]></xsd:documentation></xsd:annotation>
-        </xsd:attribute>
-        <xsd:attribute name="name" use="optional" type="xsd:string">
-       		<xsd:annotation><xsd:documentation><![CDATA[
-				模型名称，默认使用resource表示的资源名称
-			]]></xsd:documentation></xsd:annotation>
-        </xsd:attribute>
-        <xsd:attribute name="desc" use="optional" type="xsd:string">
-       		<xsd:annotation><xsd:documentation><![CDATA[
-				模型描述
-			]]></xsd:documentation></xsd:annotation>
-        </xsd:attribute>
-        <xsd:attribute name="prior" use="optional" type="xsd:integer">
-       		<xsd:annotation><xsd:documentation><![CDATA[
-				模型优先级，用于处理相同id多个模型时的冲突
-			]]></xsd:documentation></xsd:annotation>
-        </xsd:attribute>
-   	</xsd:attributeGroup>
 </xsd:schema>

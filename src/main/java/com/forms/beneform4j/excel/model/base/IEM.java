@@ -28,6 +28,13 @@ public interface IEM extends Serializable {
     public String getName();
 
     /**
+     * 获取模型类别
+     * 
+     * @return
+     */
+    public String getType();
+
+    /**
      * 获取模型描述
      * 
      * @return

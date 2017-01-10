@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excel-tree-model-config xmlns="http://www.formssi.com/schema/beneform4j/excel-tree-model"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel-tree-model http://www.formssi.com/schema/beneform4j/excel-tree-model.xsd">
+	
+	<workbook id="oneGrid1" name="单个Grid测试一">
+		<td text="定长文本，如客户号" property="charData" showType="LOCK_SHOW" desc="冻结区域显示" dataType="CHAR"/>
+		<td text="变长文本，如客户名称" property="varcharData" showType="LOCK_SHOW" desc="冻结区域显示"/>
+		<td text="隐藏文本，如区域" property="hiddenData" showType="LOCK_HIDDEN" desc="冻结区域隐藏"/>
+		<td text="整型" property="intData" dataType="INTEGER"/>
+		<td text="实型" property="doubleData" dataType="DECIMAL"/>
+		<td text="实型，保留四位小数" property="doubleData" dataType="DECIMAL" format="#,##0.0000"/>
+		<td text="百分数" property="percentagData" dataType="PERCENTAG"/>
+		<td text="普通隐藏" property="normalHiddenData" showType="INIT_HIDDEN" desc="普通区域隐藏"/>
+		<td text="跨多列">
+			<td text="子列1" property="subData1"/>
+			<td text="子列2" property="subData2"/>
+			<td text="子列3" property="subData3"/>
+		</td>
+	</workbook>
+	
+	<workbook id="dynamic-xml" name="单一客户信息-财务信息" desc="财务信息" dynamic="true">
+		<td text="客户名称" property="cst_nm" showType="LOCK_SHOW"/>
+		<td text="客户号" property="cst_id" showType="LOCK_SHOW"/>
+		<td text="近三年销售收入">
+			<td text="${(param.currentYear-2)?c}年销售收入" property="sr1"/>
+			<td text="${(param.currentYear-1)?c}年销售收入" property="sr2"/>
+			<td text="${param.currentYear?c}年销售收入" property="sr3"/>
+			<td text="同比变化金额" property="srTbbh"/>
+		</td>
+		<td text="净利润">
+			<td text="${(param.currentYear-2)?c}年" property="lr1"/>
+			<td text="${(param.currentYear-1)?c}年" property="lr2"/>
+			<td text="${param.currentYear?c}年" property="lr3"/>
+			<td text="同比变化金额" property="lrTbbh"/>
+		</td>
+		<td text="资产负债">
+			<td text="总资产" property="zzc"/>
+			<td text="总负债" property="zfz"/>
+		</td>
+	</workbook>
+</excel-tree-model-config>

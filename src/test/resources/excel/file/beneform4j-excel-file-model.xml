@@ -3,14 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel-file-model http://www.formssi.com/schema/beneform4j/excel-file-model.xsd">
 	
-	<file id="testFile1" path="D:/excel-file-model/formulas_demo.xlsx" />
-	<file id="testFile2" path="D:/excel-file-model/formulas_demo.xlsx" />
+	<!-- 类路径excel/file下的Excel文件，直接使用文件名作为ID -->
+	<group locationPatterns="classpath*:excel/file/**" suffixs="xls xlsx"/>
 	
-	<folder dir="D:/excel-file-model">
-		<file id="testFolder1" path="formulas_demo.xlsx" />
-		<file id="testFolder2" path="formulas_demo.xlsx" />
-	</folder>
-	
-	<resource id="testResource1" location="classpath:excel/file/formula_copy_template.xls"/>
-	
+	<!-- D盘excel-file-model下的Excel文件，使用d-和文件名一起作为ID -->
+	<group idPrefix="d-" locationPatterns="file:/D:/excel-file-model/**" suffixs="xls xlsx"/>
+
+	<!-- 使用model元素指定文件路径，直接指定ID -->
+	<model id="testResource1" location="classpath:excel/file/two_inner_loops_demo.xls"/>
 </excel-file-model-config>
