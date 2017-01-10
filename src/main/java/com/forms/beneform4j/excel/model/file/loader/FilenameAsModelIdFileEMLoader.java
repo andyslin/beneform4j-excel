@@ -3,8 +3,9 @@ package com.forms.beneform4j.excel.model.file.loader;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.Resource;
 
+import com.forms.beneform4j.excel.model.base.EMType;
+import com.forms.beneform4j.excel.model.base.em.BaseEM;
 import com.forms.beneform4j.excel.model.base.loader.AbstractResourceEMLoader;
-import com.forms.beneform4j.excel.model.file.em.ResourceFileEM;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -19,8 +20,9 @@ public class FilenameAsModelIdFileEMLoader extends AbstractResourceEMLoader {
 
     @Override
     protected void registerExcelModel(Resource resource, boolean force) {
-        ResourceFileEM em = new ResourceFileEM(resource);
         String filename = resource.getFilename();
+        String type = EMType.getTypeByFilename(filename);
+        BaseEM em = ResourceEMLoaderHelper.newResourceEM(resource, type);
         String id = FilenameUtils.getBaseName(filename);
         em.setId(id);
         em.setName(id);

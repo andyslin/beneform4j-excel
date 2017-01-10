@@ -5,10 +5,11 @@ import java.io.InputStream;
 
 import org.springframework.core.io.Resource;
 
+import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.model.base.em.BaseEM;
-import com.forms.beneform4j.excel.model.file.IFileEm;
+import com.forms.beneform4j.excel.model.file.IFileEM;
 
-public class ResourceFileEM extends BaseEM implements IFileEm {
+public class ResourceFileEM extends BaseEM implements IFileEM {
 
     /**
      * 
@@ -23,12 +24,11 @@ public class ResourceFileEM extends BaseEM implements IFileEm {
     }
 
     @Override
-    public InputStream getInputStream() throws IOException {
-        return this.resource.getInputStream();
-    }
-
-    @Override
-    public String toString() {
-        return "IFileEm[id=" + getId() + "] " + resource.getDescription();
+    public InputStream getInputStream() {
+        try {
+            return this.resource.getInputStream();
+        } catch (IOException e) {
+            throw Throw.createRuntimeException("读取文件模型异常", e);
+        }
     }
 }

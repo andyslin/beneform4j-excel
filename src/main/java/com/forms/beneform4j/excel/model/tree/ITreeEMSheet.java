@@ -6,7 +6,14 @@ import java.util.List;
 public interface ITreeEMSheet extends Serializable {
 
     /**
-     * 获取区域列表
+     * 获取所属的Excel模型
+     * 
+     * @return
+     */
+    public ITreeEM getWorkbook();
+
+    /**
+     * 获取所有区域列表
      * 
      * @return
      */
@@ -18,4 +25,18 @@ public interface ITreeEMSheet extends Serializable {
      * @return
      */
     public String getSheetName();
+
+    /**
+     * 获取生成表单的条件
+     * 
+     * @return
+     */
+    public String getCondition();
+
+    /**
+     * 获取数据属性
+     * 
+     * @return
+     */
+    public String getProperty();
 }

@@ -15,7 +15,7 @@ public class EMManager {
      * @return
      */
     public static IEM load(String modelId) {
-        List<IEMLoader> loaders = ExcelComponentConfig.getExcelModelLoaders();
+        List<IEMLoader> loaders = ExcelComponentConfig.getEmLoaders();
         if (null != loaders) {
             for (IEMLoader loader : loaders) {
                 IEM model = loader.load(modelId);
@@ -33,7 +33,7 @@ public class EMManager {
      * @param modelId
      */
     public static void remove(String modelId) {
-        List<IEMLoader> loaders = ExcelComponentConfig.getExcelModelLoaders();
+        List<IEMLoader> loaders = ExcelComponentConfig.getEmLoaders();
         if (null != loaders) {
             for (IEMLoader loader : loaders) {
                 loader.remove(modelId);
@@ -57,7 +57,7 @@ public class EMManager {
      * 清除Excel模型
      */
     public static void clear() {
-        List<IEMLoader> loaders = ExcelComponentConfig.getExcelModelLoaders();
+        List<IEMLoader> loaders = ExcelComponentConfig.getEmLoaders();
         if (null != loaders) {
             for (IEMLoader loader : loaders) {
                 loader.clear();

@@ -13,9 +13,10 @@ import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.core.util.xml.XmlHelper;
 import com.forms.beneform4j.core.util.xml.parser.XmlParserUtils;
+import com.forms.beneform4j.excel.model.base.EMType;
 import com.forms.beneform4j.excel.model.base.IEM;
+import com.forms.beneform4j.excel.model.base.em.BaseEM;
 import com.forms.beneform4j.excel.model.base.loader.AbstractResourceEMLoader;
-import com.forms.beneform4j.excel.model.file.em.ResourceFileEM;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -91,7 +92,14 @@ public class XmlFileEMLoader extends AbstractResourceEMLoader {
         if (null == resource || !resource.exists()) {
             Throw.throwRuntimeException("the file " + file.getPath() + " is not exist, the id is " + id + ".");
         }
-        ResourceFileEM em = new ResourceFileEM(resource);
+
+        String type = ele.getAttribute("type");
+        if (CoreUtils.isBlank(type)) {
+            String filename = resource.getFilename();
+            type = EMType.getTypeByFilename(filename);
+        }
+
+        BaseEM em = ResourceEMLoaderHelper.newResourceEM(resource, type);
         em.setId(id);
 
         String name = ele.getAttribute("name");
@@ -131,7 +139,12 @@ public class XmlFileEMLoader extends AbstractResourceEMLoader {
         if (null == resource || !resource.exists()) {
             Throw.throwRuntimeException("the location " + resource + " is not exist, the id is " + id + ".");
         }
-        ResourceFileEM em = new ResourceFileEM(resource);
+        String type = ele.getAttribute("type");
+        if (CoreUtils.isBlank(type)) {
+            String filename = resource.getFilename();
+            type = EMType.getTypeByFilename(filename);
+        }
+        BaseEM em = ResourceEMLoaderHelper.newResourceEM(resource, type);
         em.setId(id);
 
         String name = ele.getAttribute("name");

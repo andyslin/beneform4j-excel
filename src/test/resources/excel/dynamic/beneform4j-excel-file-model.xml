@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excel-file-model-config xmlns="http://www.formssi.com/schema/beneform4j/excel-file-model"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel-file-model http://www.formssi.com/schema/beneform4j/excel-file-model.xsd">
+	
+<!-- 	<file id="dynamic1" path="D:/excel-file-model/formulas_demo.xlsx" /> -->
+<!-- 	<file id="dynamic2" path="D:/excel-file-model/formulas_demo.xlsx" /> -->
+	
+<!-- 	<folder dir="D:/excel-file-model"> -->
+<!-- 		<file id="testDynamicFolder1" path="formulas_demo.xlsx" /> -->
+<!-- 		<file id="testDynamicFolder2" path="formulas_demo.xlsx" /> -->
+<!-- 	</folder> -->
+	
+	<resource id="testDyanmicResource1" location="classpath:excel/dynamic/one-grid.xml"/>
+	
+</excel-file-model-config>

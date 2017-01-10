@@ -77,8 +77,27 @@
         </xsd:attribute>
         <xsd:attribute name="name" use="optional" type="xsd:string">
        		<xsd:annotation><xsd:documentation><![CDATA[
-				模型名称，默认使用resource表示的资源名称
+				模型名称
 			]]></xsd:documentation></xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="type" use="optional">
+       		<xsd:annotation><xsd:documentation><![CDATA[
+				模型类别，默认根据文件后缀判断，如果是Excel文件，作为IFileEM，否则作为IDynamicTreeEM
+			]]></xsd:documentation></xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Excel">
+						<xsd:annotation><xsd:documentation><![CDATA[
+							Excel文件模板，直接作为Excel模型
+						]]></xsd:documentation></xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="Freemarker">
+						<xsd:annotation><xsd:documentation><![CDATA[
+							Freemarker文件模板，用于生成XML配置的Excel模型
+						]]></xsd:documentation></xsd:annotation>
+					</xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
         </xsd:attribute>
         <xsd:attribute name="desc" use="optional" type="xsd:string">
        		<xsd:annotation><xsd:documentation><![CDATA[

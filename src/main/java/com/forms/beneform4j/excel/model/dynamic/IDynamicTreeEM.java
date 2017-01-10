@@ -5,5 +5,5 @@ import com.forms.beneform4j.excel.model.tree.ITreeEM;
 
 public interface IDynamicTreeEM extends IEM {
 
-    public ITreeEM apply(Object param);
+    public ITreeEM apply(Object param, Object data);
 }

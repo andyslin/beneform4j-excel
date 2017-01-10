@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excel-tree-model-config xmlns="http://www.formssi.com/schema/beneform4j/excel-tree-model"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel-tree-model http://www.formssi.com/schema/beneform4j/excel-tree-model.xsd">
+
+	<workbook id="oneRegion1" name="单个Region测试一">
+		<region>
+			<td text="定长文本，如客户号" property="charData" showType="LOCK_SHOW" desc="冻结区域显示" dataType="CHAR"/>
+			<td text="变长文本，如客户名称" property="varcharData" showType="LOCK_SHOW" desc="冻结区域显示"/>
+			<td text="隐藏文本，如区域" property="hiddenData" showType="LOCK_HIDDEN" desc="冻结区域隐藏"/>
+			<td text="整型" property="intData" dataType="INTEGER"/>
+			<td text="实型" property="doubleData" dataType="DECIMAL"/>
+			<td text="实型，保留四位小数" property="doubleData" dataType="DECIMAL" format="#,##0.0000"/>
+			<td text="百分数" property="percentagData" dataType="PERCENTAG"/>
+			<td text="普通隐藏" property="normalHiddenData" showType="INIT_HIDDEN" desc="普通区域隐藏"/>
+			<td text="跨多列">
+				<td text="子列1" property="subData1"/>
+				<td text="子列2" property="subData2"/>
+				<td text="子列3" property="subData3"/>
+			</td>
+		</region>
+	</workbook>
+	
+	<workbook id="oneRegion2" name="单个Region测试二，横向偏移1个位置">
+		<region offsetX="1">
+			<td text="定长文本，如客户号" property="charData" showType="LOCK_SHOW" desc="冻结区域显示" dataType="CHAR"/>
+			<td text="变长文本，如客户名称" property="varcharData" showType="LOCK_SHOW" desc="冻结区域显示"/>
+			<td text="隐藏文本，如区域" property="hiddenData" showType="LOCK_HIDDEN" desc="冻结区域隐藏"/>
+			<td text="整型" property="intData" dataType="INTEGER"/>
+			<td text="实型" property="doubleData" dataType="DECIMAL"/>
+			<td text="实型，保留四位小数" property="doubleData" dataType="DECIMAL" format="#,##0.0000"/>
+			<td text="百分数" property="percentagData" dataType="PERCENTAG"/>
+			<td text="普通隐藏" property="normalHiddenData" showType="INIT_HIDDEN" desc="普通区域隐藏"/>
+			<td text="跨多列">
+				<td text="子列1" property="subData1"/>
+				<td text="子列2" property="subData2"/>
+				<td text="子列3" property="subData3"/>
+			</td>
+		</region>
+	</workbook>
+	
+	<workbook id="oneRegion3" name="单个Region测试三，横向偏移1个位置，纵向偏移5个位置">
+		<region offsetX="1" offsetY="5">
+			<td text="定长文本，如客户号" property="charData" showType="LOCK_SHOW" desc="冻结区域显示" dataType="CHAR"/>
+			<td text="变长文本，如客户名称" property="varcharData" showType="LOCK_SHOW" desc="冻结区域显示"/>
+			<td text="隐藏文本，如区域" property="hiddenData" showType="LOCK_HIDDEN" desc="冻结区域隐藏"/>
+			<td text="整型" property="intData" dataType="INTEGER"/>
+			<td text="实型" property="doubleData" dataType="DECIMAL"/>
+			<td text="实型，保留四位小数" property="doubleData" dataType="DECIMAL" format="#,##0.0000"/>
+			<td text="百分数" property="percentagData" dataType="PERCENTAG"/>
+			<td text="普通隐藏" property="normalHiddenData" showType="INIT_HIDDEN" desc="普通区域隐藏"/>
+			<td text="跨多列">
+				<td text="子列1" property="subData1"/>
+				<td text="子列2" property="subData2"/>
+				<td text="子列3" property="subData3"/>
+			</td>
+		</region>
+	</workbook>
+</excel-tree-model-config>

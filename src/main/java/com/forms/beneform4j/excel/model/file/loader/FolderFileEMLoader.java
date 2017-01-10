@@ -10,8 +10,9 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
 import com.forms.beneform4j.core.util.logger.CommonLogger;
+import com.forms.beneform4j.excel.model.base.EMType;
+import com.forms.beneform4j.excel.model.base.em.BaseEM;
 import com.forms.beneform4j.excel.model.base.loader.AbstractOnceEMLoader;
-import com.forms.beneform4j.excel.model.file.em.ResourceFileEM;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -31,7 +32,7 @@ import com.forms.beneform4j.excel.model.file.em.ResourceFileEM;
  */
 public class FolderFileEMLoader extends AbstractOnceEMLoader {
 
-    private static final Set<String> defaultSuffixs = new HashSet<String>(Arrays.asList("xls", "xlsx"));
+    private static final Set<String> defaultSuffixs = new HashSet<String>(Arrays.asList("xls", "xlsx", "ftl", "xml"));
 
     /**
      * 根目录
@@ -104,7 +105,7 @@ public class FolderFileEMLoader extends AbstractOnceEMLoader {
             } else {
                 filenames.add(filename);
                 Resource resource = new FileSystemResource(file);
-                ResourceFileEM em = new ResourceFileEM(resource);
+                BaseEM em = ResourceEMLoaderHelper.newResourceEM(resource, EMType.getTypeByFilename(suffix));
                 String basename = FilenameUtils.getBaseName(filename);
                 String id = (null == parent) ? basename : (parent + "/" + basename);
                 if (id.startsWith("/")) {

@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.springframework.cache.Cache;
 
+import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.cache.Caches;
 import com.forms.beneform4j.core.util.logger.CommonLogger;
 import com.forms.beneform4j.excel.model.base.IEM;
@@ -32,12 +33,17 @@ public abstract class AbstractCacheableEMLoader extends AbstractEMLoader {
     /**
      * 是否启用缓存
      */
-    private boolean cacheable;
+    private boolean cacheable = true;
 
     /**
      * 模型缓存容器
      */
     private Cache cache;
+
+    /**
+     * 缓存名称
+     */
+    private String cacheName;
 
     /**
      * 是否已经初始化缓存的监控标志
@@ -96,6 +102,24 @@ public abstract class AbstractCacheableEMLoader extends AbstractEMLoader {
      */
     public void setCacheable(boolean cacheable) {
         this.cacheable = cacheable;
+    }
+
+    /**
+     * 缓存容器名称
+     * 
+     * @return 缓存容器名称
+     */
+    public String getCacheName() {
+        return cacheName;
+    }
+
+    /**
+     * 设置缓存容器名称
+     * 
+     * @param cacheName 缓存容器名称
+     */
+    public void setCacheName(String cacheName) {
+        this.cacheName = cacheName;
     }
 
     /**
@@ -205,7 +229,11 @@ public abstract class AbstractCacheableEMLoader extends AbstractEMLoader {
                     try {
                         Cache c = this.initCache();
                         if (null == c) {
-                            this.cache = Caches.getCache(this.getClass(), AbstractCacheableEMLoader.class.getName());
+                            String cacheName = getCacheName();
+                            if (CoreUtils.isBlank(cacheName)) {
+                                cacheName = this.getClass() + "###" + AbstractCacheableEMLoader.class.getName();
+                            }
+                            this.cache = Caches.getCache(cacheName);
                         } else {
                             this.cache = c;
                         }
@@ -233,13 +261,13 @@ public abstract class AbstractCacheableEMLoader extends AbstractEMLoader {
             String loadername = null == name ? "annoy" : name;
             if (null == old) {
                 cache.put(modelId, em);
-                CommonLogger.info("[loader : " + loadername + "] register IEM with id is [" + modelId + "], use {" + em + "}");
+                CommonLogger.info("[loader : " + loadername + "] register IEM  [" + em + "]");
             } else if (old.getPrior() <= em.getPrior()) {
                 // 之前的缓存优先级高
-                CommonLogger.warn("[loader : " + loadername + "] has more IEM with id is [" + modelId + "], according to the prior use {" + old + "}, ignore  {" + em + "]");
+                CommonLogger.warn("[loader : " + loadername + "] has more IEM with id is [" + modelId + "], according to the prior use [" + old + "], ignore [" + em + "]");
             } else {
                 cache.put(modelId, em);
-                CommonLogger.warn("[loader : " + loadername + "] has more IEM with id is [" + modelId + "], according to the prior use {" + em + "}, ignore {" + old + "}");
+                CommonLogger.warn("[loader : " + loadername + "] has more IEM with id is [" + modelId + "], according to the prior use [" + em + "], ignore [" + old + "]");
             }
         }
     }
