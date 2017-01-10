@@ -17,13 +17,10 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
-<<<<<<< HEAD
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-jexl</artifactId>
-=======
->>>>>>> branch 'master' of http://192.168.22.190:8090/beneform4j/beneform4j-excel.git
 		</dependency>
 		<!-- POI组件包开始 -->
 		<dependency>

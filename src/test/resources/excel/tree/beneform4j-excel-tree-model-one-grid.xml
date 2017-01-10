@@ -18,7 +18,6 @@
 			<td text="子列3" property="subData3"/>
 		</td>
 	</workbook>
-<<<<<<< HEAD
 	
 	<workbook id="dynamic-xml" name="单一客户信息-财务信息" desc="财务信息" dynamic="true">
 		<td text="客户名称" property="cst_nm" showType="LOCK_SHOW"/>
@@ -40,6 +39,4 @@
 			<td text="总负债" property="zfz"/>
 		</td>
 	</workbook>
-=======
->>>>>>> branch 'master' of http://192.168.22.190:8090/beneform4j/beneform4j-excel.git
 </excel-tree-model-config>

@@ -37,7 +37,6 @@
 					]]></xsd:documentation></xsd:annotation>
 				</xsd:element> 			
    			</xsd:choice>
-<<<<<<< HEAD
    			<xsd:attribute name="dynamic" use="optional" type="xsd:boolean">
    				<xsd:annotation><xsd:documentation><![CDATA[
 					是否动态模型，默认为否。如果是动态模型，则延迟解析
@@ -99,64 +98,6 @@
 					]]></xsd:documentation></xsd:annotation>
 				</xsd:element>  
 				<xsd:any namespace="##other" minOccurs="1" maxOccurs="unbounded" processContents="skip">
-=======
-   			<xsd:attributeGroup ref="modelAttributes"/>
-   		</xsd:complexType>
-   	</xsd:element>
-   	
-   	<xsd:element name="sheet">
-   		<xsd:annotation><xsd:documentation><![CDATA[
-			定义一个Sheet元素
-		]]></xsd:documentation></xsd:annotation>
-   		<xsd:complexType>
-   			<xsd:choice minOccurs="1" maxOccurs="1">
-				<xsd:element ref="td" minOccurs="1" maxOccurs="unbounded">
-					<xsd:annotation><xsd:documentation><![CDATA[
-						第一种情形，直接子元素为td，默认为只有一个region，并且为grid，只允许出现td元素
-					]]></xsd:documentation></xsd:annotation>
-				</xsd:element>
-				<xsd:element ref="region" minOccurs="1" maxOccurs="unbounded">
-					<xsd:annotation><xsd:documentation><![CDATA[
-						第二种情形，直接子元素为region，只允许出现region元素
-					]]></xsd:documentation></xsd:annotation>
-				</xsd:element>  
-   			</xsd:choice>
-   			<xsd:attribute name="name" use="optional" type="xsd:string">
-        		<xsd:annotation><xsd:documentation><![CDATA[
-					Sheet名称
-				]]></xsd:documentation></xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="condition" use="optional" type="xsd:string">
-        		<xsd:annotation><xsd:documentation><![CDATA[
-					渲染Sheet的条件表达式
-				]]></xsd:documentation></xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="property" use="optional" type="xsd:string">
-        		<xsd:annotation><xsd:documentation><![CDATA[
-					获取渲染Sheet的数据的属性
-				]]></xsd:documentation></xsd:annotation>
-            </xsd:attribute>
-   		</xsd:complexType>
-   	</xsd:element>
-   	
-   	<xsd:element name="region">
-   		<xsd:annotation><xsd:documentation><![CDATA[
-			定义一个Region元素
-		]]></xsd:documentation></xsd:annotation>
-   		<xsd:complexType>
-   			<xsd:choice minOccurs="1" maxOccurs="1">
-				<xsd:element ref="td" minOccurs="1" maxOccurs="unbounded">
-					<xsd:annotation><xsd:documentation><![CDATA[
-						第一种情形，直接子元素为td，默认为grid，只允许出现td元素
-					]]></xsd:documentation></xsd:annotation>
-				</xsd:element>
-				<xsd:element ref="region" minOccurs="1" maxOccurs="unbounded">
-					<xsd:annotation><xsd:documentation><![CDATA[
-						第二种情形，直接子元素为region，默认为nested-region，只允许出现region元素
-					]]></xsd:documentation></xsd:annotation>
-				</xsd:element>  
-				<xsd:any namespace="##other" minOccurs="1" maxOccurs="unbounded">
->>>>>>> branch 'master' of http://192.168.22.190:8090/beneform4j/beneform4j-excel.git
 					<xsd:annotation><xsd:documentation><![CDATA[
 						第三种情形，直接子元素为自定义命名空间的元素，由用户自行定义规则
 					]]></xsd:documentation></xsd:annotation>

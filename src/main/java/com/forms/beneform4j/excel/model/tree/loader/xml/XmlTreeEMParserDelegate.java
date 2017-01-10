@@ -21,7 +21,6 @@ import com.forms.beneform4j.excel.model.tree.em.TreeEMSheet;
 
 public class XmlTreeEMParserDelegate {
 
-<<<<<<< HEAD
     //private static final String WORKBOOK_ID = "id";
     private static final String WORKBOOK_NAME = "name";
     private static final String WORKBOOK_DESC = "desc";
@@ -65,57 +64,6 @@ public class XmlTreeEMParserDelegate {
      * @return
      */
     public static TreeEM parseWorkbookElement(String modelId, Element workbook) {
-=======
-    private static final String WORKBOOK_ID = "id";
-    private static final String WORKBOOK_NAME = "name";
-    private static final String WORKBOOK_DESC = "desc";
-    private static final String WORKBOOK_PRIOR = "prior";
-
-    private static final String SHEET_NAME = "name";
-    private static final String SHEET_CONDITION = "condition";
-    private static final String SHEET_PROPERTY = "property";
-
-    private static final String REGION_NAME = "name";
-    private static final String REGION_TITLE = "title";
-    private static final String REGION_CONDITION = "condition";
-    private static final String REGION_PROPERTY = "property";
-    private static final String REGION_OFFSET_NAME = "offsetName";
-    private static final String REGION_OFFSET_POINT = "offsetPoint";
-    private static final String REGION_OFFSET_X = "offsetX";
-    private static final String REGION_OFFSET_Y = "offsetY";
-    private static final String REGION_TYPE = "type";
-
-    /**
-     * 解析一个workbook元素
-     * 
-     * @param workbook
-     * @return
-     */
-    public static TreeEM parseWorkbookDocument(String modelId, Document document) {
-        Element element = document.getDocumentElement();
-        Element workbook = XmlHelper.getChildElementByTagName(element, XmlTreeEMConsts.WORKBOOK);
-        return parseWorkbookElement(modelId, workbook);
-    }
-
-    /**
-     * 解析一个workbook元素
-     * 
-     * @param workbook
-     * @return
-     */
-    public static TreeEM parseWorkbookElement(Element workbook) {
-        String modelId = workbook.getAttribute(WORKBOOK_ID);
-        return parseWorkbookElement(modelId, workbook);
-    }
-
-    /**
-     * 解析一个workbook元素
-     * 
-     * @param workbook
-     * @return
-     */
-    private static TreeEM parseWorkbookElement(String modelId, Element workbook) {
->>>>>>> branch 'master' of http://192.168.22.190:8090/beneform4j/beneform4j-excel.git
         // sheet配置
         List<Element> sheets = XmlHelper.getChildElementsByTagName(workbook, XmlTreeEMConsts.SHEET);
         if (!sheets.isEmpty()) {// 存在<sheet>元素

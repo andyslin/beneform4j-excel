@@ -3,18 +3,5 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel-file-model http://www.formssi.com/schema/beneform4j/excel-file-model.xsd">
 	
-<<<<<<< HEAD
 	<model id="dynamic-one-grid" location="classpath:excel/dynamic/one-grid.xml.ftl"/>
-=======
-<!-- 	<file id="dynamic1" path="D:/excel-file-model/formulas_demo.xlsx" /> -->
-<!-- 	<file id="dynamic2" path="D:/excel-file-model/formulas_demo.xlsx" /> -->
-	
-<!-- 	<folder dir="D:/excel-file-model"> -->
-<!-- 		<file id="testDynamicFolder1" path="formulas_demo.xlsx" /> -->
-<!-- 		<file id="testDynamicFolder2" path="formulas_demo.xlsx" /> -->
-<!-- 	</folder> -->
-	
-	<resource id="testDyanmicResource1" location="classpath:excel/dynamic/one-grid.xml"/>
-	
->>>>>>> branch 'master' of http://192.168.22.190:8090/beneform4j/beneform4j-excel.git
 </excel-file-model-config>
