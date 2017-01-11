@@ -1,4 +1,4 @@
-package com.forms.beneform4j.excel.exports.file.model;
+package com.forms.beneform4j.excel.exports.file.jxls2.model;
 
 import java.util.ArrayList;
 import java.util.List;

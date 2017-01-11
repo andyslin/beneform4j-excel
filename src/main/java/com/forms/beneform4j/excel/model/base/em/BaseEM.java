@@ -1,6 +1,7 @@
 package com.forms.beneform4j.excel.model.base.em;
 
 import com.forms.beneform4j.core.util.CoreUtils;
+import com.forms.beneform4j.excel.model.base.EMType;
 import com.forms.beneform4j.excel.model.base.IEM;
 
 public class BaseEM implements IEM {
@@ -14,7 +15,7 @@ public class BaseEM implements IEM {
 
     private String name;
 
-    private String type;
+    private EMType type;
 
     private String desc;
 
@@ -40,7 +41,7 @@ public class BaseEM implements IEM {
      * {@inheritDoc}
      */
     @Override
-    public String getType() {
+    public EMType getType() {
         return type;
     }
 
@@ -68,7 +69,11 @@ public class BaseEM implements IEM {
         this.name = name;
     }
 
-    public void setType(String type) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setType(EMType type) {
         this.type = type;
     }
 

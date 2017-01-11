@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.forms.beneform4j.excel.exports.IExcelExporter;
+import com.forms.beneform4j.excel.exports.ExcelExporters;
 import com.forms.beneform4j.excel.model.EMManager;
 import com.forms.beneform4j.excel.model.base.IEM;
 
@@ -20,22 +20,20 @@ import com.forms.beneform4j.excel.model.base.IEM;
 @ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
 public class TreeEMExcelExporterTest {
 
-    private IExcelExporter exporter = new TreeEMExcelExporter();
-
     @Test
     public void testExport() throws Exception {
         test("oneGrid1");
 
-        //        test("oneRegion1");
-        //        test("oneRegion2");
-        //        test("oneRegion3");
-        //
-        //        test("multiRegion1");
-        //        test("multiRegion2");
-        //        test("multiRegion3");
-        //        test("multiRegion4");
-        //        test("multiRegion5");
-        //        test("multiRegion6");
+        test("oneRegion1");
+        test("oneRegion2");
+        test("oneRegion3");
+
+        test("multiRegion1");
+        test("multiRegion2");
+        test("multiRegion3");
+        test("multiRegion4");
+        test("multiRegion5");
+        test("multiRegion6");
     }
 
     private void test(String modelId) {
@@ -43,7 +41,7 @@ public class TreeEMExcelExporterTest {
             String filename = "D:/excel-test/tree/" + modelId + ".xlsx";
             IEM model = EMManager.load(modelId);
             List<Object> data = getTestData();
-            exporter.export(model, data, filename);
+            ExcelExporters.export(model, data, filename);
         } catch (Exception e) {
             e.printStackTrace();
         }

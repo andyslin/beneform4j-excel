@@ -37,11 +37,6 @@
 					]]></xsd:documentation></xsd:annotation>
 				</xsd:element> 			
    			</xsd:choice>
-   			<xsd:attribute name="dynamic" use="optional" type="xsd:boolean">
-   				<xsd:annotation><xsd:documentation><![CDATA[
-					是否动态模型，默认为否。如果是动态模型，则延迟解析
-				]]></xsd:documentation></xsd:annotation>
-   			</xsd:attribute>
    			<xsd:attributeGroup ref="modelAttributes"/>
    		</xsd:complexType>
    	</xsd:element>

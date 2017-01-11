@@ -79,22 +79,24 @@ public class DynamicEMExcelExporterTest {
             map.put("cst_id", "1000" + i);
             map.put("cst_nm", "客户名称" + i);
 
-            map.put("sr1", RandomUtils.nextDouble() * 100);
-            double sr2 = RandomUtils.nextDouble() * 100;
-            double sr3 = RandomUtils.nextDouble() * 100;
+            map.put("season", RandomUtils.nextInt(1, 4) + "");
+
+            map.put("sr1", RandomUtils.nextDouble(0, 1) * 100);
+            double sr2 = RandomUtils.nextDouble(0, 1) * 100;
+            double sr3 = RandomUtils.nextDouble(0, 1) * 100;
             map.put("sr2", sr2);
             map.put("sr3", sr3);
             map.put("srTbbh", sr3 - sr2);
 
-            map.put("lr1", RandomUtils.nextDouble() * 100);
-            double lr2 = RandomUtils.nextDouble() * 100;
-            double lr3 = RandomUtils.nextDouble() * 100;
+            map.put("lr1", RandomUtils.nextDouble(0, 1) * 100);
+            double lr2 = RandomUtils.nextDouble(0, 1) * 100;
+            double lr3 = RandomUtils.nextDouble(0, 1) * 100;
             map.put("lr2", lr2);
             map.put("lr3", lr3);
             map.put("lrTbbh", lr3 - lr2);
 
-            map.put("zzc", RandomUtils.nextDouble() * 100000);
-            map.put("zfz", RandomUtils.nextDouble() * 100000);
+            map.put("zzc", RandomUtils.nextDouble(0, 1) * 100000);
+            map.put("zfz", RandomUtils.nextDouble(0, 1) * 100000);
 
             list.add(map);
         }

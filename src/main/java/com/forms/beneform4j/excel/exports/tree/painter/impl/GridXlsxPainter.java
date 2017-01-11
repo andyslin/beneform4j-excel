@@ -2,6 +2,8 @@ package com.forms.beneform4j.excel.exports.tree.painter.impl;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ClientAnchor;
@@ -17,6 +19,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
 
 import com.forms.beneform4j.core.util.CoreUtils;
+import com.forms.beneform4j.core.util.logger.CommonLogger;
 import com.forms.beneform4j.excel.ExcelUtils;
 import com.forms.beneform4j.excel.data.accessor.DataAccessors;
 import com.forms.beneform4j.excel.data.accessor.IDataAccessor;
@@ -30,11 +33,50 @@ public class GridXlsxPainter extends AbstractSingleXlsxPainter<Grid> {
 
     private static final int TITLE_ROWS = 1; // 标题所占行数
 
+    private static final Pattern DYNAMIC_PATTERN = Pattern.compile("\\$\\s*\\{\\s*([^}]+?)\\s*\\}");
+
     @Override
     protected Scope doPaint(Grid component, POIExcelContext context, IDataAccessor accessor, Scope offsetScope) {
         GridConfig config = new GridConfig();
         GridXlsxPainterDelegate gc = new GridXlsxPainterDelegate(component, context, accessor, config, offsetScope);
         return gc.paint();
+    }
+
+    /**
+     * 解析动态字符串
+     * 
+     * @param accessor
+     * @param src
+     * @return
+     */
+    protected String resolveDynamicString(IDataAccessor accessor, String src) {
+        if (CoreUtils.isBlank(src) || null == accessor) {
+            return src;
+        }
+
+        Matcher matcher = DYNAMIC_PATTERN.matcher(src);
+        while (matcher.find()) {
+            String context = matcher.group(0);
+            String expression = matcher.group(1);
+            String replacement = accessor.value(expression, String.class);
+            CommonLogger.debug("dynamic parse: " + context + " ===> " + replacement);
+            src = matcher.replaceFirst(Matcher.quoteReplacement(replacement));
+            matcher = DYNAMIC_PATTERN.matcher(src);
+        }
+        return src;
+    }
+
+    /**
+     * 解析单元格的值
+     * 
+     * @param da
+     * @param root
+     * @param td
+     * @return
+     */
+    protected Object resolveCellValue(IDataAccessor da, Object root, Td td) {
+        Object val = da.value(td.getProperty());//暂不支持计算公式
+        return val;
     }
 
     private class GridConfig {
@@ -115,7 +157,7 @@ public class GridXlsxPainter extends AbstractSingleXlsxPainter<Grid> {
                     t = region.getWorkbook().getName();
                 }
             }
-            this.title = t;
+            this.title = resolveDynamicString(accessor, t);
 
             this.wb = context.getWorkbook();
             this.sheet = context.getSheet();
@@ -132,7 +174,6 @@ public class GridXlsxPainter extends AbstractSingleXlsxPainter<Grid> {
                 Td td = leaf.get(i);
                 this.dataStyle[i] = ExcelUtils.getDataStyle(wb, format, td.getAlignType(), td.getDataFormat());
             }
-
         }
 
         private Scope paint() {
@@ -172,25 +213,32 @@ public class GridXlsxPainter extends AbstractSingleXlsxPainter<Grid> {
                     int col1 = beginCell + td.getLeft();
                     int row2 = beginRow + titleRowspan + td.getTop() + td.getRowspan() - 1;
                     int col2 = beginCell + td.getLeft() + td.getColspan() - 1;
-                    ExcelUtils.setMerge(sheet, row1, col1, row2, col2, td.getFieldName(), headStyle);
-                    // 添加注释
-                    String desc = td.getDesc();
-                    if (!CoreUtils.isBlank(desc)) {
-                        Comment comment = draw.createCellComment(anchor);
-                        comment.setString(getRichTextString(desc.trim()));
-                        comment.setRow(row1);
-                        comment.setColumn(col1);
-                        CellUtil.getCell(CellUtil.getRow(row1, sheet), col1).setCellComment(comment);
-                    }
+                    String header = resolveDynamicString(accessor, td.getFieldName());
+                    ExcelUtils.setMerge(sheet, row1, col1, row2, col2, header, headStyle);
+                    addCellComment(row1, col1, td.getDesc());
                 }
             }
             sSetHiddenAndLocked();
         }
 
-        private RichTextString getRichTextString(String text) {
-            RichTextString rts = helper.createRichTextString(text);
-            rts.applyFont(font); // 用于解决2007格式中批注显示不出来的问题
-            return rts;
+        /**
+         * 添加注释
+         * 
+         * @param row1
+         * @param col1
+         * @param desc
+         */
+        private void addCellComment(int row1, int col1, String desc) {
+            if (!CoreUtils.isBlank(desc)) {
+                desc = resolveDynamicString(accessor, desc);
+                Comment comment = draw.createCellComment(anchor);
+                RichTextString rts = helper.createRichTextString(desc);
+                rts.applyFont(font);
+                comment.setString(rts);
+                comment.setRow(row1);
+                comment.setColumn(col1);
+                CellUtil.getCell(CellUtil.getRow(row1, sheet), col1).setCellComment(comment);
+            }
         }
 
         /**
@@ -222,19 +270,6 @@ public class GridXlsxPainter extends AbstractSingleXlsxPainter<Grid> {
                 Object val = resolveCellValue(da, data, td);
                 ExcelUtils.setCell(sheet, beginDataRow + index, beginCell + j, val, dataStyle[j]);
             }
-        }
-
-        /**
-         * 解析单元格的值
-         * 
-         * @param da
-         * @param root
-         * @param td
-         * @return
-         */
-        private Object resolveCellValue(IDataAccessor da, Object root, Td td) {
-            Object val = da.value(td.getProperty());//暂不支持计算公式
-            return val;
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.forms.beneform4j.excel.exports.file;
+package com.forms.beneform4j.excel.exports.file.jxls2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,17 +8,15 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.forms.beneform4j.excel.exports.IExcelExporter;
-import com.forms.beneform4j.excel.exports.file.model.Department;
-import com.forms.beneform4j.excel.exports.file.model.Employee;
+import com.forms.beneform4j.excel.exports.ExcelExporters;
+import com.forms.beneform4j.excel.exports.file.jxls2.model.Department;
+import com.forms.beneform4j.excel.exports.file.jxls2.model.Employee;
 import com.forms.beneform4j.excel.model.EMManager;
 import com.forms.beneform4j.excel.model.base.IEM;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
-public class FileEMExcelExporterTest {
-
-    private IExcelExporter exporter = new FileEMExcelExporter();
+public class Jxls2FileEMExcelExporterTest {
 
     @Test
     public void testOneGrid1() throws Exception {
@@ -30,7 +28,7 @@ public class FileEMExcelExporterTest {
             String filename = "D:/excel-test/file/" + modelId + ".xls";
             IEM model = EMManager.load(modelId);
             List<Department> data = getTestData();
-            exporter.export(model, data, filename);
+            ExcelExporters.export(model, data, filename);
         } catch (Exception e) {
             e.printStackTrace();
         }

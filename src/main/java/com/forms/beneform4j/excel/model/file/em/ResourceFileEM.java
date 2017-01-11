@@ -21,6 +21,7 @@ public class ResourceFileEM extends BaseEM implements IFileEM {
     public ResourceFileEM(Resource resource) {
         super();
         this.resource = resource;
+        // 
     }
 
     @Override

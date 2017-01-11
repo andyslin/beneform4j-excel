@@ -32,7 +32,14 @@ public interface IEM extends Serializable {
      * 
      * @return
      */
-    public String getType();
+    public EMType getType();
+
+    /**
+     * 设置模型类别
+     * 
+     * @param type
+     */
+    public void setType(EMType type);
 
     /**
      * 获取模型描述

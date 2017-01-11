@@ -1,24 +1,31 @@
 package com.forms.beneform4j.excel.exports.tree;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import com.forms.beneform4j.core.util.exception.Throw;
+import com.forms.beneform4j.excel.ExcelComponentConfig;
+import com.forms.beneform4j.excel.data.accessor.DataAccessors;
 import com.forms.beneform4j.excel.data.accessor.IDataAccessor;
-import com.forms.beneform4j.excel.exports.base.AbstractDataExcelExporter;
+import com.forms.beneform4j.excel.exports.base.AbstractWorkbookExcelExporter;
 import com.forms.beneform4j.excel.model.base.IEM;
 import com.forms.beneform4j.excel.model.dynamic.IDynamicTreeEM;
 import com.forms.beneform4j.excel.model.tree.ITreeEM;
 
-public abstract class AbstractTreeEMExcelExporter extends AbstractDataExcelExporter {
+public abstract class AbstractTreeEMExcelExporter extends AbstractWorkbookExcelExporter {
 
-    abstract protected Workbook export(ITreeEM model, IDataAccessor accessor);
+    abstract protected void export(ITreeEM model, IDataAccessor accessor, Workbook workbook);
 
     @Override
-    public void export(IEM model, Object param, Object data, OutputStream output) {
+    protected Workbook newWorkbook(IEM model, Object param, Object data) {
+        return new SXSSFWorkbook(1000);
+    }
+
+    @Override
+    protected void export(IEM model, Object param, Object data, Workbook workbook) {
         ITreeEM tem = null;
         if (model instanceof ITreeEM) {
             tem = (ITreeEM) model;
@@ -28,21 +35,13 @@ public abstract class AbstractTreeEMExcelExporter extends AbstractDataExcelExpor
             Throw.throwRuntimeException("不支持的Excel模型");
         }
         IDataAccessor accessor = getDataAccessor(param, data);
-        Workbook workbook = this.export(tem, accessor);
-        writeOutputStream(workbook, output);
+        export(tem, accessor, workbook);
     }
 
-    private void writeOutputStream(Workbook workbook, OutputStream output) {
-        if (null != workbook) {
-            try {
-                workbook.write(output);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (workbook instanceof SXSSFWorkbook) {
-                    ((SXSSFWorkbook) workbook).dispose();
-                }
-            }
-        }
+    private IDataAccessor getDataAccessor(Object param, Object data) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(ExcelComponentConfig.getParamObjectVarName(), param);
+        IDataAccessor accessor = DataAccessors.newDataAccessor(data, map);
+        return accessor;
     }
 }
