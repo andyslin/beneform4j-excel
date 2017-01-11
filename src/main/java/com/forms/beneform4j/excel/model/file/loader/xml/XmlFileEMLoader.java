@@ -108,7 +108,7 @@ public class XmlFileEMLoader extends AbstractResourceEMLoader {
                     String filename = resource.getFilename();
                     if (!excludes.contains(resource) && checkSuffix(suffixs, filename)) {
                         String id = idPrefix + resolveId(location, filename);
-                        String type = EMType.getTypeByFilename(filename);
+                        EMType type = EMType.getTypeByFilename(filename);
                         IEM em = getBaseEM(resource, id, filename, type, prior, resource.getDescription());
                         addEM(em, force);
                     }
@@ -199,14 +199,18 @@ public class XmlFileEMLoader extends AbstractResourceEMLoader {
             prior = Integer.parseInt(priorStr);
         }
 
-        String type = EMType.getTypeByFilename(filename);
+        EMType type = EMType.getTypeByFilename(filename);
         IEM em = getBaseEM(resource, id, name, type, prior, desc);
         addEM(em, force);
     }
 
-    private IEM getBaseEM(Resource resource, String id, String name, String type, int prior, String desc) {
-        BaseEM em = EMType.MODEL_TYPE_EXCEL.equals(type) ? new ResourceFileEM(resource) : new ResourceFreemarkerTreeEM(resource);
-
+    private IEM getBaseEM(Resource resource, String id, String name, EMType type, int prior, String desc) {
+        BaseEM em = null;
+        if (EMType.FREEMARKER_TREE.equals(type)) {
+            em = new ResourceFreemarkerTreeEM(resource);
+        } else {
+            em = new ResourceFileEM(resource);
+        }
         em.setType(type);
         em.setId(id);
         em.setName(name);

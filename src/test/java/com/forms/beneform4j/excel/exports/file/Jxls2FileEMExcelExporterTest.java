@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.forms.beneform4j.excel.exports.IExcelExporter;
+import com.forms.beneform4j.excel.exports.file.impl.Jxls2FileEMExcelExporterDelegate;
 import com.forms.beneform4j.excel.exports.file.model.Department;
 import com.forms.beneform4j.excel.exports.file.model.Employee;
 import com.forms.beneform4j.excel.model.EMManager;
@@ -16,9 +17,9 @@ import com.forms.beneform4j.excel.model.base.IEM;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
-public class FileEMExcelExporterTest {
+public class Jxls2FileEMExcelExporterTest {
 
-    private IExcelExporter exporter = new FileEMExcelExporter();
+    private IExcelExporter exporter = new Jxls2FileEMExcelExporterDelegate();
 
     @Test
     public void testOneGrid1() throws Exception {

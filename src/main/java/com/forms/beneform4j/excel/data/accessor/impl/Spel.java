@@ -24,10 +24,12 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.expression.spel.support.StandardTypeConverter;
 import org.springframework.expression.spel.support.StandardTypeLocator;
+import org.springframework.stereotype.Component;
 
 import com.forms.beneform4j.core.util.config.BaseConfig;
 import com.forms.beneform4j.core.util.exception.Throw;
 
+@Component("SpringExpressionLanguageHelper")
 public class Spel implements ApplicationContextAware {
 
     /**

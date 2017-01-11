@@ -37,6 +37,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.ss.util.CellUtil;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.forms.beneform4j.core.util.CoreUtils;
 
@@ -60,6 +62,26 @@ public class ExcelUtils {
     // }
     // }catch(Throwable t){}
     // }
+
+    public static Workbook newStreamWorkbook() {
+        return newStreamWorkbook(null);
+    }
+
+    public static Workbook newStreamWorkbook(XSSFWorkbook workbook) {
+        return newStreamWorkbook(workbook, 1000);
+    }
+
+    public static Workbook newStreamWorkbook(XSSFWorkbook workbook, int rowAccessWindowSize) {
+        return new SXSSFWorkbook(workbook, rowAccessWindowSize);
+    }
+
+    public static Workbook newStreamWorkbook(XSSFWorkbook workbook, int rowAccessWindowSize, boolean compressTmpFiles) {
+        return new SXSSFWorkbook(workbook, rowAccessWindowSize, compressTmpFiles);
+    }
+
+    public static Workbook newStreamWorkbook(XSSFWorkbook workbook, int rowAccessWindowSize, boolean compressTempFiles, boolean useSharedStringsTable) {
+        return new SXSSFWorkbook(workbook, rowAccessWindowSize, compressTempFiles, useSharedStringsTable);
+    }
 
     /**
      * 自适应宽度

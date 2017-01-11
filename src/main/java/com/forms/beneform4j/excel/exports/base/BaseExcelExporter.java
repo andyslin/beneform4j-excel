@@ -14,12 +14,16 @@ import com.forms.beneform4j.excel.model.tree.ITreeEM;
 
 public class BaseExcelExporter implements IExcelExporter {
 
-    private IExcelExporter treeExporter = new TreeEMExcelExporter();
+    private static final IExcelExporter defaultTreeExporter = new TreeEMExcelExporter();
 
-    private IExcelExporter fileExporter = new FileEMExcelExporter();
+    private static final IExcelExporter defaultFileExporter = new FileEMExcelExporter();
+
+    private IExcelExporter treeExporter = defaultTreeExporter;
+
+    private IExcelExporter fileExporter = defaultFileExporter;
 
     /**
-     * 注入ITreeEM类型的导出器
+     * 注入树型模板的导出器
      * 
      * @param treeExporter
      */
@@ -28,9 +32,9 @@ public class BaseExcelExporter implements IExcelExporter {
     }
 
     /**
-     * 注入IFileEM类型的导出器
+     * 注入文件模板导出器
      * 
-     * @param treeExporter
+     * @param fileExporter
      */
     public void setFileExporter(IExcelExporter fileExporter) {
         this.fileExporter = fileExporter;
@@ -75,14 +79,11 @@ public class BaseExcelExporter implements IExcelExporter {
     protected IExcelExporter getExporter(IEM model) {
         if (null == model) {
             throw Throw.createRuntimeException("Excel模型为空");
-        } else if (model instanceof ITreeEM) {
-            return treeExporter;
-        } else if (model instanceof IDynamicTreeEM) {
+        } else if (model instanceof ITreeEM || model instanceof IDynamicTreeEM) {
             return treeExporter;
         } else if (model instanceof IFileEM) {
             return fileExporter;
-        } else {
-            throw Throw.createRuntimeException("不支持的Excel模型");
         }
+        throw Throw.createRuntimeException("不支持的Excel模型");
     }
 }

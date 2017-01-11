@@ -3,7 +3,6 @@ package com.forms.beneform4j.excel.exports.tree;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.logger.CommonLogger;
@@ -20,13 +19,7 @@ import com.forms.beneform4j.excel.model.tree.ITreeEMSheet;
 public class TreeEMExcelExporter extends AbstractTreeEMExcelExporter {
 
     @Override
-    protected Workbook export(ITreeEM model, IDataAccessor accessor) {
-        //XSSFWorkbook wb = new XSSFWorkbook();
-        int rowAccessWindowSize = 1000;
-        boolean compressTempFiles = true;
-        boolean useSharedStringsTable = false;
-        Workbook workbook = new SXSSFWorkbook(null, rowAccessWindowSize, compressTempFiles, useSharedStringsTable);
-
+    protected void export(ITreeEM model, IDataAccessor accessor, Workbook workbook) {
         // 上下文
         POIExcelContext context = new POIExcelContext(workbook, false);
         // 循环处理每个Sheet配置
@@ -37,7 +30,6 @@ public class TreeEMExcelExporter extends AbstractTreeEMExcelExporter {
                 paintSheet(sheetProvider, context, emSheet);
             }
         }
-        return workbook;
     }
 
     private void paintSheet(IDataAccessor accessor, POIExcelContext context, ITreeEMSheet emSheet) {

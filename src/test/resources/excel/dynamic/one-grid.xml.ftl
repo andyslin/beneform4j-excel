@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel-tree-model http://www.formssi.com/schema/beneform4j/excel-tree-model.xsd">
 	
-	<workbook name="动态模型，会破坏XML文件结构，需要另行指定ID">
+	<workbook name="动态模型，会破坏XML文件结构，需要另行指定ID；使用Freemarker模板先填充，然后再解析，访问参数时不需要添加井号">
 		<region>
 			<td text="简单属性值" property="simpleProperty"/>
 			<td text="动态计算标题">

@@ -16,6 +16,10 @@ public class TreeEM extends BaseEM implements ITreeEM {
 
     private List<ITreeEMSheet> sheets;
 
+    public TreeEM() {
+        super.setType(EMType.TREE);
+    }
+
     @Override
     public List<ITreeEMSheet> getSheets() {
         return sheets;
@@ -26,7 +30,7 @@ public class TreeEM extends BaseEM implements ITreeEM {
     }
 
     @Override
-    public String getType() {
-        return EMType.MODEL_TYPE_XML_TREE;
+    public EMType getType() {
+        return EMType.TREE;
     }
 }

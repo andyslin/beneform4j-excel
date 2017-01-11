@@ -6,7 +6,6 @@ import org.springframework.core.io.Resource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.xml.XmlHelper;
 import com.forms.beneform4j.core.util.xml.context.IXmlParserContext.XmlValidationMode;
 import com.forms.beneform4j.core.util.xml.context.impl.XmlParserContext;
@@ -34,13 +33,8 @@ public class XmlTreeEMLoader extends AbstractResourceEMLoader {
         if (null != elements) {
             for (Element ele : elements) {
                 String modelId = ele.getAttribute(XmlTreeEMConsts.WORKBOOK_ID);
-                String dynamic = ele.getAttribute(XmlTreeEMConsts.WORKBOOK_DYNAMIC);
-                if (CoreUtils.isBlank(dynamic) || !CoreUtils.string2Boolean(dynamic)) {
-                    IEM em = XmlTreeEMParserDelegate.parseWorkbookElement(modelId, ele);
-                    addEM(em, force);
-                } else {
-                    //
-                }
+                IEM em = XmlTreeEMParserDelegate.parseWorkbookElement(modelId, ele);
+                addEM(em, force);
             }
         }
     }

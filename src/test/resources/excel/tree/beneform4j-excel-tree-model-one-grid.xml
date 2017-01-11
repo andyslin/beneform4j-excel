@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel-tree-model http://www.formssi.com/schema/beneform4j/excel-tree-model.xsd">
 	
-	<workbook id="oneGrid1" name="单个Grid测试一">
+	<workbook id="oneGrid1" name="单个Grid测试一，属性可以用表达式" desc="属性、标题、注释可以使用表达式，属性使用表达式无需添加${}，而标题和注释需要添加${}">
 		<td text="定长文本，如客户号" property="charData" showType="LOCK_SHOW" desc="冻结区域显示" dataType="CHAR"/>
 		<td text="变长文本，如客户名称" property="varcharData" showType="LOCK_SHOW" desc="冻结区域显示"/>
 		<td text="隐藏文本，如区域" property="hiddenData" showType="LOCK_HIDDEN" desc="冻结区域隐藏"/>
@@ -19,24 +19,25 @@
 		</td>
 	</workbook>
 	
-	<workbook id="dynamic-xml" name="单一客户信息-财务信息" desc="财务信息" dynamic="true">
+	<workbook id="dynamic-xml" name="单一客户信息-财务信息">
 		<td text="客户名称" property="cst_nm" showType="LOCK_SHOW"/>
 		<td text="客户号" property="cst_id" showType="LOCK_SHOW"/>
+		<td text="季节" property="@enum.getValue(season)" showType="LOCK_SHOW" desc="数据转换"/>
 		<td text="近三年销售收入">
-			<td text="${(param.currentYear-2)?c}年销售收入" property="sr1"/>
-			<td text="${(param.currentYear-1)?c}年销售收入" property="sr2"/>
-			<td text="${param.currentYear?c}年销售收入" property="sr3"/>
-			<td text="同比变化金额" property="srTbbh"/>
+			<td text="${#param.currentYear-2}年销售收入" property="sr1" dataType="DECIMAL"/>
+			<td text="${#param.currentYear-1}年销售收入" property="sr2" dataType="DECIMAL"/>
+			<td text="${#param.currentYear}年销售收入" property="sr3" dataType="DECIMAL"/>
+			<td text="同比变化金额" property="srTbbh" dataType="DECIMAL"/>
 		</td>
 		<td text="净利润">
-			<td text="${(param.currentYear-2)?c}年" property="lr1"/>
-			<td text="${(param.currentYear-1)?c}年" property="lr2"/>
-			<td text="${param.currentYear?c}年" property="lr3"/>
-			<td text="同比变化金额" property="lrTbbh"/>
+			<td text="${#param.currentYear-2}年" property="lr1" dataType="DECIMAL"/>
+			<td text="${#param.currentYear-1}年" property="lr2" dataType="DECIMAL"/>
+			<td text="${#param.currentYear}年销售收入" property="lr3" dataType="DECIMAL"/>
+			<td text="同比变化金额" property="lrTbbh" dataType="DECIMAL"/>
 		</td>
 		<td text="资产负债">
-			<td text="总资产" property="zzc"/>
-			<td text="总负债" property="zfz"/>
+			<td text="总资产" property="zzc" dataType="DECIMAL"/>
+			<td text="总负债" property="zfz" dataType="DECIMAL"/>
 		</td>
 	</workbook>
 </excel-tree-model-config>
