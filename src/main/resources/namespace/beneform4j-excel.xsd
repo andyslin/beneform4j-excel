@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://www.formssi.com/schema/beneform4j/excel" 
+	targetNamespace="http://www.formssi.com/schema/beneform4j/excel" 
+	elementFormDefault="qualified" version="1.0">
+	
+	<xsd:element name="excel-config">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			定义Excel模型配置根元素
+		]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="import" minOccurs="0" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:attribute name="resource" type="xsd:string" use="required"/>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:choice minOccurs="0" maxOccurs="unbounded">
+					<xsd:element name="tree-workbook" type="treeWorkbookType"/>
+					<xsd:element name="file-workbook-group" type="fileWorkbookGroupType"/>
+					<xsd:element name="file-workbook" type="fileWorkbookType"/>
+					<xsd:any namespace="##other" processContents="lax"/>
+				</xsd:choice>
+			</xsd:sequence>
+			
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:complexType name="treeWorkbookType">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			定义一个Workbook树型配置模型
+		]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice minOccurs="1" maxOccurs="1">
+			<xsd:element name="td" type="tdType" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+						第一种情形，直接子元素为td，默认为只有一个sheet，sheet中只有一个region，并且为grid，只允许出现td元素
+					]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="region" type="regionType" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+						第二种情形，直接子元素为region，默认为只有一个sheet，只允许出现region元素
+					]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sheet" type="sheetType" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+						第三种情形，直接子元素为sheet，只允许出现sheet元素
+					]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:choice>
+		<xsd:attribute name="id" type="xsd:ID" use="required">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					模型ID
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attributeGroup ref="modelAttributes"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="sheetType">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			定义Sheet元素类型
+		]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice minOccurs="1" maxOccurs="1">
+			<xsd:element name="td" type="tdType" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+				第一种情形，直接子元素为td，默认为只有一个grid区域，并且只允许出现td元素
+			]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="region" type="regionType" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+				第二种情形，直接子元素为region，只允许出现region元素
+			]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:choice>
+		<xsd:attribute name="name" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+			Sheet名称
+		]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="condition" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+			渲染Sheet的条件表达式
+		]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="property" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+			获取渲染Sheet的数据的属性
+		]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<xsd:complexType name="regionType">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			定义Region元素类型
+		]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice minOccurs="1" maxOccurs="1">
+			<xsd:element name="td" type="tdType" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+						第一种情形，直接子元素为td，默认为grid区域，并且只允许出现td元素
+					]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="region" type="regionType" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+						第二种情形，直接子元素为region，默认为nested-region，并且只允许出现region元素
+					]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:any namespace="##other" processContents="skip" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+						第三种情形，直接子元素为自定义命名空间的元素，由用户自行定义规则
+					]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:any>
+		</xsd:choice>
+		<xsd:attribute name="name" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					区域名称，在同一个sheet中需唯一
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="title" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					区域标题
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="type" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					区域类型，只有td元素的默认为grid区域，只有子区域元素的区域，默认为nested-region
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="condition" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					渲染区域的条件表达式
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="property" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					获取渲染区域的数据的属性
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="offsetName" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					计算偏移时的基准区域名称，必须为同一个sheet中已命名的region，默认为同一级别中的上一个region
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="offsetPoint" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					计算偏移时的基准区域点，默认为左下角顶点，也即在上一个区域的正下方
+				]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="LEFT_TOP">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								左上角顶点，从上一个区域的左上角顶点开始，实际上会覆盖上一个区域
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="RIGHT_TOP">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								右上角顶点，从上一个区域的右上角顶点的同一行下一列开始，也即横向扩充
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="RIGHT_BUTTOM">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								右下角顶点，从上一个区域的右下角顶点的下一行下一列开始，呈对角状
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="LEFT_BUTTOM">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								左下角顶点（默认值），从左下角顶点的下一行同一列开始，也即纵向扩充
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="offsetX" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					横向偏移量
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="offsetY" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					纵向偏移量
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<xsd:complexType name="tdType">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			定义Td元素类型
+		]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="td" type="tdType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="text" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					表头部分的名称
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="property" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					取数据的属性，对于叶子元素，该属性是必须属性
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="renderer" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					渲染函数
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="desc" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					注释，会作为Excel表头部分的注释显示
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="dataType" use="optional" default="VARCHAR">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					数据类型 （默认为变长文本）
+				]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="INTEGER">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								整型，默认格式"0"，默认居右显示
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="DECIMAL">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								实型，默认格式"#,##0.00"，默认居右显示
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="PERCENTAG">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								百分数，默认格式"0.00%"，默认居右显示
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="CHAR">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								定长文本，默认居中显示
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="VARCHAR">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								变长文本，默认居左显示
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="format" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					数据显示格式，可以覆盖由dataType确定的默认格式
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="alignType" use="optional" default="LEFT">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					对齐方式，可以覆盖由dataType确定的对齐方式
+				]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="LEFT"/>
+					<xsd:enumeration value="CENTER"/>
+					<xsd:enumeration value="RIGHT"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="showType" use="optional" default="INIT_SHOW">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					显示方式（默认为普通区域显示）
+				]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="INIT_SHOW">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								普通区域显示
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="INIT_HIDDEN">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								 普通区域隐藏
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="LOCK_SHOW">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								左边冻结区域显示
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="LOCK_HIDDEN">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+								左边冻结区域隐藏
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="width" type="xsd:positiveInteger" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					列宽
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+<!-- 		<xsd:attribute name="formula" use="optional" type="xsd:string"> -->
+<!-- 			<xsd:annotation> -->
+<!-- 				<xsd:documentation><![CDATA[ -->
+<!-- 		 计算公式  -->
+<!-- 		 ]]></xsd:documentation> -->
+<!-- 			</xsd:annotation> -->
+<!-- 		</xsd:attribute> -->
+<!-- 		<xsd:attribute name="stat" use="optional" type="xsd:string"> -->
+<!-- 			<xsd:annotation> -->
+<!-- 				<xsd:documentation><![CDATA[ -->
+<!-- 		 统计方法 -->
+<!-- 		 ]]></xsd:documentation> -->
+<!-- 			</xsd:annotation> -->
+<!-- 		</xsd:attribute> -->
+<!-- 		<xsd:attribute name="headerCls" use="optional" type="xsd:string"> -->
+<!-- 			<xsd:annotation> -->
+<!-- 				<xsd:documentation><![CDATA[ -->
+<!-- 		 表头区域样式  -->
+<!-- 		 ]]></xsd:documentation> -->
+<!-- 			</xsd:annotation> -->
+<!-- 		</xsd:attribute> -->
+<!-- 		<xsd:attribute name="dataCls" use="optional" type="xsd:string"> -->
+<!-- 			<xsd:annotation> -->
+<!-- 				<xsd:documentation><![CDATA[ -->
+<!-- 		 数据区域样式 -->
+<!-- 		 ]]></xsd:documentation> -->
+<!-- 			</xsd:annotation> -->
+<!-- 		</xsd:attribute> -->
+	</xsd:complexType>
+	
+	<xsd:complexType name="fileWorkbookGroupType">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			定义template-group元素类型，用于定义一组模板文件
+		]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="idPrefix" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					ID前缀，和资源名称一起组成ID
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="locationPatterns" use="required">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					资源模式，ID前缀和资源名称一起组成ID，使用Spring的ResourcePatternResolver加载资源，支持classpath,url,file等格式
+				]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:list itemType="xsd:string"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="suffixs" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					后缀
+				]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:list itemType="xsd:string"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="excludes" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					需要排除的匹配模式
+				]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:list itemType="xsd:string"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="prior" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					模型优先级，用于处理相同id多个模型时的冲突
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<xsd:complexType name="fileWorkbookType">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			定义template元素类型，用于定义单个模板文件
+		]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="id" type="xsd:ID" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				模型ID，如果未配置ID，使用资源名称作为ID
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attributeGroup ref="modelAttributes"/>
+		<xsd:attribute name="location" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				资源位置，使用Spring的ResourcePatternResolver加载资源，支持classpath,url,file等格式
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<xsd:attributeGroup name="modelAttributes">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			模型属性组
+		]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="name" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				模型名称
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="desc" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				模型描述
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="prior" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				模型优先级，用于处理相同id多个模型时的冲突
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+</xsd:schema>

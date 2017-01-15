@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<excel-file-model-config xmlns="http://www.formssi.com/schema/beneform4j/excel-file-model"
+<excel-config xmlns="http://www.formssi.com/schema/beneform4j/excel"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel-file-model http://www.formssi.com/schema/beneform4j/excel-file-model.xsd">
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd">
 	
 	<!-- 类路径excel/file下的Excel文件，直接使用文件名作为ID -->
-	<group locationPatterns="classpath*:excel/file/**" suffixs="xls xlsx"/>
+	<file-workbook-group locationPatterns="classpath*:excel/file/**" suffixs="xls xlsx"/>
 	
 	<!-- D盘excel-file-model下的Excel文件，使用d-和文件名一起作为ID -->
-	<group idPrefix="d-" locationPatterns="file:/D:/excel-file-model/**" suffixs="xls xlsx"/>
+	<file-workbook-group idPrefix="d-" locationPatterns="file:/D:/excel-file-model/**" suffixs="xls xlsx"/>
 
 	<!-- 使用model元素指定文件路径，直接指定ID -->
-	<model id="testResource1" location="classpath:excel/file/two_inner_loops_demo.xls"/>
-</excel-file-model-config>
+	<file-workbook id="testResource1" location="classpath:excel/file/two_inner_loops_demo.xls"/>
+</excel-config>

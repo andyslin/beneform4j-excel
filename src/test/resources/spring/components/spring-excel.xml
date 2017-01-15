@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<bean class="com.forms.beneform4j.excel.ExcelComponentConfig">
+		<property name="emLoaders">
+			<list>
+				<!-- XML配置 -->
+				<bean p:name="xml-loader" class="com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoader">
+					<property name="locationPatterns" value="classpath:excel/*/beneform4j-excel*.xml"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excel-config xmlns="http://www.formssi.com/schema/beneform4j/excel"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd">
+	
+	<import resource="tree/beneform4j-excel-one-grid.xml"/>
+	<import resource="tree/beneform4j-excel-one-region.xml"/>
+	<import resource="tree/beneform4j-excel-multi-region.xml"/>
+	
+</excel-config>

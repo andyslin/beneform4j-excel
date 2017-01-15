@@ -4,8 +4,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.forms.beneform4j.excel.export.datastream.wrap.IDataStreamHandlerWrap;
-import com.forms.beneform4j.excel.model.tree.component.grid.Grid;
+import com.forms.beneform4j.excel.core.core.core.export.datastream.wrap.IDataStreamHandlerWrap;
+import com.forms.beneform4j.excel.core.model.em.tree.impl.component.grid.Grid;
 
 /**
  * Copy Right Information : Forms Syntron <br>

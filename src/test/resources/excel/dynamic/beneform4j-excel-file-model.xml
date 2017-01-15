@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<excel-file-model-config xmlns="http://www.formssi.com/schema/beneform4j/excel-file-model"
+<excel-config xmlns="http://www.formssi.com/schema/beneform4j/excel"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel-file-model http://www.formssi.com/schema/beneform4j/excel-file-model.xsd">
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd">
 	
-	<model id="dynamic-one-grid" location="classpath:excel/dynamic/one-grid.xml.ftl"/>
-</excel-file-model-config>
+	<file-workbook id="dynamic-one-grid" location="classpath:excel/dynamic/one-grid.xml.ftl"/>
+</excel-config>

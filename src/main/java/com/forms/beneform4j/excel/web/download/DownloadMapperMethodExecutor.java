@@ -8,8 +8,8 @@ import com.forms.beneform4j.core.dao.mybatis.mapper.IMapperMethodExecutor;
 import com.forms.beneform4j.core.dao.mybatis.mapper.MapperMethod;
 import com.forms.beneform4j.core.dao.mybatis.mapper.MapperMethod.SqlCommand;
 import com.forms.beneform4j.core.dao.stream.IListStreamReader;
-import com.forms.beneform4j.excel.export.datastream.handler.IDataStreamHandler;
-import com.forms.beneform4j.excel.export.datastream.wrap.IDataStreamHandlerWrap;
+import com.forms.beneform4j.excel.core.core.core.export.datastream.handler.IDataStreamHandler;
+import com.forms.beneform4j.excel.core.core.core.export.datastream.wrap.IDataStreamHandlerWrap;
 
 public class DownloadMapperMethodExecutor implements IMapperMethodExecutor {
 

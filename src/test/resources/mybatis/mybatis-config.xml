@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- Java属性与数据库字段采用驼峰式对应 -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<!-- 字段映射采用复合规则，有配置的使用配置映射，未配置的采用默认映射 -->
+		<setting name="autoMappingBehavior" value="FULL" />
+		<setting name="safeResultHandlerEnabled" value="false"/>
+		<setting name="callSettersOnNulls" value="true"/>
+		<setting name="useColumnLabel" value="true"/>
+		<setting name="logPrefix" value="mybatis."/>
+		<setting name="logImpl" value="com.forms.beneform4j.core.dao.mybatis.MybatisLog"/>
+		<setting name="defaultScriptingLanguage" value="com.forms.beneform4j.core.dao.mybatis.parse.EXMLLanguageDriver"/>
+	</settings>
+	<typeHandlers>
+		<typeHandler handler="com.forms.beneform4j.core.dao.mybatis.typehandler.BooleanTypeHandler"/>
+		<typeHandler handler="com.forms.beneform4j.core.dao.mybatis.typehandler.String2NumberHandler"/>
+		<typeHandler handler="com.forms.beneform4j.core.dao.mybatis.typehandler.CursorTypeHandler" javaType="Object" jdbcType="CURSOR"/>
+		<typeHandler handler="com.forms.beneform4j.core.dao.mybatis.typehandler.ClobTypeHandler" javaType="String" jdbcType="LONGVARCHAR"/>
+	</typeHandlers>
+	<plugins>
+		<!-- 插件 -->
+		<plugin interceptor="com.forms.beneform4j.core.dao.mybatis.interceptor.statement.StatementHandlerInterceptor"/>
+		<plugin interceptor="com.forms.beneform4j.core.dao.mybatis.interceptor.resultset.ResultSetHandlerInterceptor"/>
+	</plugins>
+</configuration>

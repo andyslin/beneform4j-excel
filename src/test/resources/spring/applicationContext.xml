@@ -6,23 +6,19 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 	
-	<!-- 扫描通过注解配置的Bean -->
-    <context:component-scan base-package="com.forms.beneform4j"/>
+	<!-- Spring公共配置文件，开启自动扫描、配置属性文件、国际化文件、初始化、日志等组件 -->
+	<import resource="spring-commons.xml"/>
 	
-	<bean class="com.forms.beneform4j.excel.ExcelComponentConfig">
-		<property name="emLoaders">
-			<list>
-				<!-- 使用单独的XML文件来配置Excel文件模型路径的加载器，适用于手工指定模型ID的情况 -->
-				<bean p:name="resources" class="com.forms.beneform4j.excel.model.file.loader.xml.XmlFileEMLoader">
-					<property name="locationPatterns" value="classpath:excel/*/beneform4j-excel-file-model.xml"/>
-				</bean>
-				
-				<!-- 使用XML配置的树型Excel模型 -->
-				<bean p:name="xml-tree" p:validation="true" class="com.forms.beneform4j.excel.model.tree.loader.xml.XmlTreeEMLoader">
-					<property name="locationPatterns" value="classpath:excel/tree/beneform4j-excel-tree-model*.xml"></property>
-				</bean>
-			</list>
-		</property>
-	</bean>
+	<!-- beneform4j配置文件 -->
+	<import resource="spring-beneform4j.xml"/>
+	
+	<!-- 异常相关的Spring文件 -->
+	<import resource="spring-exception.xml"/>
+	
+	<!-- 其它组件相关的Spring文件 -->
+	<import resource="components/spring-components.xml"/>
+	
+	<!-- 对象关系映射相关的Spring文件，包括数据源、Mybatis模板、事务配置等 -->
+	<import resource="spring-orm.xml"/>
 	
 </beans>
