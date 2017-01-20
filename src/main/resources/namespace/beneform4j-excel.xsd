@@ -18,15 +18,95 @@
 					</xsd:complexType>
 				</xsd:element>
 				<xsd:choice minOccurs="0" maxOccurs="unbounded">
-					<xsd:element name="tree-workbook" type="treeWorkbookType"/>
 					<xsd:element name="file-workbook-group" type="fileWorkbookGroupType"/>
 					<xsd:element name="file-workbook" type="fileWorkbookType"/>
+					<xsd:element name="tree-workbook" type="treeWorkbookType"/>
+					
+					<xsd:element name="bean-workbook" type="beanWorkbookType"/>
+					<xsd:element name="bean-workbook-matcher" type="beanWorkbookMatcherType"/>
+					<xsd:element name="bean-workbook-validator" type="beanWorkbookValidatorType"/>
+					<xsd:element name="bean-workbook-extractor" type="beanWorkbookExtractorType"/>
 					<xsd:any namespace="##other" processContents="lax"/>
 				</xsd:choice>
 			</xsd:sequence>
 			
 		</xsd:complexType>
 	</xsd:element>
+	
+	<xsd:complexType name="fileWorkbookGroupType">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			定义template-group元素类型，用于定义一组模板文件
+		]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="idPrefix" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					ID前缀，和资源名称一起组成ID
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="locationPatterns" use="required">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					资源模式，ID前缀和资源名称一起组成ID，使用Spring的ResourcePatternResolver加载资源，支持classpath,url,file等格式
+				]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:list itemType="xsd:string"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="suffixs" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					后缀
+				]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:list itemType="xsd:string"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="excludes" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					需要排除的匹配模式
+				]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:list itemType="xsd:string"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="prior" type="xsd:integer" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					模型优先级，用于处理相同id多个模型时的冲突
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<xsd:complexType name="fileWorkbookType">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			定义template元素类型，用于定义单个模板文件
+		]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="id" type="xsd:ID" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				模型ID，如果未配置ID，使用资源名称作为ID
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attributeGroup ref="modelAttributes"/>
+		<xsd:attribute name="location" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				资源位置，使用Spring的ResourcePatternResolver加载资源，支持classpath,url,file等格式
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
 	
 	<xsd:complexType name="treeWorkbookType">
 		<xsd:annotation>
@@ -35,21 +115,21 @@
 		]]></xsd:documentation>
 		</xsd:annotation>
 		<xsd:choice minOccurs="1" maxOccurs="1">
-			<xsd:element name="td" type="tdType" minOccurs="1" maxOccurs="unbounded">
+			<xsd:element name="td" type="treeWorkbookTdType" minOccurs="1" maxOccurs="unbounded">
 				<xsd:annotation>
 					<xsd:documentation><![CDATA[
 						第一种情形，直接子元素为td，默认为只有一个sheet，sheet中只有一个region，并且为grid，只允许出现td元素
 					]]></xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="region" type="regionType" minOccurs="1" maxOccurs="unbounded">
+			<xsd:element name="region" type="treeWorkbookRegionType" minOccurs="1" maxOccurs="unbounded">
 				<xsd:annotation>
 					<xsd:documentation><![CDATA[
 						第二种情形，直接子元素为region，默认为只有一个sheet，只允许出现region元素
 					]]></xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="sheet" type="sheetType" minOccurs="1" maxOccurs="unbounded">
+			<xsd:element name="sheet" type="treeWorkbookSheetType" minOccurs="1" maxOccurs="unbounded">
 				<xsd:annotation>
 					<xsd:documentation><![CDATA[
 						第三种情形，直接子元素为sheet，只允许出现sheet元素
@@ -67,21 +147,21 @@
 		<xsd:attributeGroup ref="modelAttributes"/>
 	</xsd:complexType>
 	
-	<xsd:complexType name="sheetType">
+	<xsd:complexType name="treeWorkbookSheetType">
 		<xsd:annotation>
 			<xsd:documentation><![CDATA[
 			定义Sheet元素类型
 		]]></xsd:documentation>
 		</xsd:annotation>
 		<xsd:choice minOccurs="1" maxOccurs="1">
-			<xsd:element name="td" type="tdType" minOccurs="1" maxOccurs="unbounded">
+			<xsd:element name="td" type="treeWorkbookTdType" minOccurs="1" maxOccurs="unbounded">
 				<xsd:annotation>
 					<xsd:documentation><![CDATA[
 				第一种情形，直接子元素为td，默认为只有一个grid区域，并且只允许出现td元素
 			]]></xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="region" type="regionType" minOccurs="1" maxOccurs="unbounded">
+			<xsd:element name="region" type="treeWorkbookRegionType" minOccurs="1" maxOccurs="unbounded">
 				<xsd:annotation>
 					<xsd:documentation><![CDATA[
 				第二种情形，直接子元素为region，只允许出现region元素
@@ -112,21 +192,21 @@
 		</xsd:attribute>
 	</xsd:complexType>
 	
-	<xsd:complexType name="regionType">
+	<xsd:complexType name="treeWorkbookRegionType">
 		<xsd:annotation>
 			<xsd:documentation><![CDATA[
 			定义Region元素类型
 		]]></xsd:documentation>
 		</xsd:annotation>
 		<xsd:choice minOccurs="1" maxOccurs="1">
-			<xsd:element name="td" type="tdType" minOccurs="1" maxOccurs="unbounded">
+			<xsd:element name="td" type="treeWorkbookTdType" minOccurs="1" maxOccurs="unbounded">
 				<xsd:annotation>
 					<xsd:documentation><![CDATA[
 						第一种情形，直接子元素为td，默认为grid区域，并且只允许出现td元素
 					]]></xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="region" type="regionType" minOccurs="1" maxOccurs="unbounded">
+			<xsd:element name="region" type="treeWorkbookRegionType" minOccurs="1" maxOccurs="unbounded">
 				<xsd:annotation>
 					<xsd:documentation><![CDATA[
 						第二种情形，直接子元素为region，默认为nested-region，并且只允许出现region元素
@@ -238,14 +318,14 @@
 		</xsd:attribute>
 	</xsd:complexType>
 	
-	<xsd:complexType name="tdType">
+	<xsd:complexType name="treeWorkbookTdType">
 		<xsd:annotation>
 			<xsd:documentation><![CDATA[
 			定义Td元素类型
 		]]></xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="td" type="tdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="td" type="treeWorkbookTdType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 		<xsd:attribute name="text" type="xsd:string" use="required">
 			<xsd:annotation>
@@ -418,80 +498,308 @@
 <!-- 		</xsd:attribute> -->
 	</xsd:complexType>
 	
-	<xsd:complexType name="fileWorkbookGroupType">
+	<xsd:complexType name="beanWorkbookType">
 		<xsd:annotation>
 			<xsd:documentation><![CDATA[
-			定义template-group元素类型，用于定义一组模板文件
+			定义一个导入至JavaBean/Map的Workbook配置模型
 		]]></xsd:documentation>
 		</xsd:annotation>
-		<xsd:attribute name="idPrefix" type="xsd:string" use="optional">
-			<xsd:annotation>
-				<xsd:documentation><![CDATA[
-					ID前缀，和资源名称一起组成ID
-				]]></xsd:documentation>
-			</xsd:annotation>
-		</xsd:attribute>
-		<xsd:attribute name="locationPatterns" use="required">
-			<xsd:annotation>
-				<xsd:documentation><![CDATA[
-					资源模式，ID前缀和资源名称一起组成ID，使用Spring的ResourcePatternResolver加载资源，支持classpath,url,file等格式
-				]]></xsd:documentation>
-			</xsd:annotation>
-			<xsd:simpleType>
-				<xsd:list itemType="xsd:string"/>
-			</xsd:simpleType>
-		</xsd:attribute>
-		<xsd:attribute name="suffixs" use="optional">
-			<xsd:annotation>
-				<xsd:documentation><![CDATA[
-					后缀
-				]]></xsd:documentation>
-			</xsd:annotation>
-			<xsd:simpleType>
-				<xsd:list itemType="xsd:string"/>
-			</xsd:simpleType>
-		</xsd:attribute>
-		<xsd:attribute name="excludes" use="optional">
-			<xsd:annotation>
-				<xsd:documentation><![CDATA[
-					需要排除的匹配模式
-				]]></xsd:documentation>
-			</xsd:annotation>
-			<xsd:simpleType>
-				<xsd:list itemType="xsd:string"/>
-			</xsd:simpleType>
-		</xsd:attribute>
-		<xsd:attribute name="prior" type="xsd:integer" use="optional">
-			<xsd:annotation>
-				<xsd:documentation><![CDATA[
-					模型优先级，用于处理相同id多个模型时的冲突
-				]]></xsd:documentation>
-			</xsd:annotation>
-		</xsd:attribute>
-	</xsd:complexType>
-	
-	<xsd:complexType name="fileWorkbookType">
-		<xsd:annotation>
-			<xsd:documentation><![CDATA[
-			定义template元素类型，用于定义单个模板文件
-		]]></xsd:documentation>
-		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="property" type="beanWorkbookPropertyType" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
 		<xsd:attribute name="id" type="xsd:ID" use="optional">
 			<xsd:annotation>
 				<xsd:documentation><![CDATA[
-				模型ID，如果未配置ID，使用资源名称作为ID
+				模型ID，如果未配置ID，使用beanType的全限定类名，模型ID和beanType至少要配置一项
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="beanType" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				JavaBean的目标类型，默认为LinkedHashMap类型，模型ID和beanType至少要配置一项
 			]]></xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
 		<xsd:attributeGroup ref="modelAttributes"/>
-		<xsd:attribute name="location" type="xsd:string" use="required">
-			<xsd:annotation>
-				<xsd:documentation><![CDATA[
-				资源位置，使用Spring的ResourcePatternResolver加载资源，支持classpath,url,file等格式
-			]]></xsd:documentation>
-			</xsd:annotation>
+	</xsd:complexType>
+	
+	<xsd:complexType name="beanWorkbookPropertyType">
+		<xsd:annotation><xsd:documentation><![CDATA[
+			定义一个属性
+		]]></xsd:documentation></xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="matcher" minOccurs="0" maxOccurs="1" type="beanWorkbookMatcherType">
+				<xsd:annotation><xsd:documentation><![CDATA[
+					匹配器元素，当属性为集合类型时，表示匹配每次循环体开始的位置
+				]]></xsd:documentation></xsd:annotation>
+			</xsd:element>
+			<xsd:element name="validator" minOccurs="0" maxOccurs="1" type="beanWorkbookValidatorType">
+				<xsd:annotation><xsd:documentation><![CDATA[
+					可选，校验器元素
+				]]></xsd:documentation></xsd:annotation>
+			</xsd:element>
+			<xsd:element name="extractor" minOccurs="0" maxOccurs="1" type="beanWorkbookExtractorType">
+				<xsd:annotation><xsd:documentation><![CDATA[
+					可选，提取器元素
+				]]></xsd:documentation></xsd:annotation>
+			</xsd:element>
+			<xsd:element name="end-loop-matcher" minOccurs="0" maxOccurs="1" type="beanWorkbookMatcherType">
+				<xsd:annotation><xsd:documentation><![CDATA[
+					可选，集合类型的整体循环结束匹配器，未配置时循环处理完当前表单
+				]]></xsd:documentation></xsd:annotation>
+			</xsd:element>
+			<xsd:element name="inner-workbook" minOccurs="0" maxOccurs="1" type="beanWorkbookType">
+				<xsd:annotation><xsd:documentation><![CDATA[
+					可选，集合类型内部元素类型的配置
+				]]></xsd:documentation></xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="name" use="required" type="xsd:token">
+			<xsd:annotation><xsd:documentation><![CDATA[
+				属性名称
+			]]></xsd:documentation></xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="type" use="optional">
+			<xsd:annotation><xsd:documentation><![CDATA[
+				属性类型
+			]]></xsd:documentation></xsd:annotation>
+			<xsd:simpleType>
+				<xsd:union memberTypes="xsd:token">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:token">
+							<xsd:enumeration value="byte"></xsd:enumeration>
+							<xsd:enumeration value="short"></xsd:enumeration>
+							<xsd:enumeration value="char"></xsd:enumeration>
+							<xsd:enumeration value="int"></xsd:enumeration>
+							<xsd:enumeration value="long"></xsd:enumeration>
+							<xsd:enumeration value="float"></xsd:enumeration>
+							<xsd:enumeration value="double"></xsd:enumeration>
+							<xsd:enumeration value="boolean"></xsd:enumeration>
+							<xsd:enumeration value="string"></xsd:enumeration>
+							<xsd:enumeration value="list"></xsd:enumeration>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:union>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="matcher-ref" use="optional" type="xsd:string">
+			<xsd:annotation><xsd:documentation><![CDATA[
+				匹配器引用类型，作用和<matcher>子元素相同，两者只需配置其中之一，引用类型优先
+			]]></xsd:documentation></xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="validator-ref" use="optional" type="xsd:string">
+			<xsd:annotation><xsd:documentation><![CDATA[
+				匹配器引用类型，作用和<validator>子元素相同，两者只需配置其中之一，引用类型优先
+			]]></xsd:documentation></xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="extractor-ref" use="optional" type="xsd:string">
+			<xsd:annotation><xsd:documentation><![CDATA[
+				匹配器引用类型，作用和<extractor>子元素相同，两者只需配置其中之一，引用类型优先
+			]]></xsd:documentation></xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="endLoopMatcher-ref" use="optional" type="xsd:string">
+			<xsd:annotation><xsd:documentation><![CDATA[
+				匹配器引用类型，作用和<end-loop-matcher>子元素相同，两者只需配置其中之一，引用类型优先
+			]]></xsd:documentation></xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="innerWorkbook-ref" use="optional" type="xsd:string">
+			<xsd:annotation><xsd:documentation><![CDATA[
+				匹配器引用类型，作用和<inner-workbook>子元素相同，两者只需配置其中之一，引用类型优先
+			]]></xsd:documentation></xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="desc" use="optional" type="xsd:string">
+			<xsd:annotation><xsd:documentation><![CDATA[
+				可选，说明
+			]]></xsd:documentation></xsd:annotation>
 		</xsd:attribute>
 	</xsd:complexType>
+	
+	<xsd:complexType name="beanWorkbookMatcherType">
+		<xsd:annotation>
+			<xsd:documentation>匹配器元素类型</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice minOccurs="0" maxOccurs="1">
+				<xsd:element name="position-matcher">
+					<xsd:annotation>
+						<xsd:documentation>根据位置直接匹配Excel文件中的列的元素类型</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:attributeGroup ref="beanWorkbookSheetMatcherAttributes"/>
+						<xsd:attribute name="row" use="optional">
+							<xsd:annotation>
+								<xsd:documentation>匹配行位置，有效值[-1,65535]，小于或等于0表示匹配所有行</xsd:documentation>
+							</xsd:annotation>
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:integer">
+									<xsd:minInclusive value="-1"/>
+									<xsd:maxInclusive value="65535"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="cell" use="optional">
+							<xsd:annotation>
+								<xsd:documentation>匹配列位置，有效值*[A-IV]，不分大小写，星号*表示匹配所有列</xsd:documentation>
+							</xsd:annotation>
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:token">
+									<xsd:pattern value="[*a-zA-Z]|([a-hA-H][a-zA-Z])|([i|I][a-vA-V])"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="base-matcher">
+					<xsd:annotation>
+						<xsd:documentation>根据取值和偏移位置匹配Excel文件中的列的元素类型</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:attributeGroup ref="beanWorkbookSheetMatcherAttributes"/>
+						<xsd:attribute name="offsetX" use="optional" type="xsd:integer"/>
+						<xsd:attribute name="offsetY" use="optional" type="xsd:integer"/>
+						<xsd:attribute name="isMergeCell" use="optional" type="xsd:boolean"/>
+						<xsd:attribute name="ignoreCase" use="optional" type="xsd:boolean"/>
+						<xsd:attribute name="value" use="optional" type="xsd:string"/>
+						<xsd:attribute name="pattern" use="optional" type="xsd:string"/>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="mixin-matcher">
+					<xsd:annotation><xsd:documentation><![CDATA[
+						混入类型
+					]]></xsd:documentation></xsd:annotation>
+					<xsd:complexType>
+						<xsd:attribute name="beanName" type="xsd:string" use="optional">
+							<xsd:annotation>
+								<xsd:documentation><![CDATA[
+								名称
+							]]></xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+						<xsd:attribute name="beanType" type="xsd:string" use="optional">
+							<xsd:annotation>
+								<xsd:documentation><![CDATA[
+								类型，必须实现com.forms.beneform4j.excel.core.model.em.bean.IBeanEMMatcher接口
+							]]></xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:choice>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:ID"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="beanWorkbookValidatorType">
+		<xsd:annotation>
+			<xsd:documentation>校验器元素类型</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="base-validator">
+					<xsd:annotation>
+						<xsd:documentation>基本校验器，可通过值或正则表达式来校验指定偏移位置处的值</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:attribute name="offsetX" use="optional" type="xsd:integer"/>
+						<xsd:attribute name="offsetY" use="optional" type="xsd:integer"/>
+						<xsd:attribute name="allowEmpty" use="optional" type="xsd:boolean"/>
+						<xsd:attribute name="ignoreCase" use="optional" type="xsd:boolean"/>
+						<xsd:attribute name="value" use="optional" type="xsd:string"/>
+						<xsd:attribute name="pattern" use="optional" type="xsd:string"/>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="mixin-validator">
+					<xsd:annotation><xsd:documentation><![CDATA[
+						混入类型
+					]]></xsd:documentation></xsd:annotation>
+					<xsd:complexType>
+						<xsd:attribute name="beanName" type="xsd:string" use="optional">
+							<xsd:annotation>
+								<xsd:documentation><![CDATA[
+								名称
+							]]></xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+						<xsd:attribute name="beanType" type="xsd:string" use="optional">
+							<xsd:annotation>
+								<xsd:documentation><![CDATA[
+								类型，必须实现com.forms.beneform4j.excel.core.model.em.bean.IBeanEMValidator接口
+							]]></xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:choice>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:ID"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="beanWorkbookExtractorType">
+		<xsd:annotation>
+			<xsd:documentation>提取器元素类型</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="base-extractor">
+					<xsd:annotation>
+						<xsd:documentation>简单解析值</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:attribute name="nextStep" use="optional">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:token">
+									<xsd:enumeration value="NORMAL"/>
+									<xsd:enumeration value="CONTINUE_CELL"/>
+									<xsd:enumeration value="CONTINUE_ROW"/>
+									<xsd:enumeration value="CONTINUE_SHEET"/>
+									<xsd:enumeration value="END"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="offsetSheet" use="optional" type="xsd:integer"/>
+						<xsd:attribute name="offsetX" use="optional" type="xsd:integer"/>
+						<xsd:attribute name="offsetY" use="optional" type="xsd:integer"/>
+						<xsd:attribute name="skipOffsetSheet" use="optional" type="xsd:integer"/>
+						<xsd:attribute name="skipOffsetX" use="optional" type="xsd:integer"/>
+						<xsd:attribute name="skipOffsetY" use="optional" type="xsd:integer"/>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="mixin-extractor">
+					<xsd:annotation><xsd:documentation><![CDATA[
+						混入类型
+					]]></xsd:documentation></xsd:annotation>
+					<xsd:complexType>
+						<xsd:attribute name="beanName" type="xsd:string" use="optional">
+							<xsd:annotation>
+								<xsd:documentation><![CDATA[
+								名称
+							]]></xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+						<xsd:attribute name="beanType" type="xsd:string" use="optional">
+							<xsd:annotation>
+								<xsd:documentation><![CDATA[
+								类型，必须实现com.forms.beneform4j.excel.core.model.em.bean.IBeanEMExtractor接口
+							]]></xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:choice>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:ID"/>
+	</xsd:complexType>
+	
+	<xsd:attributeGroup name="beanWorkbookSheetMatcherAttributes">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			用于匹配表单Sheet的属性组
+		]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="sheetIndex" use="optional" type="xsd:nonNegativeInteger"/>
+		<xsd:attribute name="sheetName" use="optional" type="xsd:string"/>
+	</xsd:attributeGroup>
 	
 	<xsd:attributeGroup name="modelAttributes">
 		<xsd:annotation>

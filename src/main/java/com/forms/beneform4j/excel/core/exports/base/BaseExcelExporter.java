@@ -3,7 +3,6 @@ package com.forms.beneform4j.excel.core.exports.base;
 import java.io.OutputStream;
 
 import com.forms.beneform4j.core.util.exception.Throw;
-import com.forms.beneform4j.excel.core.data.loader.IDataLoader;
 import com.forms.beneform4j.excel.core.exports.IExcelExporter;
 import com.forms.beneform4j.excel.core.exports.file.FileEMExcelExporter;
 import com.forms.beneform4j.excel.core.exports.tree.TreeEMExcelExporter;
@@ -12,7 +11,7 @@ import com.forms.beneform4j.excel.core.model.em.dynamic.IDynamicTreeEM;
 import com.forms.beneform4j.excel.core.model.em.file.IFileEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
 
-public class BaseExcelExporter implements IExcelExporter {
+public class BaseExcelExporter extends AbstractOutputStreamExcelExporter {
 
     private static final IExcelExporter defaultTreeExporter = new TreeEMExcelExporter();
 
@@ -41,39 +40,15 @@ public class BaseExcelExporter implements IExcelExporter {
     }
 
     @Override
-    public void export(IEM model, Object data, OutputStream output) {
+    public void exports(IEM model, Object data, OutputStream output) {
         IExcelExporter exporter = getExporter(model);
-        exporter.export(model, data, output);
+        exporter.exports(model, data, output);
     }
 
     @Override
-    public String export(IEM model, Object data, String filename) {
+    public void exports(IEM model, Object param, Object data, OutputStream output) {
         IExcelExporter exporter = getExporter(model);
-        return exporter.export(model, data, filename);
-    }
-
-    @Override
-    public void export(IEM model, Object param, Object data, OutputStream output) {
-        IExcelExporter exporter = getExporter(model);
-        exporter.export(model, data, data, output);
-    }
-
-    @Override
-    public String export(IEM model, Object param, Object data, String filename) {
-        IExcelExporter exporter = getExporter(model);
-        return exporter.export(model, param, data, filename);
-    }
-
-    @Override
-    public void export(IEM model, Object param, IDataLoader loader, OutputStream output) {
-        IExcelExporter exporter = getExporter(model);
-        exporter.export(model, loader, param, output);
-    }
-
-    @Override
-    public String export(IEM model, Object param, IDataLoader loader, String filename) {
-        IExcelExporter exporter = getExporter(model);
-        return exporter.export(model, loader, param, filename);
+        exporter.exports(model, data, data, output);
     }
 
     protected IExcelExporter getExporter(IEM model) {

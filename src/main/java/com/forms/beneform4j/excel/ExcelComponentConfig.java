@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.forms.beneform4j.core.util.config.ConfigHelper;
-import com.forms.beneform4j.excel.core.data.accessor.IDataAccessorFactory;
 import com.forms.beneform4j.excel.core.exports.IExcelExporter;
 import com.forms.beneform4j.excel.core.exports.tree.painter.ITreeEMComponentXlsxPainter;
 import com.forms.beneform4j.excel.core.exports.tree.painter.impl.GridXlsxPainter;
@@ -14,14 +13,7 @@ import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMComponent;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.component.NestedRegionTreeEMComponent;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.component.grid.Grid;
 import com.forms.beneform4j.excel.core.model.loader.IEMLoader;
-import com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoader;
-import com.forms.beneform4j.excel.core.model.loader.xml.component.ITreeEMComponentParser;
-import com.forms.beneform4j.excel.core.model.loader.xml.component.impl.GridParser;
-import com.forms.beneform4j.excel.core.model.loader.xml.component.impl.NestedRegionParser;
-import com.forms.beneform4j.excel.core.model.loader.xml.workbook.IEMWorkbookParser;
-import com.forms.beneform4j.excel.core.model.loader.xml.workbook.impl.FileWorkbookGroupParser;
-import com.forms.beneform4j.excel.core.model.loader.xml.workbook.impl.FileWorkbookParser;
-import com.forms.beneform4j.excel.core.model.loader.xml.workbook.impl.TreeWorkbookParser;
+import com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoaderConfig;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -34,22 +26,9 @@ import com.forms.beneform4j.excel.core.model.loader.xml.workbook.impl.TreeWorkbo
  */
 public class ExcelComponentConfig {
 
-    private static final Map<String, IEMWorkbookParser> workbookParserMapping = new HashMap<String, IEMWorkbookParser>();
-
-    private static final Map<String, ITreeEMComponentParser> componentParserMapping = new HashMap<String, ITreeEMComponentParser>();
-
     private static final Map<Class<? extends ITreeEMComponent>, ITreeEMComponentXlsxPainter> xlsxPainters = new HashMap<Class<? extends ITreeEMComponent>, ITreeEMComponentXlsxPainter>();
 
     static {
-        // 注册workbook元素及其解析器
-        registerWorkbookParser(XmlEMLoader.TREE_WORKBOOK_ELEMENT_NAME, new TreeWorkbookParser());
-        registerWorkbookParser(XmlEMLoader.FILE_WORKBOOK_GROUP_ELEMENT_NAME, new FileWorkbookGroupParser());
-        registerWorkbookParser(XmlEMLoader.FILE_WORKBOOK_ELEMENT_NAME, new FileWorkbookParser());
-
-        // 注册树型模型的组件类型及其解析器
-        registerComponentParser(XmlEMLoader.GRID_COMPONENT_TYPE, new GridParser());
-        registerComponentParser(XmlEMLoader.NESTED_REGION_COMPONENT_TYPE, new NestedRegionParser());
-
         // 注册树型模型的组件类型及其Xlsx渲染器
         registerXlsxPainter(Grid.class, new GridXlsxPainter());
         registerXlsxPainter(NestedRegionTreeEMComponent.class, new NestedRegionXlsxPainter());
@@ -59,11 +38,6 @@ public class ExcelComponentConfig {
      * Excel模型的加载器列表
      */
     private static List<IEMLoader> emLoaders;
-
-    /**
-     * 数据提供者工厂
-     */
-    private static IDataAccessorFactory dataAccessorFactory;
 
     /**
      * 参数对象变量名称
@@ -99,68 +73,6 @@ public class ExcelComponentConfig {
     }
 
     /**
-     * 根据树型Excel模型的组件类型获取相应的解析器
-     * 
-     * @param type
-     * @return
-     */
-    public static ITreeEMComponentParser getTreeEMComponentParser(String type) {
-        return componentParserMapping.get(type);
-    }
-
-    /**
-     * 注册树型Excel模型的组件类型及其相应的解析器
-     * 
-     * @param type
-     * @param parser
-     */
-    public static void registerComponentParser(String type, ITreeEMComponentParser parser) {
-        componentParserMapping.put(type, parser);
-    }
-
-    /**
-     * 注入树型Excel模型的组件解析器
-     * 
-     * @param componentParserMapping
-     */
-    public void setComponentParserMapping(Map<String, ITreeEMComponentParser> componentParserMapping) {
-        if (null != componentParserMapping) {
-            ExcelComponentConfig.componentParserMapping.putAll(componentParserMapping);
-        }
-    }
-
-    /**
-     * 根据元素名称获取Excel模型元素解析器
-     * 
-     * @param name
-     * @return
-     */
-    public static IEMWorkbookParser getEMWorkbookParser(String name) {
-        return workbookParserMapping.get(name);
-    }
-
-    /**
-     * 注册Excel模型元素的名称及其相应的解析器
-     * 
-     * @param name
-     * @param parser
-     */
-    public static void registerWorkbookParser(String name, IEMWorkbookParser parser) {
-        workbookParserMapping.put(name, parser);
-    }
-
-    /**
-     * 注入Excel模型元素的解析器
-     * 
-     * @param workbookParserMapping
-     */
-    public void setWorkbookParserMapping(Map<String, IEMWorkbookParser> workbookParserMapping) {
-        if (null != workbookParserMapping) {
-            ExcelComponentConfig.workbookParserMapping.putAll(workbookParserMapping);
-        }
-    }
-
-    /**
      * 获取Xlsx组件绘制器
      * 
      * @param component
@@ -192,24 +104,6 @@ public class ExcelComponentConfig {
         if (null != xlsxPainters) {
             ExcelComponentConfig.xlsxPainters.putAll(xlsxPainters);
         }
-    }
-
-    /**
-     * 获取数据访问器工厂
-     * 
-     * @return
-     */
-    public static IDataAccessorFactory getDataAccessorFactory() {
-        return ConfigHelper.getComponent(dataAccessorFactory, IDataAccessorFactory.class);
-    }
-
-    /**
-     * 注入数据访问器工厂
-     * 
-     * @param dataAccessorFactory
-     */
-    public void setDataAccessorFactory(IDataAccessorFactory dataAccessorFactory) {
-        ExcelComponentConfig.dataAccessorFactory = dataAccessorFactory;
     }
 
     /**
@@ -265,4 +159,11 @@ public class ExcelComponentConfig {
     public void setExcelExporter(IExcelExporter excelExporter) {
         ExcelComponentConfig.excelExporter = excelExporter;
     }
+
+    /**
+     * 注入XmlEMLoaderConfig配置，由于XmlEMLoaderConfig中都是静态配置，所以这里只需要提供注入的方法即可，而不需要实际的赋值
+     * 
+     * @param xmlEMLoaderConfig
+     */
+    public void setXmlEMLoaderConfig(XmlEMLoaderConfig xmlEMLoaderConfig) {}
 }

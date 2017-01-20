@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excel-config xmlns="http://www.formssi.com/schema/beneform4j/excel"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd">
+
+	<!-- 匹配第1行第A列位置 -->
+	<bean-workbook-matcher id="firstMatcher">
+		<position-matcher row="1" cell="A"/>
+	</bean-workbook-matcher>
+	<!-- 解析当前列，并继续下一行循环处理(跳过当前处理行的后续列) -->
+	<bean-workbook-extractor id="continueRowParser">
+		<base-extractor nextStep="CONTINUE_ROW"/>
+	</bean-workbook-extractor>
+	<!-- 解析下一列，并继续下一行循环处理(跳过当前处理行的后续列) -->
+	<bean-workbook-extractor id="nextColumnAndContinueRowParser">
+		<base-extractor offsetX="1" nextStep="CONTINUE_ROW"/>
+	</bean-workbook-extractor>
+	<!-- 解析下一列，并且跳过下一列 -->
+	<bean-workbook-extractor id="nextColumnAndSkipColumnParser">
+		<base-extractor offsetX="1" skipOffsetX="1"/>
+	</bean-workbook-extractor>
+	<!-- 解析下一列，并跳过下一行，继续行循环处理 -->
+	<bean-workbook-extractor id="nextColumnAndSkipRowParser">
+		<base-extractor offsetX="1" skipOffsetX="1" nextStep="CONTINUE_ROW"/>
+	</bean-workbook-extractor>
+
+	<!-- 按类型定义， 返回该类型的实例-->
+	<bean-workbook id="ReqChangeFhBean" beanType="com.forms.beneform4j.excel.core.imports.bean.ReqChangeFhBean">
+		<!-- 直接配置属性 -->
+		<property name="title" matcher-ref="firstMatcher" extractor-ref="continueRowParser"/>
+		<property name="reqChangeName" extractor-ref="nextColumnAndContinueRowParser" desc="解析“需求变更名称”下一列，然后继续处理下一行">
+			<matcher>
+				<base-matcher value="需求变更名称"/>
+			</matcher>
+		</property>
+		<property name="centerReqNo" extractor-ref="nextColumnAndContinueRowParser">
+			<matcher>
+				<base-matcher value="软件中心需求编号"/>
+			</matcher>
+		</property>
+		<property name="centerPrincipalAndTel" type="string" extractor-ref="nextColumnAndSkipColumnParser" desc="解析“软件中心负责人及电话”下一列，然后跳过下一列，继续列循环">
+			<matcher>
+				<base-matcher value="软件中心负责人及电话"/>
+			</matcher>
+		</property>
+		<property name="fhPrincipalAndTel" type="string" extractor-ref="nextColumnAndSkipRowParser" desc="解析“分行负责人及电话”的下一列，然后跳过“方案概述”一行">
+			<matcher>
+				<base-matcher value="分行负责人及电话"/>
+			</matcher>
+		</property>
+		<property name="production">
+			<matcher>
+				<base-matcher pattern="涉及改造产品\s*（总行）"/>
+			</matcher>
+			<inner-workbook >
+				<property name="involveChangeProduceOfChief" extractor-ref="nextColumnAndSkipColumnParser">
+					<matcher>
+						<base-matcher pattern="涉及改造产品\s*（总行）"/>
+					</matcher>
+				</property>
+				<property name="involveChangeProduceOfBranch" extractor-ref="nextColumnAndContinueRowParser">
+					<matcher>
+						<base-matcher pattern="涉及改造产品\s*（分行）"/>
+					</matcher>
+				</property>
+				<property name="coopTestProduceOfChief" extractor-ref="nextColumnAndContinueRowParser">
+					<matcher>
+						<base-matcher value="配合测试产品（总行）"/>
+					</matcher>
+				</property>
+			</inner-workbook>
+		</property>
+		
+		
+		<property name="envChangeOfChief" extractor-ref="nextColumnAndSkipColumnParser">
+			<matcher>
+				<base-matcher value="总行资源、部署及系统环境变化"/>
+			</matcher>
+		</property>
+		<property name="pressAffectOfChief" extractor-ref="nextColumnAndContinueRowParser">
+			<matcher>
+				<base-matcher value="总行接口压力影响"/>
+			</matcher>
+		</property>
+		<property name="systemSecurity" extractor-ref="nextColumnAndContinueRowParser">
+			<matcher>
+				<base-matcher pattern="系统安全性\s*（符合情况）"/>
+			</matcher>
+		</property>
+		<property name="schemeIntroduce" extractor-ref="nextColumnAndContinueRowParser">
+			<matcher>
+				<base-matcher pattern="改造方案说明\s*（总分行整体说明）"/>
+			</matcher>
+		</property>
+		<property name="addInterface" extractor-ref="nextColumnAndContinueRowParser">
+			<matcher>
+				<base-matcher value="新增接口"/>
+			</matcher>
+		</property>
+		<property name="openedInterface" extractor-ref="nextColumnAndContinueRowParser">
+			<matcher>
+				<base-matcher value="已开放接口"/>
+			</matcher>
+		</property>
+		<property name="steps" type="list">
+			<matcher>
+				<base-matcher value="总工作量（人天）"/>
+			</matcher>
+			<end-loop-matcher>
+				<base-matcher value="其他说明"/>
+			</end-loop-matcher>
+			<inner-workbook>
+				<property name="totalLoad" type="double" extractor-ref="nextColumnAndContinueRowParser">
+					<matcher>
+						<base-matcher value="总工作量（人天）"/>
+					</matcher>
+				</property>
+				<property name="operatePeriod" type="string" extractor-ref="nextColumnAndSkipColumnParser">
+					<matcher>
+						<base-matcher value="实施周期(工作日)"/>
+					</matcher>
+				</property>
+				<property name="operateAdvise" extractor-ref="nextColumnAndContinueRowParser">
+					<matcher>
+						<base-matcher value="实施建议"/>
+					</matcher>
+				</property>
+				<property name="loadDetails" type="list">
+					<matcher>
+						<mixin-matcher beanType="com.forms.beneform4j.excel.core.imports.bean.LoadDetailsMatcher"/>
+					</matcher>
+					<end-loop-matcher>
+						<base-matcher pattern="[(其他说明)|(总工作量（人天）)]"/>
+					</end-loop-matcher>
+					<inner-workbook>
+						<property name="produceShortName">
+							<matcher>
+								<position-matcher cell="B"/>
+							</matcher>
+						</property>
+						<property name="version">
+							<matcher>
+								<position-matcher cell="C"/>
+							</matcher>
+						</property>
+						<property name="load" type="double">
+							<matcher>
+								<position-matcher cell="D"/>
+							</matcher>
+						</property>
+					</inner-workbook>
+				</property>
+			</inner-workbook>
+		</property>
+		<property name="otherIntroduce">
+			<matcher>
+				<base-matcher pattern="其他说明"/>
+			</matcher>
+			<extractor>
+				<base-extractor nextStep="END" offsetX="1"/>
+			</extractor>
+		</property>
+	</bean-workbook>
+	
+</excel-config>

@@ -41,7 +41,7 @@ public class TreeEMExcelExporterTest {
             String filename = "D:/excel-test/tree/" + modelId + ".xlsx";
             IEM model = EMManager.load(modelId);
             List<Object> data = getTestData();
-            ExcelExporters.export(model, data, filename);
+            ExcelExporters.exports(model, data, filename);
         } catch (Exception e) {
             e.printStackTrace();
         }

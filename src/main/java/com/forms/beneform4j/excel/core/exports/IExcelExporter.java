@@ -2,35 +2,87 @@ package com.forms.beneform4j.excel.core.exports;
 
 import java.io.OutputStream;
 
-import com.forms.beneform4j.excel.core.data.loader.IDataLoader;
 import com.forms.beneform4j.excel.core.model.em.IEM;
 
 public interface IExcelExporter {
 
     /**
-     * 导出数据至输出流
+     * 导出数据至Excel文件输出流
      * 
-     * @param model
-     * @param data
-     * @param output
+     * @param modelId Excel模型ID
+     * @param data 数据，在文件模板中可通过data.property的形式来访问数据属性，在xml配置的树型模板中可以直接访问data的属性（下同）
+     * @param output 输出流
      */
-    public void export(IEM model, Object data, OutputStream output);
+    public void exports(String modelId, Object data, OutputStream output);
 
     /**
-     * 导出数据至模板文件，如果目标文件后缀和模板文件后缀不匹配，则替换成模板文件后缀
+     * 导出数据至Excel文件
      * 
-     * @param model
-     * @param data
-     * @param filename
-     * @return
+     * @param modelId Excel模型ID
+     * @param data 数据
+     * @param filename 输出文件名
+     * @return 实际输出文件名，如果是Excel文件模板，则返回文件名后缀和模板相同，否则返回文件名后缀为xlsx（下同）
      */
-    public String export(IEM model, Object data, String filename);
+    public String exports(String modelId, Object data, String filename);
 
-    public void export(IEM model, Object param, Object data, OutputStream output);
+    /**
+     * 根据参数导出数据至Excel文件输出流
+     * 
+     * @param modelId Excel模型ID
+     * @param param 参数，在文件模板和动态模板中可以通过param.property的形式访问，在xml配置的树型模板中可以通过#param.property的形式访问（下同）
+     * @param data 数据
+     * @param output 输出流
+     */
+    public void exports(String modelId, Object param, Object data, OutputStream output);
 
-    public String export(IEM model, Object param, Object data, String filename);
+    /**
+     * 根据参数导出数据至Excel文件
+     * 
+     * @param modelId Excel模型ID
+     * @param param 参数
+     * @param data 数据
+     * @param filename 输出文件名
+     * @return 实际输出文件名
+     */
+    public String exports(String modelId, Object param, Object data, String filename);
 
-    public void export(IEM model, Object param, IDataLoader loader, OutputStream output);
+    /**
+     * 导出数据至Excel文件输出流
+     * 
+     * @param model Excel模型
+     * @param data 数据
+     * @param output 输出流
+     */
+    public void exports(IEM model, Object data, OutputStream output);
 
-    public String export(IEM model, Object param, IDataLoader loader, String filename);
+    /**
+     * 导出数据至Excel文件
+     * 
+     * @param model Excel模型
+     * @param data 数据
+     * @param filename 输出文件名
+     * @return 实际输出文件名
+     */
+    public String exports(IEM model, Object data, String filename);
+
+    /**
+     * 根据参数导出数据至Excel文件输出流
+     * 
+     * @param model Excel模型
+     * @param param 参数
+     * @param data 数据
+     * @param output 输出流
+     */
+    public void exports(IEM model, Object param, Object data, OutputStream output);
+
+    /**
+     * 根据参数导出数据至Excel文件
+     * 
+     * @param model Excel模型
+     * @param param 参数
+     * @param data 数据
+     * @param filename 输出文件名
+     * @return 实际输出文件名
+     */
+    public String exports(IEM model, Object param, Object data, String filename);
 }

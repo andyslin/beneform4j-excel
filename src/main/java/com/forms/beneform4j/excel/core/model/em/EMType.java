@@ -4,15 +4,17 @@ import org.apache.commons.io.FilenameUtils;
 
 public enum EMType {
 
-    TREE("tree", "树型结构模型"),
+    BEAN("bean", "导入-Bean模型"),
 
-    FREEMARKER_TREE("freemarker-tree", "使用Freemarker模板定义的属性结构模型"),
+    TREE("tree", "导出-树型结构模型"),
 
-    EXCEL("excel", "Excel模板文件"),
+    FREEMARKER_TREE("freemarker-tree", "导出-使用Freemarker模板定义的属性结构模型"),
 
-    JXLS2_EXCEL("jxls2-excel", "jxls2类库使用的Excel模板文件，EXCEL类型的子类型"),
+    EXCEL("excel", "导出-Excel模板文件"),
 
-    JETT_EXCEL("jett-excel", "jett类库使用的Excel模板文件，EXCEL类型的子类型"),
+    JXLS2_EXCEL("jxls2-excel", "导出-jxls2类库使用的Excel模板文件，EXCEL类型的子类型"),
+
+    JETT_EXCEL("jett-excel", "导出-jett类库使用的Excel模板文件，EXCEL类型的子类型"),
 
     UNKNOWN("", "未知类型");
 

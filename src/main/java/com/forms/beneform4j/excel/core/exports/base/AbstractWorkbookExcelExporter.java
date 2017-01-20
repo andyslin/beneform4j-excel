@@ -31,7 +31,7 @@ public abstract class AbstractWorkbookExcelExporter extends AbstractDataExcelExp
     abstract protected void export(IEM model, Object param, Object data, Workbook workbook);
 
     @Override
-    public void export(IEM model, Object param, Object data, OutputStream output) {
+    public void exports(IEM model, Object param, Object data, OutputStream output) {
         Workbook workbook = this.newWorkbook(model, param, data);
         this.export(model, param, data, workbook);
         writeOutputStream(workbook, output);

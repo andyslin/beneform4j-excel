@@ -6,9 +6,9 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.forms.beneform4j.excel.core.data.accessor.IDataAccessor;
-import com.forms.beneform4j.excel.core.data.accessor.impl.OgnlDataAccessor;
-import com.forms.beneform4j.excel.core.data.accessor.impl.SpelDataAccessor;
+import com.forms.beneform4j.core.util.data.accessor.IDataAccessor;
+import com.forms.beneform4j.core.util.data.accessor.impl.OgnlDataAccessor;
+import com.forms.beneform4j.core.util.data.accessor.impl.SpelDataAccessor;
 
 public class DataAccessorTest {
 

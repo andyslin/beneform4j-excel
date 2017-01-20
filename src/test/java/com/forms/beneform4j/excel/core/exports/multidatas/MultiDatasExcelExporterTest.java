@@ -41,7 +41,7 @@ public class MultiDatasExcelExporterTest {
             String filename = "D:/excel-test/multi/" + modelId + "(TREE-" + paramCode + ")" + ".xls";
             IEM model = EMManager.load(modelId);
             IListStreamReader<ParamEnumDef> data = DbDataService.getData(paramCode);
-            ExcelExporters.export(model, data.iterator(), filename);
+            ExcelExporters.exports(model, data.iterator(), filename);
             System.out.println((System.currentTimeMillis() - s) / 1000.0);
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,7 +55,7 @@ public class MultiDatasExcelExporterTest {
             String filename = "D:/excel-test/multi/" + modelId + "(JETT-" + paramCode + ")" + ".xls";
             IEM model = EMManager.load(modelId);
             Object data = DbDataService.getData(paramCode);
-            ExcelExporters.export(model, data, filename);
+            ExcelExporters.exports(model, data, filename);
             System.out.println((System.currentTimeMillis() - s) / 1000.0);
         } catch (Exception e) {
             e.printStackTrace();

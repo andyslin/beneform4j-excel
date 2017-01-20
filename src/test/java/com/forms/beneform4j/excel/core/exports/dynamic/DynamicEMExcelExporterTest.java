@@ -32,7 +32,7 @@ public class DynamicEMExcelExporterTest {
             IEM model = EMManager.load(modelId);
             Map<String, Object> param = getParam(0);
             List<Object> data = getDynamicData(100);
-            ExcelExporters.export(model, param, data, filename);
+            ExcelExporters.exports(model, param, data, filename);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,7 +44,7 @@ public class DynamicEMExcelExporterTest {
             IEM model = EMManager.load(modelId);
             Map<String, Object> param = getParam(count);
             List<Object> data = getTestData(100, count);
-            ExcelExporters.export(model, param, data, filename);
+            ExcelExporters.exports(model, param, data, filename);
         } catch (Exception e) {
             e.printStackTrace();
         }

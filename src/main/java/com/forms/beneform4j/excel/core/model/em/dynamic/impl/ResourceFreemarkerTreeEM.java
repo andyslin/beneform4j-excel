@@ -10,7 +10,7 @@ import com.forms.beneform4j.core.util.xml.parser.XmlParserUtils;
 import com.forms.beneform4j.excel.core.model.em.base.BaseEM;
 import com.forms.beneform4j.excel.core.model.em.dynamic.IDynamicTreeEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
-import com.forms.beneform4j.excel.core.model.loader.xml.workbook.impl.TreeWorkbookParserDelegate;
+import com.forms.beneform4j.excel.core.model.loader.xml.tree.TreeWorkbookParserDelegate;
 
 public class ResourceFreemarkerTreeEM extends BaseEM implements IDynamicTreeEM {
 

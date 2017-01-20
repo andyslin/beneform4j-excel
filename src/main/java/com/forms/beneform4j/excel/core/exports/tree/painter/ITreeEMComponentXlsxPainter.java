@@ -1,6 +1,6 @@
 package com.forms.beneform4j.excel.core.exports.tree.painter;
 
-import com.forms.beneform4j.excel.core.data.accessor.IDataAccessor;
+import com.forms.beneform4j.core.util.data.accessor.IDataAccessor;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMComponent;
 
 public interface ITreeEMComponentXlsxPainter {

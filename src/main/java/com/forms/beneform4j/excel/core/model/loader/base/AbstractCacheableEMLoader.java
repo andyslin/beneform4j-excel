@@ -151,7 +151,7 @@ public abstract class AbstractCacheableEMLoader extends AbstractEMLoader {
                     if (null == em) {
                         em = this.doLoad(context, modelId);
                         if (null != em) {
-                            cache.put(modelId, em);
+                            this.context.register(em);
                         } else {
                             em = cache.get(modelId, IEM.class);
                         }

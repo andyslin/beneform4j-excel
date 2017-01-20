@@ -18,47 +18,10 @@ import com.forms.beneform4j.core.util.xml.XmlHelper;
 import com.forms.beneform4j.core.util.xml.context.IXmlParserContext.XmlValidationMode;
 import com.forms.beneform4j.core.util.xml.context.impl.XmlParserContext;
 import com.forms.beneform4j.core.util.xml.parser.XmlParserUtils;
-import com.forms.beneform4j.excel.ExcelComponentConfig;
 import com.forms.beneform4j.excel.core.model.loader.IResourceEMLoadContext;
 import com.forms.beneform4j.excel.core.model.loader.base.AbstractResourceEMLoader;
-import com.forms.beneform4j.excel.core.model.loader.xml.workbook.IEMWorkbookParser;
 
 public class XmlEMLoader extends AbstractResourceEMLoader {
-
-    /**
-     * 表示Excel模型ID属性
-     */
-    public static final String WORKBOOK_ID_PROPERTY = "id";
-
-    /**
-     * 表示一个树型Excel模型的区域子元素
-     */
-    public static final String REGION_ELEMENT_NAME = "region";
-    /**
-     * 表示一个树型Excel模型的元素
-     */
-    public static final String TREE_WORKBOOK_ELEMENT_NAME = "tree-workbook";
-    /**
-     * 表示一个文件Excel模型的元素
-     */
-    public static final String FILE_WORKBOOK_ELEMENT_NAME = "file-workbook";
-    /**
-     * 表示一组文件Excel模型的元素
-     */
-    public static final String FILE_WORKBOOK_GROUP_ELEMENT_NAME = "file-workbook-group";
-    /**
-     * 表示导入其它配置文件的元素
-     */
-    public static final String IMPORT_ELEMENT_NAME = "import";
-
-    /**
-     * 表示表格组件类型
-     */
-    public static final String GRID_COMPONENT_TYPE = "grid";
-    /**
-     * 表示嵌套组件类型
-     */
-    public static final String NESTED_REGION_COMPONENT_TYPE = "nested-region";
 
     /**
      * 是否校验XML配置文件
@@ -80,10 +43,10 @@ public class XmlEMLoader extends AbstractResourceEMLoader {
             Node node = nl.item(i);
             if (node instanceof Element) {
                 Element ele = (Element) node;
-                if (IMPORT_ELEMENT_NAME.equalsIgnoreCase(XmlHelper.getLocalName(ele))) {
+                if (XmlEMLoaderConsts.IMPORT_ELEMENT_NAME.equalsIgnoreCase(XmlHelper.getLocalName(ele))) {
                     this.loadImportResourceEM(context, ele);
                 } else {
-                    IEMWorkbookParser parser = getWorkbookParser(ele);
+                    IEMTopElementParser parser = getWorkbookParser(ele);
                     if (null != parser) {
                         parser.parse(context, ele);
                     } else {
@@ -100,9 +63,9 @@ public class XmlEMLoader extends AbstractResourceEMLoader {
      * @param element
      * @return
      */
-    protected IEMWorkbookParser getWorkbookParser(Element element) {
+    protected IEMTopElementParser getWorkbookParser(Element element) {
         String name = XmlHelper.getLocalName(element);
-        return ExcelComponentConfig.getEMWorkbookParser(name);
+        return XmlEMLoaderConfig.getEMTopElementParser(name);
     }
 
     private void loadImportResourceEM(IResourceEMLoadContext context, Element ele) {

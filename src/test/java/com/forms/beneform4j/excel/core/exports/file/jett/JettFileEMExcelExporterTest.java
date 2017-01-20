@@ -31,7 +31,7 @@ public class JettFileEMExcelExporterTest {
             String filename = "D:/excel-test/jett/" + modelId + ".xls";
             IEM model = EMManager.load(modelId);
             Object data = getTestData();
-            ExcelExporters.export(model, data, filename);
+            ExcelExporters.exports(model, data, filename);
         } catch (Exception e) {
             e.printStackTrace();
         }
