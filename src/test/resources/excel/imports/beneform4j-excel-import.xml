@@ -106,9 +106,9 @@
 			<matcher>
 				<base-matcher value="总工作量（人天）"/>
 			</matcher>
-			<end-loop-matcher>
+			<end-matcher>
 				<base-matcher value="其他说明"/>
-			</end-loop-matcher>
+			</end-matcher>
 			<inner-workbook>
 				<property name="totalLoad" type="double" extractor-ref="nextColumnAndContinueRowParser">
 					<matcher>
@@ -129,9 +129,9 @@
 					<matcher>
 						<mixin-matcher beanType="com.forms.beneform4j.excel.core.imports.bean.LoadDetailsMatcher"/>
 					</matcher>
-					<end-loop-matcher>
+					<end-matcher>
 						<base-matcher pattern="[(其他说明)|(总工作量（人天）)]"/>
-					</end-loop-matcher>
+					</end-matcher>
 					<inner-workbook>
 						<property name="produceShortName">
 							<matcher>

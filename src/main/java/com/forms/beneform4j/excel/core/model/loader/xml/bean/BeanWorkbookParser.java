@@ -117,16 +117,20 @@ public class BeanWorkbookParser implements IEMTopElementParser {
                 } else if ("extractor".equalsIgnoreCase(name) && null == property.getExtractor()) {
                     IBeanEMExtractor extractor = extractorParser.parse(ele);
                     property.setExtractor(extractor);
-                } else if (collectionAble && "end-loop-matcher".equalsIgnoreCase(name) && null == property.getEndMatcher()) {
+                } else if ("end-matcher".equalsIgnoreCase(name) && null == property.getEndMatcher()) {
                     IBeanEMMatcher endMatcher = matcherParser.parse(ele);
                     property.setEndMatcher(endMatcher);
-                } else if (collectionAble && "inner-workbook".equalsIgnoreCase(name) && null == property.getInnerBeanEM()) {
+                } else if ("inner-workbook".equalsIgnoreCase(name) && null == property.getInnerBeanEM()) {
                     Class<?> innerCls = null;
                     if (null != field) {
                         try {
-                            Type t = field.getGenericType();
-                            ParameterizedType p = (ParameterizedType) t;
-                            innerCls = (Class<?>) p.getActualTypeArguments()[0];
+                            if (collectionAble) {
+                                Type t = field.getGenericType();
+                                ParameterizedType p = (ParameterizedType) t;
+                                innerCls = (Class<?>) p.getActualTypeArguments()[0];
+                            } else {
+                                innerCls = field.getType();
+                            }
                         } catch (Exception e) {
                         }
                     }
@@ -181,18 +185,16 @@ public class BeanWorkbookParser implements IEMTopElementParser {
             property.setExtractor(e);
         }
 
-        if (collectionAble) {
-            String endLoopMatcher = ele.getAttribute("endLoopMatcher-ref");
-            if (!CoreUtils.isBlank(endLoopMatcher)) {
-                IBeanEMMatcher m = matcherParser.parse(endLoopMatcher);
-                property.setEndMatcher(m);
-            }
+        String endMatcher = ele.getAttribute("endMatcher-ref");
+        if (!CoreUtils.isBlank(endMatcher)) {
+            IBeanEMMatcher m = matcherParser.parse(endMatcher);
+            property.setEndMatcher(m);
+        }
 
-            String innerWorkbook = ele.getAttribute("innerWorkbook-ref");
-            if (!CoreUtils.isBlank(innerWorkbook)) {
-                IBeanEM inner = new BeanEMProxy(innerWorkbook);
-                property.setInnerBeanEM(inner);
-            }
+        String innerWorkbook = ele.getAttribute("innerWorkbook-ref");
+        if (!CoreUtils.isBlank(innerWorkbook)) {
+            IBeanEM inner = new BeanEMProxy(innerWorkbook);
+            property.setInnerBeanEM(inner);
         }
     }
 

@@ -7,9 +7,6 @@ import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMProperty;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMValidator;
 import com.forms.beneform4j.excel.core.model.em.bean.impl.extractor.DefaultBeanEMExtractor;
 
-/**
- * 版权：深圳四方精创资讯股份有限公司 功能：实现类－属性级别元数据简单实现类 作者： LinJisong 版本： 1.0.0 日期： 2015-11-16
- */
 public class BeanEMProperty implements IBeanEMProperty {
 
     /**

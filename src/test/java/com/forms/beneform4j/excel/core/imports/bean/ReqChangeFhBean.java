@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.forms.beneform4j.excel.core.model.em.bean.BeanEMExtractResult.NextStep;
+import com.forms.beneform4j.excel.core.model.loader.anno.BeanEMNestedFieldAnno;
 import com.forms.beneform4j.excel.core.model.loader.anno.extractor.BaseBeanEMExtractorAnno;
 import com.forms.beneform4j.excel.core.model.loader.anno.matcher.cell.BaseBeanEMMatcherAnno;
 import com.forms.beneform4j.excel.core.model.loader.anno.matcher.cell.MixinBeanEMMatcherAnno;
 import com.forms.beneform4j.excel.core.model.loader.anno.matcher.cell.PositionBeanEMMatcherAnno;
-import com.forms.beneform4j.excel.core.model.loader.anno.matcher.endloop.BaseBeanEMEndLoopMatcherAnno;
+import com.forms.beneform4j.excel.core.model.loader.anno.matcher.end.BaseBeanEMEndMatcherAnno;
 import com.forms.beneform4j.excel.core.model.loader.anno.validator.BaseBeanEMValidatorAnno;
 import com.forms.beneform4j.excel.core.model.loader.anno.validator.CompositeBeanEMValidatorAnno;
 
@@ -64,6 +65,7 @@ public class ReqChangeFhBean implements Serializable {
     @BaseBeanEMExtractorAnno(offsetX = 1, skipOffsetY = 1, nextStep = NextStep.CONTINUE_ROW)
     private String fhPrincipalAndTel;
 
+    @BeanEMNestedFieldAnno
     @BaseBeanEMMatcherAnno(pattern = "涉及改造产品\\s*（总行）", offsetX = 1)
     private Production production;
 
@@ -107,7 +109,7 @@ public class ReqChangeFhBean implements Serializable {
      * 实施步骤 1.定位每个循环体开始的位置 2.定位整个循环结束的位置，如果没有定义，将一直执行直到当前sheet处理完
      */
     @BaseBeanEMMatcherAnno(value = "总工作量（人天）")
-    @BaseBeanEMEndLoopMatcherAnno(@BaseBeanEMMatcherAnno(value = "其他说明"))
+    @BaseBeanEMEndMatcherAnno(@BaseBeanEMMatcherAnno(value = "其他说明"))
     private List<Step> steps;
 
     /**
@@ -177,7 +179,7 @@ public class ReqChangeFhBean implements Serializable {
          * 工作量说明 使用自定义的匹配器匹配每个循环体的开始位置
          */
         @MixinBeanEMMatcherAnno(beanType = LoadDetailsMatcher.class)
-        @BaseBeanEMEndLoopMatcherAnno(@BaseBeanEMMatcherAnno(pattern = "[(其他说明)|(总工作量（人天）)]"))
+        @BaseBeanEMEndMatcherAnno(@BaseBeanEMMatcherAnno(pattern = "[(其他说明)|(总工作量（人天）)]"))
         private List<LoadDetail> loadDetails;
     }
 

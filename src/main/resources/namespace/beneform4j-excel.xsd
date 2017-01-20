@@ -544,14 +544,14 @@
 					可选，提取器元素
 				]]></xsd:documentation></xsd:annotation>
 			</xsd:element>
-			<xsd:element name="end-loop-matcher" minOccurs="0" maxOccurs="1" type="beanWorkbookMatcherType">
+			<xsd:element name="end-matcher" minOccurs="0" maxOccurs="1" type="beanWorkbookMatcherType">
 				<xsd:annotation><xsd:documentation><![CDATA[
-					可选，集合类型的整体循环结束匹配器，未配置时循环处理完当前表单
+					可选，集合类型的整体循环结束匹配器，未配置时循环处理完当前表单，或者嵌套类型元素的结束匹配器
 				]]></xsd:documentation></xsd:annotation>
 			</xsd:element>
 			<xsd:element name="inner-workbook" minOccurs="0" maxOccurs="1" type="beanWorkbookType">
 				<xsd:annotation><xsd:documentation><![CDATA[
-					可选，集合类型内部元素类型的配置
+					可选，集合类型内部元素类型或者嵌套类型元素的配置
 				]]></xsd:documentation></xsd:annotation>
 			</xsd:element>
 		</xsd:sequence>
@@ -598,9 +598,9 @@
 				匹配器引用类型，作用和<extractor>子元素相同，两者只需配置其中之一，引用类型优先
 			]]></xsd:documentation></xsd:annotation>
 		</xsd:attribute>
-		<xsd:attribute name="endLoopMatcher-ref" use="optional" type="xsd:string">
+		<xsd:attribute name="endMatcher-ref" use="optional" type="xsd:string">
 			<xsd:annotation><xsd:documentation><![CDATA[
-				匹配器引用类型，作用和<end-loop-matcher>子元素相同，两者只需配置其中之一，引用类型优先
+				匹配器引用类型，作用和<end-matcher>子元素相同，两者只需配置其中之一，引用类型优先
 			]]></xsd:documentation></xsd:annotation>
 		</xsd:attribute>
 		<xsd:attribute name="innerWorkbook-ref" use="optional" type="xsd:string">

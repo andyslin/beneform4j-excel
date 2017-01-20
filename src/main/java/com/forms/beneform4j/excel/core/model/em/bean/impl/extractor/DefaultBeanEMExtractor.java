@@ -24,6 +24,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.forms.beneform4j.core.util.CoreUtils;
+import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.core.util.logger.CommonLogger;
 import com.forms.beneform4j.excel.core.ExcelUtils;
 import com.forms.beneform4j.excel.core.model.em.bean.BeanEMExtractResult;
@@ -45,13 +46,18 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
     public BeanEMExtractResult extract(IBeanEMProperty property, Workbook workbook, Sheet sheet, Row row, Cell cell, Class<?> type) {
         BeanEMExtractResult result = newExtractResult();
         try {
-            if (null != type && Collection.class.isAssignableFrom(type)) {
-                extractCollectionValue(result, property, workbook, sheet, row, cell, type);
-            } else {
+            if (null == type) {
                 extractValue(result, property, workbook, sheet, row, cell, type);
+            } else {
+                IBeanEM innerBeanEM = property.getInnerBeanEM();
+                if (null != innerBeanEM) {
+                    extractInnerValue(result, property, workbook, sheet, row, cell, type);
+                } else {
+                    extractValue(result, property, workbook, sheet, row, cell, type);
+                }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Throw.throwRuntimeException(e);
         }
         return result;
     }
@@ -72,7 +78,7 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
     }
 
     /**
-     * 提取集合值
+     * 提取内部值
      * 
      * @param result
      * @param property
@@ -83,19 +89,18 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
      * @param type
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    protected void extractCollectionValue(BeanEMExtractResult result, IBeanEMProperty property, Workbook workbook, Sheet sheet, Row row, Cell cell, Class<?> type) throws Exception {
-        // 集合元素类型的模型
+    protected void extractInnerValue(BeanEMExtractResult result, IBeanEMProperty property, Workbook workbook, Sheet sheet, Row row, Cell cell, Class<?> type) throws Exception {
+        boolean isCollection = Collection.class.isAssignableFrom(type);
         IBeanEM elementEM = property.getInnerBeanEM();
-        if (null == elementEM) {
-            return;
-        }
-
         Class<?> cls = elementEM.getBeanType();
         boolean isMap = Map.class.isAssignableFrom(cls);
         Map<String, IBeanEMProperty> properties = elementEM.getProperties();
         boolean debug = CommonLogger.isDebugEnabled();
 
-        Collection list = instanceCollection(type);
+        Collection list = null;
+        if (isCollection) {
+            list = instanceCollection(type);
+        }
         List<String> dealFields = null;
         Cell lastCell = null;
         Object inner = null;
@@ -110,27 +115,40 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
                 } else {
                     continue;
                 }
+                boolean end = false;
                 if (debug) {
                     CommonLogger.debug("process cell[" + ExcelUtils.getRowPosition(cCell.getRowIndex()) + "," + ExcelUtils.getColumnPosition(cCell.getColumnIndex()) + "]:" + ExcelUtils.getCellValue(cCell));
                 }
                 if (property.getMatcher().isMatch(workbook, sheet, cRow, cCell)) {
                     if (debug) {
-                        if (null == inner) {
-                            CommonLogger.debug("match circle start, the inner type is '" + cls.getName() + "'.");
+                        if (isCollection) {
+                            if (null == inner) {
+                                CommonLogger.debug("match circle start, the inner type is '" + cls.getName() + "'.");
+                            } else {
+                                CommonLogger.debug("match circle start and end the previous circle, the inner type is '" + cls.getName() + "'.");
+                            }
                         } else {
-                            CommonLogger.debug("match circle start and end the previous circle, the inner type is '" + cls.getName() + "'.");
+                            CommonLogger.debug("match inner object start, the inner type is '" + cls.getName() + "'.");
                         }
                     }
-                    inner = cls.newInstance();
-                    list.add(inner);
+                    inner = CoreUtils.newInstance(cls);
+                    if (isCollection) {
+                        list.add(inner);
+                    } else {
+                        result.setValue(inner);
+                    }
                     dealFields = new ArrayList<String>();
                 } else if (null == dealFields) {
                     continue;
                 } else if (isEnd(property, workbook, sheet, cRow, cCell)) {
                     if (debug) {
-                        CommonLogger.debug("match circle end, the inner type is '" + cls.getName() + "'.");
+                        if (isCollection) {
+                            CommonLogger.debug("match circle end, the inner type is '" + cls.getName() + "'.");
+                        } else {
+                            CommonLogger.debug("match inner object end, the inner type is '" + cls.getName() + "'.");
+                        }
                     }
-                    break rowCircle;
+                    end = true;
                 }
                 for (String fieldName : properties.keySet()) {
                     IBeanEMProperty fm = properties.get(fieldName);
@@ -162,8 +180,12 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
                             field.set(inner, value);
                         }
 
+                        if (dealFields.size() == properties.size()) {
+                            end = true;
+                        }
+
                         NextStep cCase = pr.getNextStep();
-                        if (NextStep.END.equals(cCase)) {//解析完成，终止最外层循环
+                        if (NextStep.END.equals(cCase) || end) {//解析完成，终止最外层循环
                             result.setNextStep(NextStep.END);
                             break rowCircle;
                         } else {//修改循环索引
@@ -186,6 +208,10 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
                             }
                         }
                     }
+                }
+
+                if (end) {
+                    break rowCircle;
                 }
             }
         }

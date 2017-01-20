@@ -19,26 +19,26 @@ import com.forms.beneform4j.excel.core.model.em.bean.impl.BeanEM;
 import com.forms.beneform4j.excel.core.model.em.bean.impl.BeanEMProperty;
 import com.forms.beneform4j.excel.core.model.em.bean.impl.extractor.BaseBeanEMExtractor;
 import com.forms.beneform4j.excel.core.model.em.bean.impl.extractor.MixinBeanEMExtractor;
-import com.forms.beneform4j.excel.core.model.em.bean.impl.matcher.PositionBeanEMMatcher;
 import com.forms.beneform4j.excel.core.model.em.bean.impl.matcher.BaseBeanEMMatcher;
 import com.forms.beneform4j.excel.core.model.em.bean.impl.matcher.MixinBeanEMMatcher;
+import com.forms.beneform4j.excel.core.model.em.bean.impl.matcher.PositionBeanEMMatcher;
 import com.forms.beneform4j.excel.core.model.em.bean.impl.matcher.SheetBeanEMMatcher;
 import com.forms.beneform4j.excel.core.model.em.bean.impl.validator.BaseBeanEMValidator;
 import com.forms.beneform4j.excel.core.model.em.bean.impl.validator.CompositeBeanEMValidator;
 import com.forms.beneform4j.excel.core.model.em.bean.impl.validator.MixinBeanEMValidator;
 import com.forms.beneform4j.excel.core.model.loader.IEMLoadContext;
-import com.forms.beneform4j.excel.core.model.loader.anno.extractor.MixinBeanEMExtractorAnno;
 import com.forms.beneform4j.excel.core.model.loader.anno.extractor.BaseBeanEMExtractorAnno;
+import com.forms.beneform4j.excel.core.model.loader.anno.extractor.MixinBeanEMExtractorAnno;
 import com.forms.beneform4j.excel.core.model.loader.anno.matcher.BeanEMSheetMatcherAnno;
-import com.forms.beneform4j.excel.core.model.loader.anno.matcher.cell.PositionBeanEMMatcherAnno;
-import com.forms.beneform4j.excel.core.model.loader.anno.matcher.cell.MixinBeanEMMatcherAnno;
 import com.forms.beneform4j.excel.core.model.loader.anno.matcher.cell.BaseBeanEMMatcherAnno;
-import com.forms.beneform4j.excel.core.model.loader.anno.matcher.endloop.PositionBeanEMEndLoopMatcherAnno;
-import com.forms.beneform4j.excel.core.model.loader.anno.matcher.endloop.MixinBeanEMEndLoopMatcherAnno;
-import com.forms.beneform4j.excel.core.model.loader.anno.matcher.endloop.BaseBeanEMEndLoopMatcherAnno;
+import com.forms.beneform4j.excel.core.model.loader.anno.matcher.cell.MixinBeanEMMatcherAnno;
+import com.forms.beneform4j.excel.core.model.loader.anno.matcher.cell.PositionBeanEMMatcherAnno;
+import com.forms.beneform4j.excel.core.model.loader.anno.matcher.end.BaseBeanEMEndMatcherAnno;
+import com.forms.beneform4j.excel.core.model.loader.anno.matcher.end.MixinBeanEMEndMatcherAnno;
+import com.forms.beneform4j.excel.core.model.loader.anno.matcher.end.PositionBeanEMEndMatcherAnno;
 import com.forms.beneform4j.excel.core.model.loader.anno.validator.BaseBeanEMValidatorAnno;
-import com.forms.beneform4j.excel.core.model.loader.anno.validator.MixinBeanEMValidatorAnno;
 import com.forms.beneform4j.excel.core.model.loader.anno.validator.CompositeBeanEMValidatorAnno;
+import com.forms.beneform4j.excel.core.model.loader.anno.validator.MixinBeanEMValidatorAnno;
 import com.forms.beneform4j.excel.core.model.loader.base.AbstractCacheableEMLoader;
 
 public class AnnoEMLoader extends AbstractCacheableEMLoader {
@@ -107,16 +107,23 @@ public class AnnoEMLoader extends AbstractCacheableEMLoader {
         IBeanEMExtractor extractor = doLoadExtractor(cls, field);
         property.setExtractor(extractor);
 
-        //4.列表类型
-        if (Collection.class.isAssignableFrom(field.getType())) {
-            //4.1列表结束匹配器
-            IBeanEMMatcher endMatcher = doLoadEndLoopMatcher(cls, field);
+        //4.列表类型或嵌套类型
+        boolean nested = field.isAnnotationPresent(BeanEMNestedFieldAnno.class);
+        boolean collection = Collection.class.isAssignableFrom(field.getType());
+        if (nested || collection) {
+            //4.1 结束匹配器
+            IBeanEMMatcher endMatcher = doLoadEndMatcher(cls, field);
             property.setEndMatcher(endMatcher);
 
-            //4.2列表类型元数据
-            Class<?> gCls = getGenericType(field);
-            IBeanEM elementClassMeta = doLoad(gCls);
-            property.setInnerBeanEM(elementClassMeta);
+            //4.2 列表类型或嵌套类型模型
+            Class<?> gCls = null;
+            if (collection) {
+                gCls = getGenericType(field);
+            } else {
+                gCls = field.getType();
+            }
+            IBeanEM innerBeanEM = doLoad(gCls);
+            property.setInnerBeanEM(innerBeanEM);
         }
         return property;
     }
@@ -173,17 +180,17 @@ public class AnnoEMLoader extends AbstractCacheableEMLoader {
      * @param field
      * @return
      */
-    protected IBeanEMMatcher doLoadEndLoopMatcher(Class<?> cls, Field field) {
-        if (field.isAnnotationPresent(PositionBeanEMEndLoopMatcherAnno.class)) {
-            PositionBeanEMEndLoopMatcherAnno anno = field.getAnnotation(PositionBeanEMEndLoopMatcherAnno.class);
+    protected IBeanEMMatcher doLoadEndMatcher(Class<?> cls, Field field) {
+        if (field.isAnnotationPresent(PositionBeanEMEndMatcherAnno.class)) {
+            PositionBeanEMEndMatcherAnno anno = field.getAnnotation(PositionBeanEMEndMatcherAnno.class);
             IBeanEMMatcher matcher = doLoadBeanEMMatcher(anno.value());
             return matcher;
-        } else if (field.isAnnotationPresent(BaseBeanEMEndLoopMatcherAnno.class)) {
-            BaseBeanEMEndLoopMatcherAnno anno = field.getAnnotation(BaseBeanEMEndLoopMatcherAnno.class);
+        } else if (field.isAnnotationPresent(BaseBeanEMEndMatcherAnno.class)) {
+            BaseBeanEMEndMatcherAnno anno = field.getAnnotation(BaseBeanEMEndMatcherAnno.class);
             IBeanEMMatcher matcher = doLoadBeanEMMatcher(anno.value());
             return matcher;
-        } else if (field.isAnnotationPresent(MixinBeanEMEndLoopMatcherAnno.class)) {
-            MixinBeanEMEndLoopMatcherAnno anno = field.getAnnotation(MixinBeanEMEndLoopMatcherAnno.class);
+        } else if (field.isAnnotationPresent(MixinBeanEMEndMatcherAnno.class)) {
+            MixinBeanEMEndMatcherAnno anno = field.getAnnotation(MixinBeanEMEndMatcherAnno.class);
             return doLoadBeanEMMatcher(anno.value());
         }
         return doLoadCustomEndLoopMatcher(cls, field);

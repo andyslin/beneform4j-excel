@@ -1,4 +1,4 @@
-package com.forms.beneform4j.excel.core.model.loader.anno.matcher.endloop;
+package com.forms.beneform4j.excel.core.model.loader.anno.matcher.end;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,7 +9,7 @@ import com.forms.beneform4j.excel.core.model.loader.anno.matcher.cell.PositionBe
 
 @Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PositionBeanEMEndLoopMatcherAnno {
+public @interface PositionBeanEMEndMatcherAnno {
 
     PositionBeanEMMatcherAnno value();
 

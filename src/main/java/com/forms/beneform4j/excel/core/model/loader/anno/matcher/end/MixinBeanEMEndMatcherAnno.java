@@ -1,15 +1,15 @@
-package com.forms.beneform4j.excel.core.model.loader.anno.matcher.endloop;
+package com.forms.beneform4j.excel.core.model.loader.anno.matcher.end;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.forms.beneform4j.excel.core.model.loader.anno.matcher.cell.BaseBeanEMMatcherAnno;
+import com.forms.beneform4j.excel.core.model.loader.anno.matcher.cell.MixinBeanEMMatcherAnno;
 
 @Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BaseBeanEMEndLoopMatcherAnno {
+public @interface MixinBeanEMEndMatcherAnno {
 
-    BaseBeanEMMatcherAnno value();
+    MixinBeanEMMatcherAnno value();
 }

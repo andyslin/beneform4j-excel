@@ -40,14 +40,14 @@ public interface IBeanEMProperty extends Serializable {
     public IBeanEMExtractor getExtractor();
 
     /**
-     * 匹配结束的匹配器 只用于集合类型的属性
+     * 匹配结束的匹配器 只用于集合或嵌套对象的类型
      * 
      * @return
      */
     public IBeanEMMatcher getEndMatcher();
 
     /**
-     * 表示集合元素类型的Excel模型，只用于集合类型的属性
+     * 表示集合元素类型的Excel模型，只用于集合或嵌套对象的类型
      * 
      * @return
      */
