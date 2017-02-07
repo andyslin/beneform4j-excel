@@ -136,7 +136,7 @@ public class Td implements Serializable {
     /**
      * 数据属性
      */
-    private String property;
+    private String expression;
     /**
      * 是否隐藏
      */
@@ -240,7 +240,7 @@ public class Td implements Serializable {
 
     public void setFieldCode(String fieldCode) {
         this.fieldCode = fieldCode;
-        this.property = CoreUtils.convertToCamel(fieldCode);
+        this.expression = CoreUtils.convertToCamel(fieldCode);
     }
 
     public String getFieldName() {
@@ -331,11 +331,11 @@ public class Td implements Serializable {
         this.children = children;
     }
 
-    public String getProperty() {
-        if (CoreUtils.isBlank(property)) {
-            property = CoreUtils.convertToCamel(this.fieldCode);
+    public String getExpression() {
+        if (CoreUtils.isBlank(expression)) {
+            expression = CoreUtils.convertToCamel(this.fieldCode);
         }
-        return property;
+        return expression;
     }
 
     public String getModelId() {
@@ -394,8 +394,8 @@ public class Td implements Serializable {
         this.desc = desc;
     }
 
-    public void setProperty(String property) {
-        this.property = property;
+    public void setExpression(String expression) {
+        this.expression = expression;
     }
 
     public String getIsKey() {

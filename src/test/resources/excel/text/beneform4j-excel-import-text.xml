@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excel-config xmlns="http://www.formssi.com/schema/beneform4j/excel"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd">
+
+	<text-workbook id="convert2txt1" skipRows="3" />
+	
+	<tree-workbook id="paramDefImport" name="参数定义" desc="大数据量测试" textWorkbook-ref="convert2txt1">
+		<td text="参数代码" expression="paramCode" showType="LOCK_SHOW"/>
+		<td text="参数名称" expression="paramName" showType="LOCK_SHOW"/>
+		<td text="参数组别" expression="paramGroup"/>
+		<td text="参数类型" expression="paramAttr"/>
+		<td text="其它属性">
+			<td text="是否可编辑" expression="editable"/>
+			<td text="序号" expression="seqno" dataType="INTEGER"/>
+			<td text="备注" expression="des"/>
+		</td>
+	</tree-workbook>
+</excel-config>

@@ -58,4 +58,9 @@ public class XmlEMLoaderConsts {
      */
     public static final String BEAN_WORKBOOK_EXTRACTOR_ELEMENT_NAME = "bean-workbook-extractor";
 
+    // ===== 使用XML配置的Text模型 =====
+    /**
+     * 表示一个Text模型的元素
+     */
+    public static final String TEXT_WORKBOOK_ELEMENT_NAME = "text-workbook";
 }

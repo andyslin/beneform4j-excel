@@ -46,7 +46,7 @@ public class GridParser implements ITreeEMComponentParser {
 
     protected void setTdProperties(String modelId, Element ele, Td td) {
         td.setFieldName(ele.getAttribute("text"));//名称
-        td.setProperty(ele.getAttribute("property"));//数据属性
+        td.setExpression(ele.getAttribute("expression"));//数据属性
         td.setFormula(ele.getAttribute("formula"));//计算公式
         td.setRenderer(ele.getAttribute("renderer"));//渲染函数
         td.setStatRule(ele.getAttribute("stat"));//统计方法

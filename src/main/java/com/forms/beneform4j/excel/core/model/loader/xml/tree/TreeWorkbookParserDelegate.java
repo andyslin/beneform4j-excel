@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.core.util.xml.XmlHelper;
+import com.forms.beneform4j.excel.core.model.em.text.impl.TextEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMComponent;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMRegion;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMRegion.OffsetPoint;
@@ -19,6 +20,7 @@ import com.forms.beneform4j.excel.core.model.em.tree.impl.TreeEMRegion;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.TreeEMSheet;
 import com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoaderConfig;
 import com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoaderConsts;
+import com.forms.beneform4j.excel.core.model.loader.xml.text.TextWorkbookParser;
 
 public class TreeWorkbookParserDelegate {
 
@@ -30,6 +32,7 @@ public class TreeWorkbookParserDelegate {
     private static final String WORKBOOK_NAME = "name";
     private static final String WORKBOOK_DESC = "desc";
     private static final String WORKBOOK_PRIOR = "prior";
+    private static final String TEXT_WORKBOOK_REF = "textWorkbook-ref";
 
     private static final String SHEET_NAME = "name";
     private static final String SHEET_CONDITION = "condition";
@@ -74,6 +77,26 @@ public class TreeWorkbookParserDelegate {
      * @return
      */
     public static TreeEM parseWorkbookElement(String modelId, Element workbook) {
+        TreeEM em = parseWorkbookElement0(modelId, workbook);
+        if (null != em && CoreUtils.isBlank(em.getTextWorkbookRef())) {
+            Element ele = XmlHelper.getChildElementByTagName(workbook, XmlEMLoaderConsts.TEXT_WORKBOOK_ELEMENT_NAME);
+            if (null != ele) {
+                TextWorkbookParser parser = new TextWorkbookParser();
+                TextEM textEM = parser.parseTextEM(ele);
+                em.setTextWorkbook(textEM);
+            }
+        }
+        return em;
+    }
+
+    /**
+     * 解析一个workbook元素
+     * 
+     * @param modelId
+     * @param workbook
+     * @return
+     */
+    private static TreeEM parseWorkbookElement0(String modelId, Element workbook) {
         // sheet配置
         List<Element> sheets = XmlHelper.getChildElementsByTagName(workbook, SHEET);
         if (!sheets.isEmpty()) {// 存在<sheet>元素
@@ -229,6 +252,11 @@ public class TreeWorkbookParserDelegate {
         String prior = workbook.getAttribute(WORKBOOK_PRIOR);
         if (!CoreUtils.isBlank(prior)) {
             em.setPrior(Integer.parseInt(prior));
+        }
+
+        String textWorkbookRef = workbook.getAttribute(TEXT_WORKBOOK_REF);
+        if (!CoreUtils.isBlank(textWorkbookRef)) {
+            em.setTextWorkbookRef(textWorkbookRef.trim());
         }
     }
 

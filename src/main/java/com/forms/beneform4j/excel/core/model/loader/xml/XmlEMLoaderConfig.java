@@ -9,6 +9,7 @@ import com.forms.beneform4j.excel.core.model.loader.xml.bean.BeanEMValidatorPars
 import com.forms.beneform4j.excel.core.model.loader.xml.bean.BeanWorkbookParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.file.FileWorkbookGroupParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.file.FileWorkbookParser;
+import com.forms.beneform4j.excel.core.model.loader.xml.text.TextWorkbookParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.tree.ITreeEMComponentParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.tree.TreeWorkbookParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.tree.component.GridParser;
@@ -30,6 +31,8 @@ public class XmlEMLoaderConfig {
         registerTopElementParser(XmlEMLoaderConsts.BEAN_WORKBOOK_EXTRACTOR_ELEMENT_NAME, new BeanEMExtractorParser());
         registerTopElementParser(XmlEMLoaderConsts.BEAN_WORKBOOK_MATCHER_ELEMENT_NAME, new BeanEMMatcherParser());
         registerTopElementParser(XmlEMLoaderConsts.BEAN_WORKBOOK_VALIDATOR_ELEMENT_NAME, new BeanEMValidatorParser());
+
+        registerTopElementParser(XmlEMLoaderConsts.TEXT_WORKBOOK_ELEMENT_NAME, new TextWorkbookParser());
 
         // 注册树型模型的组件类型及其解析器
         registerTreeComponentParser(XmlEMLoaderConsts.GRID_COMPONENT_TYPE, new GridParser());

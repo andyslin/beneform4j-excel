@@ -8,11 +8,11 @@ import org.springframework.core.io.Resource;
 import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.excel.core.imports.stream.IWorkbookStreamHandler;
 import com.forms.beneform4j.excel.core.imports.stream.WorkbookStreamUtils;
-import com.forms.beneform4j.excel.core.model.em.bean.IBeanEM;
+import com.forms.beneform4j.excel.core.model.em.IEM;
 
 public abstract class AbstractResourceExcelImporter extends AbstractModelExcelImporter {
 
-    abstract protected Object doImports(Resource resource, IBeanEM model);
+    abstract protected Object doImports(Resource resource, IEM model);
 
     protected void doImports(Resource resource, IWorkbookStreamHandler handler) {
         WorkbookStreamUtils.parse(resource, handler);
@@ -41,7 +41,7 @@ public abstract class AbstractResourceExcelImporter extends AbstractModelExcelIm
     }
 
     @Override
-    protected Object doImports(InputStream input, final IBeanEM model) {
+    protected Object doImports(InputStream input, final IEM model) {
         return importsWithResource(input, new ResourceCallback<Object>() {
             @Override
             protected Object callback(Resource resource) {
@@ -51,7 +51,7 @@ public abstract class AbstractResourceExcelImporter extends AbstractModelExcelIm
     }
 
     @Override
-    protected Object doImports(String location, final IBeanEM model) {
+    protected Object doImports(String location, final IEM model) {
         return importsWithResource(location, new ResourceCallback<Object>() {
             @Override
             protected Object callback(Resource resource) {

@@ -6,23 +6,24 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.forms.beneform4j.excel.core.imports.IExcelImporter;
+import com.forms.beneform4j.excel.core.imports.base.BaseExcelImporter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
 public class ExcelImportsTest {
 
-    private IExcelImporter importer = new BeanEMExcelImporter();
+    private IExcelImporter importer = new BaseExcelImporter();
 
     @Test
     public void testImportBean() {
-        String filename = "E:/workspace-git/beneform4j-excel/src/test/resources/excel/imports/Test.xls";
+        String filename = "E:/workspace-git/beneform4j-excel/src/test/resources/excel/bean/Test.xls";
         ReqChangeFhBean bean = importer.imports(filename, ReqChangeFhBean.class);
         System.out.println(bean);
     }
 
     @Test
     public void testImportBeanById() {
-        String filename = "E:/workspace-git/beneform4j-excel/src/test/resources/excel/imports/Test.xls";
+        String filename = "E:/workspace-git/beneform4j-excel/src/test/resources/excel/bean/Test.xls";
         ReqChangeFhBean bean = importer.imports(filename, "ReqChangeFhBean", ReqChangeFhBean.class);
         System.out.println(bean);
     }

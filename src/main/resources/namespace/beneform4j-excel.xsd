@@ -26,6 +26,8 @@
 					<xsd:element name="bean-workbook-matcher" type="beanWorkbookMatcherType"/>
 					<xsd:element name="bean-workbook-validator" type="beanWorkbookValidatorType"/>
 					<xsd:element name="bean-workbook-extractor" type="beanWorkbookExtractorType"/>
+					
+					<xsd:element name="text-workbook" type="textWorkbookType"/>
 					<xsd:any namespace="##other" processContents="lax"/>
 				</xsd:choice>
 			</xsd:sequence>
@@ -36,7 +38,7 @@
 	<xsd:complexType name="fileWorkbookGroupType">
 		<xsd:annotation>
 			<xsd:documentation><![CDATA[
-			定义template-group元素类型，用于定义一组模板文件
+			定义file-workbook-group元素类型，用于定义一组模板文件
 		]]></xsd:documentation>
 		</xsd:annotation>
 		<xsd:attribute name="idPrefix" type="xsd:string" use="optional">
@@ -88,7 +90,7 @@
 	<xsd:complexType name="fileWorkbookType">
 		<xsd:annotation>
 			<xsd:documentation><![CDATA[
-			定义template元素类型，用于定义单个模板文件
+			定义file-workbook元素类型，用于定义单个模板文件
 		]]></xsd:documentation>
 		</xsd:annotation>
 		<xsd:attribute name="id" type="xsd:ID" use="optional">
@@ -114,29 +116,32 @@
 			定义一个Workbook树型配置模型
 		]]></xsd:documentation>
 		</xsd:annotation>
-		<xsd:choice minOccurs="1" maxOccurs="1">
-			<xsd:element name="td" type="treeWorkbookTdType" minOccurs="1" maxOccurs="unbounded">
-				<xsd:annotation>
-					<xsd:documentation><![CDATA[
-						第一种情形，直接子元素为td，默认为只有一个sheet，sheet中只有一个region，并且为grid，只允许出现td元素
-					]]></xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="region" type="treeWorkbookRegionType" minOccurs="1" maxOccurs="unbounded">
-				<xsd:annotation>
-					<xsd:documentation><![CDATA[
-						第二种情形，直接子元素为region，默认为只有一个sheet，只允许出现region元素
-					]]></xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="sheet" type="treeWorkbookSheetType" minOccurs="1" maxOccurs="unbounded">
-				<xsd:annotation>
-					<xsd:documentation><![CDATA[
-						第三种情形，直接子元素为sheet，只允许出现sheet元素
-					]]></xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-		</xsd:choice>
+		<xsd:sequence>
+			<xsd:choice minOccurs="1" maxOccurs="1">
+				<xsd:element name="td" type="treeWorkbookTdType" minOccurs="1" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[
+							第一种情形，直接子元素为td，默认为只有一个sheet，sheet中只有一个region，并且为grid，只允许出现td元素
+						]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="region" type="treeWorkbookRegionType" minOccurs="1" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[
+							第二种情形，直接子元素为region，默认为只有一个sheet，只允许出现region元素
+						]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="sheet" type="treeWorkbookSheetType" minOccurs="1" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[
+							第三种情形，直接子元素为sheet，只允许出现sheet元素
+						]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element name="text-workbook" type="textWorkbookType" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
 		<xsd:attribute name="id" type="xsd:ID" use="required">
 			<xsd:annotation>
 				<xsd:documentation><![CDATA[
@@ -145,6 +150,13 @@
 			</xsd:annotation>
 		</xsd:attribute>
 		<xsd:attributeGroup ref="modelAttributes"/>
+		<xsd:attribute name="textWorkbook-ref" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+					转换为文本文件的模型配置ID，作用和<text-workbook>子元素相同
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
 	</xsd:complexType>
 	
 	<xsd:complexType name="treeWorkbookSheetType">
@@ -334,10 +346,10 @@
 				]]></xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<xsd:attribute name="property" type="xsd:string" use="optional">
+		<xsd:attribute name="expression" type="xsd:string" use="optional">
 			<xsd:annotation>
 				<xsd:documentation><![CDATA[
-					取数据的属性，对于叶子元素，该属性是必须属性
+					取数据的表达式，对于叶子元素，该属性是必须属性
 				]]></xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
@@ -800,6 +812,115 @@
 		<xsd:attribute name="sheetIndex" use="optional" type="xsd:nonNegativeInteger"/>
 		<xsd:attribute name="sheetName" use="optional" type="xsd:string"/>
 	</xsd:attributeGroup>
+	
+	<xsd:complexType name="textWorkbookType">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			定义text-workbook元素类型，用于定义将Excel转换为文本文件的模型
+		]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="id" type="xsd:ID" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				模型ID
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attributeGroup ref="modelAttributes"/>
+		<xsd:attribute name="charset" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				文本文件的字符集
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="skipRows" use="optional" default="-1">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				开始处理跳过的行数，-1表示不跳过
+			]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:union memberTypes="xsd:positiveInteger">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:integer">
+							<xsd:enumeration value="-1"></xsd:enumeration>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:union>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="minCellsOfRow" use="optional" default="-1">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				每一行最少的列数，如果不足此数，使用默认单元格的值填充，-1表示不限制
+			]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:union memberTypes="xsd:positiveInteger">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:integer">
+							<xsd:enumeration value="-1"></xsd:enumeration>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:union>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="defaultCellValue" type="xsd:string" use="optional" default="">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				默认单元格的值，默认为空格
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="separator" type="xsd:string" use="optional" default=",">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				数据的分隔符，默认为英文逗号,
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ignoreEmptyRow" type="xsd:boolean" use="optional" default="true">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				是否忽略空行，默认为忽略
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="batchNoFormat" use="optional" default="d{yyyyMMddhhmmss}n{18}">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				批次号的格式 d{日期格式}(a|n|an){随机部分的长度}，其中a表示随机字母、n表示随机数字、an表示随机字母数字组合
+			]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:pattern value="d\{\w+\}(a|n|an)?\{\d+\}"></xsd:pattern>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="addBatchNo" type="xsd:boolean" use="optional" default="true">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				是否添加批次号
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="addRowIndex" type="xsd:boolean" use="optional" default="false">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				是否添加行索引，每个Sheet从1开始
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="addDataIndex" type="xsd:boolean" use="optional" default="true">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+				是否添加数据索引，索引从1开始，所有Sheet累加
+			]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
 	
 	<xsd:attributeGroup name="modelAttributes">
 		<xsd:annotation>

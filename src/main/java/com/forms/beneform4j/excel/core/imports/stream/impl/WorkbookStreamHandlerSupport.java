@@ -3,17 +3,20 @@ package com.forms.beneform4j.excel.core.imports.stream.impl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import com.forms.beneform4j.core.util.CoreUtils;
+import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.core.imports.stream.IWorkbookStreamHandler;
 
 public class WorkbookStreamHandlerSupport implements IWorkbookStreamHandler {
 
-    /**
-     * 用于生成批次号的日期格式
-     */
-    private final SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+    private static final BatchNoFormat DEFAULT_BATCH_NO_FORMAT = new BatchNoFormat("yyyyMMddhhmmss", "n", 18);
+
+    private static final Pattern BATCH_NO_FORMAT_PATTERN = Pattern.compile("^\\s*d\\s*\\{\\s*(\\w+)\\s*\\}\\s*(a|n|an)?\\s*\\{\\s*(\\d+)\\s*\\}\\s*$");
 
     /**
      * 处理器状态
@@ -55,12 +58,18 @@ public class WorkbookStreamHandlerSupport implements IWorkbookStreamHandler {
      */
     private boolean addDataIndex;
 
+    /**
+     * 批次号格式
+     */
+    private String batchNoFormat;
+
     @Override
     public void initialize() {
         if (null == defaultCellValue) {
             defaultCellValue = "";
         }
-        status.batchNo = generateBatchNo();
+        BatchNoFormat format = initializeBatchNoFormat(this.getBatchNoFormat());
+        status.batchNo = generateBatchNo(format);
         status.dataIndex = 0;
     }
 
@@ -84,6 +93,7 @@ public class WorkbookStreamHandlerSupport implements IWorkbookStreamHandler {
             status.dataIndex++;
         }
 
+        int minCellsOfRow = getMinCellsOfRow();
         if (minCellsOfRow > 0) {//最少列
             for (int i = minCellsOfRow - cells.size(); i > 0; i--) {
                 cells.add(getDefaultCellValue());
@@ -231,6 +241,24 @@ public class WorkbookStreamHandlerSupport implements IWorkbookStreamHandler {
     }
 
     /**
+     * 获取批次号格式
+     * 
+     * @return
+     */
+    public String getBatchNoFormat() {
+        return batchNoFormat;
+    }
+
+    /**
+     * 设置批次号格式
+     * 
+     * @param batchNoFormat
+     */
+    public void setBatchNoFormat(String batchNoFormat) {
+        this.batchNoFormat = batchNoFormat;
+    }
+
+    /**
      * 设置是否添加数据索引，所有Sheet统一编号，并且不计算被跳过和忽略的行数，从1开始
      * 
      * @param addDataIndex
@@ -251,23 +279,66 @@ public class WorkbookStreamHandlerSupport implements IWorkbookStreamHandler {
     /**
      * 生成批次号
      */
-    protected String generateBatchNo() {
+    protected String generateBatchNo(BatchNoFormat format) {
         StringBuffer sb = new StringBuffer();
-        sb.append(df.format(new Date()));
-        sb.append(RandomStringUtils.randomNumeric(18));
+        sb.append(format.getDateFormat().format(new Date()));
+        String type = format.getType();
+        int length = format.getRandomLength();
+        if ("a".equalsIgnoreCase(type)) {//字母
+            sb.append(RandomStringUtils.randomAlphabetic(length));
+        } else if ("n".equalsIgnoreCase(type)) {//数字
+            sb.append(RandomStringUtils.randomNumeric(length));
+        } else if ("an".equalsIgnoreCase(type)) {//字母数字
+            sb.append(RandomStringUtils.randomAlphanumeric(length));
+        } else {
+            sb.append(RandomStringUtils.random(length));
+        }
         return sb.toString();
     }
 
+    private BatchNoFormat initializeBatchNoFormat(String format) {
+        if (!CoreUtils.isBlank(format)) {
+            Matcher matcher = BATCH_NO_FORMAT_PATTERN.matcher(format);
+            if (matcher.find()) {
+                String dateFormat = matcher.group(1);
+                String type = matcher.group(2);
+                int randomLength = Integer.parseInt(matcher.group(3));
+                return new BatchNoFormat(dateFormat, type, randomLength);
+            } else {
+                Throw.throwRuntimeException("批次号的格式不符合要求");
+            }
+        }
+        return DEFAULT_BATCH_NO_FORMAT;
+    }
+
+    /**
+     * 处理器状态
+     */
     public class HandlerStatus {
 
+        /**
+         * 批次号
+         */
         private String batchNo;
 
+        /**
+         * 当前正在处理的sheet索引，从0开始
+         */
         private int sheetIndex;
 
+        /**
+         * 当前正在处理的sheet名称
+         */
         private String sheetName;
 
+        /**
+         * 当前正在处理的行索引，每一个sheet都从1开始
+         */
         private int rowIndex;
 
+        /**
+         * 当前正在处理的数据索引，从1开始，所有sheet累加计算，不包括被忽略的行
+         */
         private int dataIndex;
 
         /**
@@ -313,6 +384,33 @@ public class WorkbookStreamHandlerSupport implements IWorkbookStreamHandler {
          */
         public int getDataIndex() {
             return dataIndex;
+        }
+    }
+
+    /**
+     * 批次号格式
+     */
+    protected static class BatchNoFormat {
+        private final SimpleDateFormat dateFormat;
+        private final String type;
+        private final int randomLength;
+
+        private BatchNoFormat(String dateFormat, String type, int randomLength) {
+            this.dateFormat = new SimpleDateFormat(dateFormat);
+            this.type = type;
+            this.randomLength = randomLength;
+        }
+
+        public SimpleDateFormat getDateFormat() {
+            return dateFormat;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public int getRandomLength() {
+            return randomLength;
         }
     }
 }

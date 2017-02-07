@@ -9,6 +9,7 @@ import com.forms.beneform4j.excel.core.exports.IExcelExporter;
 import com.forms.beneform4j.excel.core.exports.tree.painter.ITreeEMComponentXlsxPainter;
 import com.forms.beneform4j.excel.core.exports.tree.painter.impl.GridXlsxPainter;
 import com.forms.beneform4j.excel.core.exports.tree.painter.impl.NestedRegionXlsxPainter;
+import com.forms.beneform4j.excel.core.imports.IExcelImporter;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMComponent;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.component.NestedRegionTreeEMComponent;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.component.grid.Grid;
@@ -53,6 +54,11 @@ public class ExcelComponentConfig {
      * Excel导出器
      */
     private static IExcelExporter excelExporter;
+
+    /**
+     * Excel导入器
+     */
+    private static IExcelImporter excelImporter;
 
     /**
      * 获取模型加载器列表
@@ -158,6 +164,24 @@ public class ExcelComponentConfig {
      */
     public void setExcelExporter(IExcelExporter excelExporter) {
         ExcelComponentConfig.excelExporter = excelExporter;
+    }
+
+    /**
+     * 获取Excel导入器
+     * 
+     * @return
+     */
+    public static IExcelImporter getExcelImporter() {
+        return ConfigHelper.getComponent(excelImporter, IExcelImporter.class);
+    }
+
+    /**
+     * 注入Excel导入器
+     * 
+     * @param excelImporter
+     */
+    public void setExcelImporter(IExcelImporter excelImporter) {
+        ExcelComponentConfig.excelImporter = excelImporter;
     }
 
     /**

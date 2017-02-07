@@ -78,7 +78,7 @@ public class GridXlsxPainter extends AbstractSingleXlsxPainter<Grid> {
      * @return
      */
     protected Object resolveCellValue(IDataAccessor da, Object root, Td td, int rows, int index) {
-        Object val = da.value(td.getProperty());//暂不支持计算公式
+        Object val = da.value(td.getExpression());//暂不支持计算公式
         return val;
     }
 

@@ -75,7 +75,7 @@ public class Grid extends AbstractTreeEMComponent {
         if (null == this.properties) {
             List<String> properties = new ArrayList<String>();
             for (Td td : this.getLeaf()) {
-                properties.add(td.getProperty());
+                properties.add(td.getExpression());
             }
             this.properties = new String[properties.size()];
             properties.toArray(this.properties);

@@ -4,52 +4,52 @@
 	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd">
 	
 	<tree-workbook id="oneGrid1" name="单个Grid测试一，属性可以用表达式" desc="属性、标题、注释可以使用表达式，属性使用表达式无需添加${}，而标题和注释需要添加${}">
-		<td text="定长文本，如客户号" property="charData" showType="LOCK_SHOW" desc="冻结区域显示" dataType="CHAR"/>
-		<td text="变长文本，如客户名称" property="varcharData" showType="LOCK_SHOW" desc="冻结区域显示"/>
-		<td text="隐藏文本，如区域" property="hiddenData" showType="LOCK_HIDDEN" desc="冻结区域隐藏"/>
-		<td text="整型" property="intData" dataType="INTEGER"/>
-		<td text="实型" property="doubleData" dataType="DECIMAL"/>
-		<td text="实型，保留四位小数" property="doubleData" dataType="DECIMAL" format="#,##0.0000"/>
-		<td text="百分数" property="percentagData" dataType="PERCENTAG"/>
-		<td text="普通隐藏" property="normalHiddenData" showType="INIT_HIDDEN" desc="普通区域隐藏"/>
+		<td text="定长文本，如客户号" expression="charData" showType="LOCK_SHOW" desc="冻结区域显示" dataType="CHAR"/>
+		<td text="变长文本，如客户名称" expression="varcharData" showType="LOCK_SHOW" desc="冻结区域显示"/>
+		<td text="隐藏文本，如区域" expression="hiddenData" showType="LOCK_HIDDEN" desc="冻结区域隐藏"/>
+		<td text="整型" expression="intData" dataType="INTEGER"/>
+		<td text="实型" expression="doubleData" dataType="DECIMAL"/>
+		<td text="实型，保留四位小数" expression="doubleData" dataType="DECIMAL" format="#,##0.0000"/>
+		<td text="百分数" expression="percentagData" dataType="PERCENTAG"/>
+		<td text="普通隐藏" expression="normalHiddenData" showType="INIT_HIDDEN" desc="普通区域隐藏"/>
 		<td text="跨多列">
-			<td text="子列1" property="subData1"/>
-			<td text="子列2" property="subData2"/>
-			<td text="子列3" property="subData3"/>
+			<td text="子列1" expression="subData1"/>
+			<td text="子列2" expression="subData2"/>
+			<td text="子列3" expression="subData3"/>
 		</td>
 	</tree-workbook>
 	
 	<tree-workbook id="paramDef" name="参数定义" desc="大数据量测试">
-		<td text="参数代码" property="paramCode" showType="LOCK_SHOW"/>
-		<td text="参数名称" property="paramName" showType="LOCK_SHOW"/>
-		<td text="参数组别" property="paramGroup"/>
-		<td text="参数类型" property="paramAttr"/>
+		<td text="参数代码" expression="paramCode" showType="LOCK_SHOW"/>
+		<td text="参数名称" expression="paramName" showType="LOCK_SHOW"/>
+		<td text="参数组别" expression="paramGroup"/>
+		<td text="参数类型" expression="paramAttr"/>
 		<td text="其它属性">
-			<td text="是否可编辑" property="editable"/>
-			<td text="序号" property="seqno" dataType="INTEGER"/>
-			<td text="备注" property="des"/>
+			<td text="是否可编辑" expression="editable"/>
+			<td text="序号" expression="seqno" dataType="INTEGER"/>
+			<td text="备注" expression="des"/>
 		</td>
 	</tree-workbook>
 	
 	<tree-workbook id="dynamic-xml" name="单一客户信息-财务信息">
-		<td text="客户名称" property="cst_nm" showType="LOCK_SHOW"/>
-		<td text="客户号" property="cst_id" showType="LOCK_SHOW"/>
-		<td text="季节" property="@enum.getValue(season)" showType="LOCK_SHOW" desc="数据转换"/>
+		<td text="客户名称" expression="cst_nm" showType="LOCK_SHOW"/>
+		<td text="客户号" expression="cst_id" showType="LOCK_SHOW"/>
+		<td text="季节" expression="@enum.getValue(season)" showType="LOCK_SHOW" desc="数据转换"/>
 		<td text="近三年销售收入">
-			<td text="${#param.currentYear-2}年销售收入" property="sr1" dataType="DECIMAL"/>
-			<td text="${#param.currentYear-1}年销售收入" property="sr2" dataType="DECIMAL"/>
-			<td text="${#param.currentYear}年销售收入" property="sr3" dataType="DECIMAL"/>
-			<td text="同比变化金额" property="srTbbh" dataType="DECIMAL"/>
+			<td text="${#param.currentYear-2}年销售收入" expression="sr1" dataType="DECIMAL"/>
+			<td text="${#param.currentYear-1}年销售收入" expression="sr2" dataType="DECIMAL"/>
+			<td text="${#param.currentYear}年销售收入" expression="sr3" dataType="DECIMAL"/>
+			<td text="同比变化金额" expression="srTbbh" dataType="DECIMAL"/>
 		</td>
 		<td text="净利润">
-			<td text="${#param.currentYear-2}年" property="lr1" dataType="DECIMAL"/>
-			<td text="${#param.currentYear-1}年" property="lr2" dataType="DECIMAL"/>
-			<td text="${#param.currentYear}年销售收入" property="lr3" dataType="DECIMAL"/>
-			<td text="同比变化金额" property="lrTbbh" dataType="DECIMAL"/>
+			<td text="${#param.currentYear-2}年" expression="lr1" dataType="DECIMAL"/>
+			<td text="${#param.currentYear-1}年" expression="lr2" dataType="DECIMAL"/>
+			<td text="${#param.currentYear}年销售收入" expression="lr3" dataType="DECIMAL"/>
+			<td text="同比变化金额" expression="lrTbbh" dataType="DECIMAL"/>
 		</td>
 		<td text="资产负债">
-			<td text="总资产" property="zzc" dataType="DECIMAL"/>
-			<td text="总负债" property="zfz" dataType="DECIMAL"/>
+			<td text="总资产" expression="zzc" dataType="DECIMAL"/>
+			<td text="总负债" expression="zfz" dataType="DECIMAL"/>
 		</td>
 	</tree-workbook>
 </excel-config>

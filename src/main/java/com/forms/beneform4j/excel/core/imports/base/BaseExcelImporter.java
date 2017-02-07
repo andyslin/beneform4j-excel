@@ -1,4 +1,4 @@
-package com.forms.beneform4j.excel.core.imports.bean;
+package com.forms.beneform4j.excel.core.imports.base;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -16,18 +16,56 @@ import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.core.util.logger.CommonLogger;
 import com.forms.beneform4j.excel.core.ExcelUtils;
-import com.forms.beneform4j.excel.core.imports.base.AbstractResourceExcelImporter;
+import com.forms.beneform4j.excel.core.imports.stream.impl.TextEMWorkbookStreamHandler;
+import com.forms.beneform4j.excel.core.imports.stream.impl.TreeEMWorkbookStreamHandler;
+import com.forms.beneform4j.excel.core.model.em.IEM;
 import com.forms.beneform4j.excel.core.model.em.bean.BeanEMExtractResult;
 import com.forms.beneform4j.excel.core.model.em.bean.BeanEMExtractResult.NextStep;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEM;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMExtractor;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMProperty;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMValidator;
+import com.forms.beneform4j.excel.core.model.em.text.ITextEM;
+import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
 
-public class BeanEMExcelImporter extends AbstractResourceExcelImporter {
+public class BaseExcelImporter extends AbstractResourceExcelImporter {
 
     @Override
-    protected Object doImports(Resource resource, IBeanEM model) {
+    protected Object doImports(Resource resource, IEM model) {
+        if (model instanceof IBeanEM) {
+            return doImportsWithBeanEM(resource, (IBeanEM) model);
+        } else if (model instanceof ITextEM) {
+            return doImportsWithTextEM(resource, (ITextEM) model);
+        } else if (model instanceof ITreeEM) {
+            return doImportsWithTreeEM(resource, (ITreeEM) model);
+        } else {
+            throw Throw.createRuntimeException("不支持的Excel模型");
+        }
+    }
+
+    private Object doImportsWithTreeEM(Resource resource, ITreeEM model) {
+        String filename = getTmpFilename(model);
+        TreeEMWorkbookStreamHandler handler = new TreeEMWorkbookStreamHandler();
+        handler.setTreeEm(model);
+        handler.setFilename(filename);
+        super.doImports(resource, handler);
+        return filename;
+    }
+
+    private Object doImportsWithTextEM(Resource resource, ITextEM model) {
+        String filename = getTmpFilename(model);
+        TextEMWorkbookStreamHandler handler = new TextEMWorkbookStreamHandler();
+        handler.setTextEm(model);
+        handler.setFilename(filename);
+        super.doImports(resource, handler);
+        return filename;
+    }
+
+    private String getTmpFilename(IEM em) {
+        return em.getId() + "-" + System.currentTimeMillis();
+    }
+
+    private Object doImportsWithBeanEM(Resource resource, IBeanEM model) {
         try {
             Workbook workbook = null;
             try {
