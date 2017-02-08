@@ -195,10 +195,10 @@
 		]]></xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<xsd:attribute name="property" type="xsd:string" use="optional">
+		<xsd:attribute name="expression" type="xsd:string" use="optional">
 			<xsd:annotation>
 				<xsd:documentation><![CDATA[
-			获取渲染Sheet的数据的属性
+			获取渲染Sheet的数据的表达式
 		]]></xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
@@ -261,10 +261,10 @@
 				]]></xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<xsd:attribute name="property" type="xsd:string" use="optional">
+		<xsd:attribute name="expression" type="xsd:string" use="optional">
 			<xsd:annotation>
 				<xsd:documentation><![CDATA[
-					获取渲染区域的数据的属性
+					获取渲染区域的数据的表达式
 				]]></xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>

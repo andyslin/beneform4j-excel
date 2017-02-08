@@ -90,11 +90,11 @@ public interface ITreeEMRegion extends Serializable {
     public String getCondition();
 
     /**
-     * 获取数据属性
+     * 获取数据的表达式
      * 
      * @return
      */
-    public String getProperty();
+    public String getExpression();
 
     /**
      * 获取区域上的组件

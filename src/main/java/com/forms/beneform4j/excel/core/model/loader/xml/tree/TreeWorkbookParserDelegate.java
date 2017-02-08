@@ -36,12 +36,12 @@ public class TreeWorkbookParserDelegate {
 
     private static final String SHEET_NAME = "name";
     private static final String SHEET_CONDITION = "condition";
-    private static final String SHEET_PROPERTY = "property";
+    private static final String SHEET_EXPRESSION = "expression";
 
     private static final String REGION_NAME = "name";
     private static final String REGION_TITLE = "title";
     private static final String REGION_CONDITION = "condition";
-    private static final String REGION_PROPERTY = "property";
+    private static final String REGION_EXPRESSION = "expression";
     private static final String REGION_OFFSET_NAME = "offsetName";
     private static final String REGION_OFFSET_POINT = "offsetPoint";
     private static final String REGION_OFFSET_X = "offsetX";
@@ -347,9 +347,9 @@ public class TreeWorkbookParserDelegate {
             emSheet.setCondition(condition.trim());
         }
 
-        String property = sheet.getAttribute(SHEET_PROPERTY);
-        if (!CoreUtils.isBlank(property)) {
-            emSheet.setProperty(property.trim());
+        String expression = sheet.getAttribute(SHEET_EXPRESSION);
+        if (!CoreUtils.isBlank(expression)) {
+            emSheet.setExpression(expression.trim());
         }
     }
 
@@ -401,9 +401,9 @@ public class TreeWorkbookParserDelegate {
             emRegion.setCondition(condition.trim());
         }
 
-        String property = region.getAttribute(REGION_PROPERTY);
-        if (!CoreUtils.isBlank(property)) {
-            emRegion.setProperty(property.trim());
+        String expression = region.getAttribute(REGION_EXPRESSION);
+        if (!CoreUtils.isBlank(expression)) {
+            emRegion.setExpression(expression.trim());
         }
     }
 

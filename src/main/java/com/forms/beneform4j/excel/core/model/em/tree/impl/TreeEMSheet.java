@@ -21,7 +21,7 @@ public class TreeEMSheet implements ITreeEMSheet {
 
     private String condition;
 
-    private String property;
+    private String expression;
 
     @Override
     public ITreeEM getWorkbook() {
@@ -44,8 +44,8 @@ public class TreeEMSheet implements ITreeEMSheet {
     }
 
     @Override
-    public String getProperty() {
-        return property;
+    public String getExpression() {
+        return expression;
     }
 
     public void setWorkbook(ITreeEM workbook) {
@@ -64,7 +64,7 @@ public class TreeEMSheet implements ITreeEMSheet {
         this.condition = condition;
     }
 
-    public void setProperty(String property) {
-        this.property = property;
+    public void setExpression(String expression) {
+        this.expression = expression;
     }
 }

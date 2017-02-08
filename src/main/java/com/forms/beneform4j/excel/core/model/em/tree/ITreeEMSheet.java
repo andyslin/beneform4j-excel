@@ -34,9 +34,9 @@ public interface ITreeEMSheet extends Serializable {
     public String getCondition();
 
     /**
-     * 获取数据属性
+     * 获取数据的表达式
      * 
      * @return
      */
-    public String getProperty();
+    public String getExpression();
 }

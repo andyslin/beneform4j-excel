@@ -20,7 +20,7 @@ public class NestedRegionXlsxPainter extends AbstractSingleXlsxPainter<NestedReg
         List<ITreeEMRegion> regions = component.getRegions();
         Scope scope = null;
         for (ITreeEMRegion region : regions) {
-            IDataAccessor regionAccessor = accessor.derive(region.getProperty());
+            IDataAccessor regionAccessor = accessor.derive(region.getExpression());
             if (regionAccessor.match(region.getCondition())) {
                 ITreeEMComponent sub = region.getComponent();
                 ITreeEMComponentXlsxPainter painter = ExcelComponentConfig.getXlsxPainter(sub);

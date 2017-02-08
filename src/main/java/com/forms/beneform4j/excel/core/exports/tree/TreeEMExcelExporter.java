@@ -25,7 +25,7 @@ public class TreeEMExcelExporter extends AbstractTreeEMExcelExporter {
         // 循环处理每个Sheet配置
         List<ITreeEMSheet> emSheets = model.getSheets();
         for (ITreeEMSheet emSheet : emSheets) {
-            IDataAccessor sheetProvider = accessor.derive(emSheet.getProperty());
+            IDataAccessor sheetProvider = accessor.derive(emSheet.getExpression());
             if (sheetProvider.match(emSheet.getCondition())) {
                 paintSheet(sheetProvider, context, emSheet);
             }
@@ -38,7 +38,7 @@ public class TreeEMExcelExporter extends AbstractTreeEMExcelExporter {
         // 循环处理每个区域配置
         List<ITreeEMRegion> regions = emSheet.getRegions();
         for (ITreeEMRegion region : regions) {
-            IDataAccessor regionAccessor = accessor.derive(region.getProperty());
+            IDataAccessor regionAccessor = accessor.derive(region.getExpression());
             if (regionAccessor.match(region.getCondition())) {
                 ITreeEMComponent component = region.getComponent();
                 ITreeEMComponentXlsxPainter painter = ExcelComponentConfig.getXlsxPainter(component);

@@ -28,7 +28,7 @@ public class TreeEMRegion implements ITreeEMRegion {
 
     private String condition;
 
-    private String property;
+    private String expression;
 
     private ITreeEMComponent component;
 
@@ -109,8 +109,8 @@ public class TreeEMRegion implements ITreeEMRegion {
      * {@inheritDoc}
      */
     @Override
-    public String getProperty() {
-        return property;
+    public String getExpression() {
+        return expression;
     }
 
     /**
@@ -153,8 +153,8 @@ public class TreeEMRegion implements ITreeEMRegion {
         this.condition = condition;
     }
 
-    public void setProperty(String property) {
-        this.property = property;
+    public void setExpression(String expression) {
+        this.expression = expression;
     }
 
     public void setComponent(ITreeEMComponent component) {
