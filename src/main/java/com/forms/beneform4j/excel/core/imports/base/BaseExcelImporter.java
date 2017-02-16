@@ -28,6 +28,15 @@ import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMValidator;
 import com.forms.beneform4j.excel.core.model.em.text.ITextEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 基本的Excel导入实现类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class BaseExcelImporter extends AbstractResourceExcelImporter {
 
     @Override
@@ -105,12 +114,12 @@ public class BaseExcelImporter extends AbstractResourceExcelImporter {
                             if (dealFields.contains(fieldName) || null == property || null == property.getMatcher()) {
                                 continue;
                             }
-                            if (property.getMatcher().isMatch(workbook, sheet, row, cell)) {
+                            if (property.getMatcher().isMatch(cell)) {
                                 dealFields.add(fieldName);
                                 Class<?> fieldType = property.getType();
                                 IBeanEMValidator validator = property.getValidator();
                                 if (null != validator) {
-                                    validator.validate(workbook, sheet, row, cell, fieldType);
+                                    validator.validate(cell, fieldType);
                                 }
 
                                 if (debug) {
@@ -118,7 +127,7 @@ public class BaseExcelImporter extends AbstractResourceExcelImporter {
                                 }
 
                                 IBeanEMExtractor parser = property.getExtractor();
-                                BeanEMExtractResult pr = parser.extract(property, workbook, sheet, row, cell, fieldType);
+                                BeanEMExtractResult pr = parser.extract(property, cell, fieldType);
                                 Object value = pr.getValue();
                                 if (isMap) {
                                     ((Map) result).put(fieldName, value);

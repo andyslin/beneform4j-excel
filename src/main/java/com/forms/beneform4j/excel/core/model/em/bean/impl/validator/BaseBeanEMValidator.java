@@ -3,15 +3,21 @@ package com.forms.beneform4j.excel.core.model.em.bean.impl.validator;
 import java.util.regex.Pattern;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 
 import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.core.ExcelUtils;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMValidator;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 基本的Bean模型的校验器实现类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class BaseBeanEMValidator implements IBeanEMValidator {
 
     /**
@@ -58,7 +64,7 @@ public class BaseBeanEMValidator implements IBeanEMValidator {
     private String pattern;
 
     @Override
-    public void validate(Workbook workbook, Sheet sheet, Row row, Cell cell, Class<?> fieldType) {
+    public void validate(Cell cell, Class<?> fieldType) {
         Cell mCell = ExcelUtils.getOffsetCell(cell, getOffsetX(), getOffsetY());
         if (null == mCell && !isAllowEmpty()) {
             Throw.throwRuntimeException("需校验的单元格不允许为空");
@@ -66,7 +72,7 @@ public class BaseBeanEMValidator implements IBeanEMValidator {
 
         String val = ExcelUtils.getCellValue(mCell);
         if (CoreUtils.isBlank(val) && !isAllowEmpty()) {
-            Throw.throwRuntimeException(getValidMsg(sheet, mCell, "不允许为空"));
+            Throw.throwRuntimeException(getValidMsg(mCell, "不允许为空"));
         } else {
             val = val.trim();
         }
@@ -76,11 +82,11 @@ public class BaseBeanEMValidator implements IBeanEMValidator {
             value = value.trim();
             if (isIgnoreCase()) {
                 if (!value.equalsIgnoreCase(val)) {
-                    Throw.throwRuntimeException(getValidMsg(sheet, mCell, "只能等于" + value + "(忽略大小写)"));
+                    Throw.throwRuntimeException(getValidMsg(mCell, "只能等于" + value + "(忽略大小写)"));
                 }
             } else {
                 if (!value.equals(val)) {
-                    Throw.throwRuntimeException(getValidMsg(sheet, mCell, "只能等于" + value));
+                    Throw.throwRuntimeException(getValidMsg(mCell, "只能等于" + value));
                 }
             }
         }
@@ -90,11 +96,11 @@ public class BaseBeanEMValidator implements IBeanEMValidator {
             pattern = pattern.trim();
             if (isIgnoreCase()) {
                 if (Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(val).find()) {
-                    Throw.throwRuntimeException(getValidMsg(sheet, mCell, "不符合格式(忽略大小写)：" + pattern));
+                    Throw.throwRuntimeException(getValidMsg(mCell, "不符合格式(忽略大小写)：" + pattern));
                 }
             } else {
                 if (Pattern.compile(pattern).matcher(val).find()) {
-                    Throw.throwRuntimeException(getValidMsg(sheet, mCell, "不符合格式：" + pattern));
+                    Throw.throwRuntimeException(getValidMsg(mCell, "不符合格式：" + pattern));
                 }
             }
         }
@@ -108,8 +114,8 @@ public class BaseBeanEMValidator implements IBeanEMValidator {
         this.allowEmpty = allowEmpty;
     }
 
-    private String getValidMsg(Sheet sheet, Cell cell, String msg) {
-        return ExcelUtils.getValidateMsg(sheet, cell, msg);
+    private String getValidMsg(Cell cell, String msg) {
+        return ExcelUtils.getValidateMsg(cell, msg);
     }
 
     public int getOffsetX() {

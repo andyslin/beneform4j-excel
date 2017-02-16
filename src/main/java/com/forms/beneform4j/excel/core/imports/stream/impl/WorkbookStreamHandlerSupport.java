@@ -12,6 +12,15 @@ import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.core.imports.stream.IWorkbookStreamHandler;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 逐行处理的回调处理器支持类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class WorkbookStreamHandlerSupport implements IWorkbookStreamHandler {
 
     private static final BatchNoFormat DEFAULT_BATCH_NO_FORMAT = new BatchNoFormat("yyyyMMddhhmmss", "n", 18);

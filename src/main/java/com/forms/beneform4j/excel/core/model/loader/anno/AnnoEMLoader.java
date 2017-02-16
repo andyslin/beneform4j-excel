@@ -41,6 +41,15 @@ import com.forms.beneform4j.excel.core.model.loader.anno.validator.CompositeBean
 import com.forms.beneform4j.excel.core.model.loader.anno.validator.MixinBeanEMValidatorAnno;
 import com.forms.beneform4j.excel.core.model.loader.base.AbstractCacheableEMLoader;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 从注解中加载Excel模型配置的加载器实现类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class AnnoEMLoader extends AbstractCacheableEMLoader {
 
     @Override

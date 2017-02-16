@@ -17,6 +17,15 @@ import com.forms.beneform4j.excel.core.model.em.base.BaseEM;
 import com.forms.beneform4j.excel.core.model.loader.IEMLoadContext;
 import com.forms.beneform4j.excel.core.model.loader.IResourceEMLoadContext;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 解析XML配置中的<file-workbook-group><br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class FileWorkbookGroupParser extends AbstractFileWorkbookParser {
 
     private static final String ID_PREFIX = "idPrefix";
@@ -62,7 +71,7 @@ public class FileWorkbookGroupParser extends AbstractFileWorkbookParser {
                     String filename = resource.getFilename();
                     if (!excludes.contains(resource) && checkSuffix(suffixs, filename)) {
                         String id = idPrefix + resolveFileWorkbookId(location, filename);
-                        EMType type = EMType.getTypeByFilename(filename);
+                        EMType type = getEMTypeByFilename(filename);
                         BaseEM em = super.getBaseWorkbookEM(resource, type);
                         em.setId(id);
                         em.setDesc(resource.getDescription());

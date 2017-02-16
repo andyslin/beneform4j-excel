@@ -15,6 +15,15 @@ import com.forms.beneform4j.excel.core.model.em.IEM;
 import com.forms.beneform4j.excel.core.model.em.dynamic.IDynamicTreeEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 使用XML中tree-workbook作为模板的Excel导出的抽象实现类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public abstract class AbstractTreeEMExcelExporter extends AbstractWorkbookExcelExporter {
 
     abstract protected void export(ITreeEM model, IDataAccessor accessor, Workbook workbook);
@@ -39,9 +48,12 @@ public abstract class AbstractTreeEMExcelExporter extends AbstractWorkbookExcelE
     }
 
     private IDataAccessor getDataAccessor(Object param, Object data) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put(ExcelComponentConfig.getParamObjectVarName(), param);
-        IDataAccessor accessor = DataAccessors.newDataAccessor(data, map);
-        return accessor;
+        if (null != param) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put(ExcelComponentConfig.getParamObjectVarName(), param);
+            return DataAccessors.newDataAccessor(data, map);
+        } else {
+            return DataAccessors.newDataAccessor(data);
+        }
     }
 }

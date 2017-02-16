@@ -2,6 +2,15 @@ package com.forms.beneform4j.excel.core.model.em.text;
 
 import com.forms.beneform4j.excel.core.model.em.IEM;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 转换为文本文件的Excel模型配置接口<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public interface ITextEM extends IEM {
 
     /**
@@ -47,7 +56,7 @@ public interface ITextEM extends IEM {
     public boolean isIgnoreEmptyRow();
 
     /**
-     * 批次号的格式 [d{yyyyMMdd}(a|n|an){8}]
+     * 批次号的格式 [d{yyyyMMdd}(a|n|an){8}]，其中d{}表示日期格式,a表示字母,n表示数字,an表示字母数字组合,a{8}表示8位随机字母
      * 
      * @return
      */

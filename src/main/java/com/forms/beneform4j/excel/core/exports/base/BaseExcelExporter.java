@@ -11,6 +11,15 @@ import com.forms.beneform4j.excel.core.model.em.dynamic.IDynamicTreeEM;
 import com.forms.beneform4j.excel.core.model.em.file.IFileEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 基本的Excel导出实现类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class BaseExcelExporter extends AbstractOutputStreamExcelExporter {
 
     private static final IExcelExporter defaultTreeExporter = new TreeEMExcelExporter();
@@ -48,7 +57,7 @@ public class BaseExcelExporter extends AbstractOutputStreamExcelExporter {
     @Override
     public void exports(IEM model, Object param, Object data, OutputStream output) {
         IExcelExporter exporter = getExporter(model);
-        exporter.exports(model, data, data, output);
+        exporter.exports(model, param, data, output);
     }
 
     protected IExcelExporter getExporter(IEM model) {

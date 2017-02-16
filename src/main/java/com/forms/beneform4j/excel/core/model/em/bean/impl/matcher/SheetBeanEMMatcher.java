@@ -1,38 +1,53 @@
 package com.forms.beneform4j.excel.core.model.em.bean.impl.matcher;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMMatcher;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : Sheet表单的匹配器实现类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class SheetBeanEMMatcher implements IBeanEMMatcher {
 
     private int sheetIndex = -1;
 
     private String sheetName = null;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean isMatch(Workbook workbook, Sheet sheet, Row row, Cell cell) {
-        if (!isMatcher(workbook, sheet)) {
+    public boolean isMatch(Cell cell) {
+        if (!isMatcher(cell)) {
             return false;
         }
-        return doMatch(workbook, sheet, row, cell);
+        return doMatch(cell);
     }
 
-    public boolean doMatch(Workbook workbook, Sheet sheet, Row row, Cell cell) {
+    public boolean doMatch(Cell cell) {
         return false;
     }
 
     /**
      * 表单是否匹配
      * 
-     * @param workbook
-     * @param sheet
+     * @param cell
      * @return
      */
-    protected boolean isMatcher(Workbook workbook, Sheet sheet) {
+    protected boolean isMatcher(Cell cell) {
+        if (null == cell) {
+            return false;
+        }
+        Sheet sheet = cell.getSheet();
+        Workbook workbook = sheet.getWorkbook();
         int index = getSheetIndex();
         if (-1 != index) {
             return workbook.getSheetAt(index) == sheet;

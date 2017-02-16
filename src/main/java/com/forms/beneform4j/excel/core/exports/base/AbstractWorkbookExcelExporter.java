@@ -8,6 +8,15 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import com.forms.beneform4j.excel.core.model.em.IEM;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 抽象的Excel导出实现类，实现将Workbook对象输出至流的功能<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public abstract class AbstractWorkbookExcelExporter extends AbstractDataExcelExporter {
 
     /**

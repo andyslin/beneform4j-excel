@@ -1,14 +1,20 @@
 package com.forms.beneform4j.excel.core.model.em.bean.impl.validator;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMValidator;
 import com.forms.beneform4j.excel.core.model.em.bean.impl.AbstractIdentifyMixin;
 import com.forms.beneform4j.excel.core.model.em.bean.impl.BeanEMManager;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 混入其它实现的校验器实现类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class MixinBeanEMValidator extends AbstractIdentifyMixin<IBeanEMValidator> implements IBeanEMValidator {
 
     /**
@@ -17,10 +23,10 @@ public class MixinBeanEMValidator extends AbstractIdentifyMixin<IBeanEMValidator
     private static final long serialVersionUID = 6244217949259032724L;
 
     @Override
-    public void validate(Workbook workbook, Sheet sheet, Row row, Cell cell, Class<?> type) {
+    public void validate(Cell cell, Class<?> type) {
         IBeanEMValidator validator = getInstance();
         if (null != validator) {
-            validator.validate(workbook, sheet, row, cell, type);
+            validator.validate(cell, type);
         }
     }
 

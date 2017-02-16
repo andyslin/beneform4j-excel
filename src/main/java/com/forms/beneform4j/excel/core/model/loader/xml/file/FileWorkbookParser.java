@@ -12,6 +12,15 @@ import com.forms.beneform4j.excel.core.model.em.base.BaseEM;
 import com.forms.beneform4j.excel.core.model.loader.IResourceEMLoadContext;
 import com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoaderConsts;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 解析XML配置中的<file-workbook><br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class FileWorkbookParser extends AbstractFileWorkbookParser {
 
     private static final String NAME = "name";
@@ -33,7 +42,7 @@ public class FileWorkbookParser extends AbstractFileWorkbookParser {
         }
 
         String filename = resource.getFilename();
-        EMType type = EMType.getTypeByFilename(filename);
+        EMType type = getEMTypeByFilename(filename);
         BaseEM em = getBaseWorkbookEM(resource, type);
 
         String id = ele.getAttribute(XmlEMLoaderConsts.ID_PROPERTY);

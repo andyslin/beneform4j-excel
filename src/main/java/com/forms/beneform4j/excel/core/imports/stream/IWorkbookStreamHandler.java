@@ -2,6 +2,15 @@ package com.forms.beneform4j.excel.core.imports.stream;
 
 import java.util.List;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : Excel对象流式解析的回调处理器接口<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public interface IWorkbookStreamHandler {
 
     /**
@@ -42,7 +51,7 @@ public interface IWorkbookStreamHandler {
     public void end();
 
     /**
-     * 默认单元格的值
+     * 单元格的默认值
      * 
      * @return
      */

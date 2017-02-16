@@ -30,6 +30,15 @@ import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMRegion;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.component.grid.Grid;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.component.grid.Td;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : Grid组件绘制器<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class GridXlsxPainter extends AbstractSingleXlsxPainter<Grid> {
 
     private static final int TITLE_ROWS = 1; // 标题所占行数

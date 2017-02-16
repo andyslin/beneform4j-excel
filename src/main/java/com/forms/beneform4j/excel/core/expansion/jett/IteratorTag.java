@@ -18,6 +18,15 @@ import net.sf.jett.tag.BaseLoopTag;
 import net.sf.jett.tag.TagContext;
 import net.sf.jett.util.AttributeUtil;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : Beneform4j扩展的jett循环标签<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class IteratorTag extends BaseLoopTag {
 
     private static final boolean DEBUG = false;

@@ -7,6 +7,15 @@ import com.forms.beneform4j.excel.core.ExcelUtils;
 import com.forms.beneform4j.excel.core.model.em.bean.BeanEMExtractResult;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMExtractor;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 抽象的提取器实现类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public abstract class AbstractBeanEMExtractor implements IBeanEMExtractor {
 
     /**

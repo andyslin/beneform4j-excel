@@ -3,13 +3,19 @@ package com.forms.beneform4j.excel.core.model.em.bean.impl.matcher;
 import java.util.regex.Pattern;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 
 import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.excel.core.ExcelUtils;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 基本的匹配器实现类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class BaseBeanEMMatcher extends SheetBeanEMMatcher {
 
     /**
@@ -53,10 +59,10 @@ public class BaseBeanEMMatcher extends SheetBeanEMMatcher {
     private String pattern;
 
     @Override
-    public boolean doMatch(Workbook workbook, Sheet sheet, Row row, Cell cell) {
+    public boolean doMatch(Cell cell) {
         Cell mCell = null;
         if (isMergeCell()) {
-            mCell = ExcelUtils.getMergetCell(sheet, cell.getRowIndex() - getOffsetX(), cell.getColumnIndex() - getOffsetY());
+            mCell = ExcelUtils.getMergetCell(cell.getSheet(), cell.getRowIndex() - getOffsetX(), cell.getColumnIndex() - getOffsetY());
         } else {
             mCell = ExcelUtils.getOffsetCell(cell, -getOffsetX(), -getOffsetY());
         }

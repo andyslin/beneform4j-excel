@@ -3,6 +3,15 @@ package com.forms.beneform4j.excel.core.model.em.text.impl;
 import com.forms.beneform4j.excel.core.model.em.base.BaseEM;
 import com.forms.beneform4j.excel.core.model.em.text.ITextEM;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 转换为文本文件的Excel配置模型实现类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class TextEM extends BaseEM implements ITextEM {
 
     /**

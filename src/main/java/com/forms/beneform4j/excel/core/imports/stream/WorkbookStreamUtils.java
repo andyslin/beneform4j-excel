@@ -60,12 +60,21 @@ import org.xml.sax.XMLReader;
 import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.exception.Throw;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : Excel对象流式解析工具类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class WorkbookStreamUtils {
 
     /**
      * 解析Excel文件
      * 
-     * @param location Excel文件
+     * @param resource Excel文件
      * @param handler 回调处理器
      */
     public static void parse(Resource resource, IWorkbookStreamHandler handler) {
@@ -180,6 +189,7 @@ public class WorkbookStreamUtils {
         private static final long serialVersionUID = 4592810075480294546L;
     }
 
+    // 2003版本解析
     private static class XLS2CSVmra implements HSSFListener {
 
         private final POIFSFileSystem fs;
@@ -334,6 +344,7 @@ public class WorkbookStreamUtils {
         }
     }
 
+    // 2007版本解析
     private static class XLSX2CSV {
 
         private static final ErrorHandler processFinishException = new ErrorHandler() {

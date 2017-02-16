@@ -5,11 +5,11 @@ import java.sql.Types;
 /**
  * Copy Right Information : Forms Syntron <br>
  * Project : 四方精创 Java EE 开发平台 <br>
- * Description : 数据类型<br>
+ * Description : 表格组件列使用的数据类型<br>
  * Author : LinJisong <br>
  * Version : 1.0.0 <br>
  * Since : 1.0.0 <br>
- * Date : 2013-10-6<br>
+ * Date : 2017-2-16<br>
  */
 public enum DataType {
     INTEGER("0", "right", Types.INTEGER), // 整型

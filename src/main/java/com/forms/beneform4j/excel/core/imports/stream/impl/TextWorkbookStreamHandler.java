@@ -10,6 +10,15 @@ import org.apache.commons.io.FileUtils;
 import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.exception.Throw;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 逐行处理的向文本文本表示的PrintStream输出的回调处理器<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class TextWorkbookStreamHandler extends PrintStreamWorkbookStreamHandler {
 
     private String filename;

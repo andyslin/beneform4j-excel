@@ -15,6 +15,15 @@ import com.forms.beneform4j.excel.core.model.loader.xml.tree.TreeWorkbookParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.tree.component.GridParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.tree.component.NestedRegionParser;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : XML模型加载器的全局配置<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class XmlEMLoaderConfig {
 
     private static final Map<String, IEMTopElementParser> topElementParserMapping = new HashMap<String, IEMTopElementParser>();
@@ -71,7 +80,7 @@ public class XmlEMLoaderConfig {
     }
 
     /**
-     * 根据元素名称获取Excel模型元素解析器
+     * 根据一级元素名称获取元素解析器
      * 
      * @param name
      * @return
@@ -81,7 +90,7 @@ public class XmlEMLoaderConfig {
     }
 
     /**
-     * 注册Excel模型元素的名称及其相应的解析器
+     * 注册一级元素的名称及其相应的解析器
      * 
      * @param name
      * @param parser
@@ -91,7 +100,7 @@ public class XmlEMLoaderConfig {
     }
 
     /**
-     * 注入Excel模型元素的解析器
+     * 注入一级元素的解析器
      * 
      * @param topElementParserMapping
      */

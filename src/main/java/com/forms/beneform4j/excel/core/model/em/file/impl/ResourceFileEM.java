@@ -9,6 +9,15 @@ import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.core.model.em.base.BaseEM;
 import com.forms.beneform4j.excel.core.model.em.file.IFileEM;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 使用Spring中资源对象实现的文件模型配置实现类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class ResourceFileEM extends BaseEM implements IFileEM {
 
     /**
@@ -24,6 +33,9 @@ public class ResourceFileEM extends BaseEM implements IFileEM {
         // 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InputStream getInputStream() {
         try {
@@ -33,6 +45,9 @@ public class ResourceFileEM extends BaseEM implements IFileEM {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getFilename() {
         return this.resource.getFilename();

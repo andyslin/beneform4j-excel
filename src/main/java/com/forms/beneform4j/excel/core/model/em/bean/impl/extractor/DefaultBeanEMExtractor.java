@@ -21,7 +21,6 @@ import java.util.concurrent.LinkedBlockingDeque;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 
 import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.exception.Throw;
@@ -35,6 +34,15 @@ import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMMatcher;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMProperty;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMValidator;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 默认的提取器实现类，使用该提取器不需要配置<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
 
     /**
@@ -43,17 +51,17 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
     private static final long serialVersionUID = 285418589559899611L;
 
     @Override
-    public BeanEMExtractResult extract(IBeanEMProperty property, Workbook workbook, Sheet sheet, Row row, Cell cell, Class<?> type) {
+    public BeanEMExtractResult extract(IBeanEMProperty property, Cell cell, Class<?> type) {
         BeanEMExtractResult result = newExtractResult();
         try {
             if (null == type) {
-                extractValue(result, property, workbook, sheet, row, cell, type);
+                extractValue(result, property, cell, type);
             } else {
                 IBeanEM innerBeanEM = property.getInnerBeanEM();
                 if (null != innerBeanEM) {
-                    extractInnerValue(result, property, workbook, sheet, row, cell, type);
+                    extractInnerValue(result, property, cell, type);
                 } else {
-                    extractValue(result, property, workbook, sheet, row, cell, type);
+                    extractValue(result, property, cell, type);
                 }
             }
         } catch (Exception e) {
@@ -67,13 +75,10 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
      * 
      * @param result
      * @param property
-     * @param workbook
-     * @param sheet
-     * @param row
      * @param cell
      * @param type
      */
-    protected void extractValue(BeanEMExtractResult result, IBeanEMProperty property, Workbook workbook, Sheet sheet, Row row, Cell cell, Class<?> type) {
+    protected void extractValue(BeanEMExtractResult result, IBeanEMProperty property, Cell cell, Class<?> type) {
         setExtractResultValue(result, cell, type);
     }
 
@@ -82,20 +87,20 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
      * 
      * @param result
      * @param property
-     * @param workbook
-     * @param sheet
-     * @param row
      * @param cell
      * @param type
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    protected void extractInnerValue(BeanEMExtractResult result, IBeanEMProperty property, Workbook workbook, Sheet sheet, Row row, Cell cell, Class<?> type) throws Exception {
+    protected void extractInnerValue(BeanEMExtractResult result, IBeanEMProperty property, Cell cell, Class<?> type) throws Exception {
         boolean isCollection = Collection.class.isAssignableFrom(type);
         IBeanEM elementEM = property.getInnerBeanEM();
         Class<?> cls = elementEM.getBeanType();
         boolean isMap = Map.class.isAssignableFrom(cls);
         Map<String, IBeanEMProperty> properties = elementEM.getProperties();
         boolean debug = CommonLogger.isDebugEnabled();
+
+        Sheet sheet = cell.getSheet();
+        //Workbook workbook = sheet.getWorkbook();
 
         Collection list = null;
         if (isCollection) {
@@ -119,7 +124,7 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
                 if (debug) {
                     CommonLogger.debug("process cell[" + ExcelUtils.getRowPosition(cCell.getRowIndex()) + "," + ExcelUtils.getColumnPosition(cCell.getColumnIndex()) + "]:" + ExcelUtils.getCellValue(cCell));
                 }
-                if (property.getMatcher().isMatch(workbook, sheet, cRow, cCell)) {
+                if (property.getMatcher().isMatch(cCell)) {
                     if (debug) {
                         if (isCollection) {
                             if (null == inner) {
@@ -140,7 +145,7 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
                     dealFields = new ArrayList<String>();
                 } else if (null == dealFields) {
                     continue;
-                } else if (isEnd(property, workbook, sheet, cRow, cCell)) {
+                } else if (isEnd(property, cCell)) {
                     if (debug) {
                         if (isCollection) {
                             CommonLogger.debug("match circle end, the inner type is '" + cls.getName() + "'.");
@@ -155,12 +160,12 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
                     if (dealFields.contains(fieldName) || null == fm || null == fm.getMatcher()) {
                         continue;
                     }
-                    if (fm.getMatcher().isMatch(workbook, sheet, cRow, cCell)) {
+                    if (fm.getMatcher().isMatch(cCell)) {
                         dealFields.add(fieldName);
                         Class<?> innerFieldType = fm.getType();
                         IBeanEMValidator validator = fm.getValidator();
                         if (null != validator) {
-                            validator.validate(workbook, sheet, cRow, cCell, innerFieldType);
+                            validator.validate(cCell, innerFieldType);
                         }
 
                         if (debug) {
@@ -168,7 +173,7 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
                         }
 
                         IBeanEMExtractor extractor = fm.getExtractor();
-                        BeanEMExtractResult pr = extractor.extract(fm, workbook, sheet, cRow, cCell, innerFieldType);
+                        BeanEMExtractResult pr = extractor.extract(fm, cCell, innerFieldType);
                         Object value = pr.getValue();
                         if (isMap) {
                             ((Map) inner).put(fieldName, value);
@@ -180,7 +185,7 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
                             field.set(inner, value);
                         }
 
-                        if (dealFields.size() == properties.size()) {
+                        if (!isCollection && dealFields.size() == properties.size()) {
                             end = true;
                         }
 
@@ -229,19 +234,16 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
      * 是否结束列表数据的提取
      * 
      * @param property
-     * @param workbook
-     * @param sheet
-     * @param row
      * @param cell
      * @return
      */
-    protected boolean isEnd(IBeanEMProperty property, Workbook workbook, Sheet sheet, Row row, Cell cell) {
-        if (null == sheet || null == row || null == cell) {
+    protected boolean isEnd(IBeanEMProperty property, Cell cell) {
+        if (null == cell) {
             return true;
         } else {
             IBeanEMMatcher em = property.getEndMatcher();
             if (null != em) {
-                return em.isMatch(workbook, sheet, row, cell);
+                return em.isMatch(cell);
             }
             return false;
         }

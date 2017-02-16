@@ -5,11 +5,11 @@ import com.forms.beneform4j.excel.core.model.em.tree.impl.component.grid.Td;
 /**
  * Copy Right Information : Forms Syntron <br>
  * Project : 四方精创 Java EE 开发平台 <br>
- * Description : 显示类型<br>
+ * Description : 表格组件使用的显示类型<br>
  * Author : LinJisong <br>
  * Version : 1.0.0 <br>
  * Since : 1.0.0 <br>
- * Date : 2013-10-6<br>
+ * Date : 2017-2-16<br>
  */
 public enum ShowType {
     INIT_SHOW, // 初始化显示

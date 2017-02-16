@@ -16,6 +16,15 @@ import com.forms.beneform4j.excel.core.model.em.dynamic.IDynamicTreeEM;
 import com.forms.beneform4j.excel.core.model.em.file.IFileEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 抽象的Excel导出实现类，将输出文件名转换为输出流，并自动修正文件名的后缀<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public abstract class AbstractOutputStreamExcelExporter extends AbstractModelExcelExporter {
 
     @Override

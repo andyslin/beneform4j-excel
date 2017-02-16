@@ -16,21 +16,15 @@ public interface IEMLoader {
     /**
      * 加载Excel模型
      * 
-     * @param modelId
-     * @return
+     * @param modelId 模型ID
+     * @return Excel模型
      */
     public IEM load(String modelId);
-
-    // /**
-    // * 获取所有的模型ID集合
-    // * @return
-    // */
-    // public Set<String> keys();
 
     /**
      * 移除Excel模型
      * 
-     * @param modelId
+     * @param modelId 模型ID
      */
     public void remove(String modelId);
 

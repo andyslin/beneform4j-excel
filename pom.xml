@@ -73,17 +73,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-examples</artifactId>
-			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-		            <groupId>*</groupId>
-		            <artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.poi</groupId> -->
+<!-- 			<artifactId>poi-examples</artifactId> -->
+<!-- 			<scope>provided</scope> -->
+<!-- 			<exclusions> -->
+<!-- 				<exclusion> -->
+<!-- 		            <groupId>*</groupId> -->
+<!-- 		            <artifactId>*</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 			</exclusions> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
     		<artifactId>xmlbeans</artifactId>
@@ -119,11 +119,11 @@
 		<!-- POI组件包结束 -->
 
 		<!-- web相关包 -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.forms</groupId> -->
-<!-- 			<artifactId>beneform4j-web</artifactId> -->
-<!-- 			<scope>provided</scope> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>com.forms</groupId>
+			<artifactId>beneform4j-web</artifactId>
+			<scope>provided</scope>
+		</dependency>
 <!-- 		<dependency> -->
 <!-- 			<groupId>javax.servlet</groupId> -->
 <!-- 			<artifactId>javax.servlet-api</artifactId> -->
@@ -135,29 +135,29 @@
 <!-- 			<scope>provided</scope> -->
 <!-- 		</dependency> -->
 
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>o</groupId>
-			<artifactId>jdbc</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>test</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.alibaba</groupId> -->
+<!-- 			<artifactId>druid</artifactId> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>o</groupId> -->
+<!-- 			<artifactId>jdbc</artifactId> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.h2database</groupId> -->
+<!-- 			<artifactId>h2</artifactId> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.forms</groupId>
-			<artifactId>beneform4j-core</artifactId>
-			<scope>test</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.forms</groupId> -->
+<!-- 			<artifactId>beneform4j-core</artifactId> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>

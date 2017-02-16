@@ -43,7 +43,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.forms.beneform4j.core.util.CoreUtils;
 
 /**
- * 版权：深圳四方精创资讯股份有限公司 功能：工具类－Excel数据提取时使用的工具类 作者： LinJisong 版本： 1.0.0 日期： 2015-11-16
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : Excel工具类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
  */
 public class ExcelUtils {
 
@@ -63,22 +69,57 @@ public class ExcelUtils {
     // }catch(Throwable t){}
     // }
 
+    /**
+     * 创建流式POI-Excel对象
+     * 
+     * @return
+     */
     public static Workbook newStreamWorkbook() {
         return newStreamWorkbook(null);
     }
 
+    /**
+     * 创建流式POI-Excel对象
+     * 
+     * @param workbook 原POI对象
+     * @return
+     */
     public static Workbook newStreamWorkbook(XSSFWorkbook workbook) {
         return newStreamWorkbook(workbook, 1000);
     }
 
+    /**
+     * 创建流式POI-Excel对象
+     * 
+     * @param workbook
+     * @param rowAccessWindowSize
+     * @return
+     */
     public static Workbook newStreamWorkbook(XSSFWorkbook workbook, int rowAccessWindowSize) {
         return new SXSSFWorkbook(workbook, rowAccessWindowSize);
     }
 
+    /**
+     * 创建流式POI-Excel对象
+     * 
+     * @param workbook
+     * @param rowAccessWindowSize
+     * @param compressTmpFiles
+     * @return
+     */
     public static Workbook newStreamWorkbook(XSSFWorkbook workbook, int rowAccessWindowSize, boolean compressTmpFiles) {
         return new SXSSFWorkbook(workbook, rowAccessWindowSize, compressTmpFiles);
     }
 
+    /**
+     * 创建流式POI-Excel对象
+     * 
+     * @param workbook
+     * @param rowAccessWindowSize
+     * @param compressTempFiles
+     * @param useSharedStringsTable
+     * @return
+     */
     public static Workbook newStreamWorkbook(XSSFWorkbook workbook, int rowAccessWindowSize, boolean compressTempFiles, boolean useSharedStringsTable) {
         return new SXSSFWorkbook(workbook, rowAccessWindowSize, compressTempFiles, useSharedStringsTable);
     }
@@ -129,8 +170,7 @@ public class ExcelUtils {
      * @param b
      * @return
      */
-    @SuppressWarnings("unused")
-    private static short getRGBColor(HSSFPalette palette, int r, int g, int b) {
+    public static short getRGBColor(HSSFPalette palette, int r, int g, int b) {
         return palette.findColor((byte) r, (byte) g, (byte) b).getIndex();
     }
 
@@ -254,10 +294,11 @@ public class ExcelUtils {
     }
 
     /**
-     * 设置单元格样式
+     * 设置单元格样式和值
      * 
      * @param cell
      * @param style
+     * @param value
      */
     public static void setCellStyleValue(Cell cell, CellStyle style, Object value) {
         if (null != style) {
@@ -681,13 +722,12 @@ public class ExcelUtils {
     /**
      * 获取校验信息
      * 
-     * @param sheet
      * @param cell
      * @param msg
      * @return
      */
-    public static String getValidateMsg(Sheet sheet, Cell cell, String msg) {
-        return "表单[" + sheet.getSheetName() + "]第[" + (cell.getRowIndex() + 1) + "]行第[" + (cell.getColumnIndex() + 1) + "]列:" + msg;
+    public static String getValidateMsg(Cell cell, String msg) {
+        return "表单[" + cell.getSheet().getSheetName() + "]第[" + (cell.getRowIndex() + 1) + "]行第[" + (cell.getColumnIndex() + 1) + "]列:" + msg;
     }
 
     /**
@@ -742,6 +782,9 @@ public class ExcelUtils {
         return new CellFormula(formula);
     }
 
+    /**
+     * 计算公式
+     */
     public static class CellFormula {
         private final String formula;
 

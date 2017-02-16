@@ -12,6 +12,15 @@ import com.forms.beneform4j.excel.core.exports.file.IExcelExporterDelegate;
 
 import net.sf.jett.transform.ExcelTransformer;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 使用Jett类库实现的Excel导出代理<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class JettFileEMExcelExporterDelegate implements IExcelExporterDelegate {
 
     protected ExcelTransformer getTransformer() {
@@ -35,7 +44,9 @@ public class JettFileEMExcelExporterDelegate implements IExcelExporterDelegate {
             transformer.transform(workbook, templateSheetNamesList, newSheetNamesList, beansList);
         } else {
             Map<String, Object> context = new HashMap<String, Object>();
-            context.put(ExcelComponentConfig.getParamObjectVarName(), param);
+            if (null != param) {
+                context.put(ExcelComponentConfig.getParamObjectVarName(), param);
+            }
             context.put(ExcelComponentConfig.getDataObjectVarName(), data);
             transformer.transform(workbook, context);
         }

@@ -1,7 +1,6 @@
 package com.forms.beneform4j.excel.core.model.em.bean.impl.extractor;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -10,6 +9,15 @@ import com.forms.beneform4j.excel.core.model.em.bean.BeanEMExtractResult;
 import com.forms.beneform4j.excel.core.model.em.bean.BeanEMExtractResult.NextStep;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMProperty;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 基本的提取器实现类<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class BaseBeanEMExtractor extends AbstractBeanEMExtractor {
 
     /**
@@ -32,20 +40,24 @@ public class BaseBeanEMExtractor extends AbstractBeanEMExtractor {
     private int skipOffsetY;
 
     @Override
-    public BeanEMExtractResult extract(IBeanEMProperty property, Workbook workbook, Sheet sheet, Row row, Cell cell, Class<?> type) {
+    public BeanEMExtractResult extract(IBeanEMProperty property, Cell cell, Class<?> type) {
         BeanEMExtractResult result = newExtractResult();
         result.setNextStep(getNextStep());
         result.setOffsetSheet(getSkipOffsetSheet());
         result.setOffsetX(getSkipOffsetX());
         result.setOffsetY(getSkipOffsetY());
 
-        if (0 != getOffsetSheet()) {
-            sheet = workbook.getSheetAt(workbook.getSheetIndex(sheet) + getOffsetSheet());
-        }
-        if (null != sheet) {
-            Cell mCell = ExcelUtils.getOffsetCell(cell, getOffsetX(), getOffsetY());
-            if (null != mCell) {
-                setExtractResultValue(result, mCell, type);
+        if (null != cell) {
+            Sheet sheet = cell.getSheet();
+            Workbook workbook = sheet.getWorkbook();
+            if (0 != getOffsetSheet()) {
+                sheet = workbook.getSheetAt(workbook.getSheetIndex(sheet) + getOffsetSheet());
+            }
+            if (null != sheet) {
+                Cell mCell = ExcelUtils.getOffsetCell(cell, getOffsetX(), getOffsetY());
+                if (null != mCell) {
+                    setExtractResultValue(result, mCell, type);
+                }
             }
         }
         return result;

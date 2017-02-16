@@ -1,7 +1,14 @@
 package com.forms.beneform4j.excel.core.model.em;
 
-import org.apache.commons.io.FilenameUtils;
-
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : Excel模型类别<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2016-12-22<br>
+ */
 public enum EMType {
 
     BEAN("bean", "导入-Bean模型"),
@@ -20,19 +27,42 @@ public enum EMType {
 
     UNKNOWN("", "未知类型");
 
+    /**
+     * 类别代码
+     */
     private String code;
 
+    /**
+     * 类别描述
+     */
     private String desc;
 
+    /**
+     * 构造函数
+     * 
+     * @param code
+     * @param desc
+     */
     private EMType(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }
 
+    /**
+     * 获取描述
+     * 
+     * @return
+     */
     public String getDesc() {
         return this.desc;
     }
 
+    /**
+     * 获取实例
+     * 
+     * @param code 类别代码
+     * @return
+     */
     public static EMType instance(String code) {
         for (EMType type : values()) {
             if (type.name().equalsIgnoreCase(code) || type.code.equalsIgnoreCase(code)) {
@@ -40,18 +70,5 @@ public enum EMType {
             }
         }
         return UNKNOWN;
-    }
-
-    public static EMType getTypeBySuffix(String suffix) {
-        if ("xls".equalsIgnoreCase(suffix) || "xlsx".equalsIgnoreCase(suffix)) {
-            return EXCEL;
-        } else {
-            return FREEMARKER_TREE;
-        }
-    }
-
-    public static EMType getTypeByFilename(String filename) {
-        String suffix = FilenameUtils.getExtension(filename);
-        return getTypeBySuffix(suffix);
     }
 }

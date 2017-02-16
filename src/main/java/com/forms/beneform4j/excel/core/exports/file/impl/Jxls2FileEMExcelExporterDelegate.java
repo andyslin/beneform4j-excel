@@ -19,6 +19,15 @@ import org.jxls.util.JxlsHelper;
 import com.forms.beneform4j.excel.ExcelComponentConfig;
 import com.forms.beneform4j.excel.core.exports.file.IExcelExporterDelegate;
 
+/**
+ * Copy Right Information : Forms Syntron <br>
+ * Project : 四方精创 Java EE 开发平台 <br>
+ * Description : 使用Jxls2类库实现的Excel导出代理<br>
+ * Author : LinJisong <br>
+ * Version : 1.0.0 <br>
+ * Since : 1.0.0 <br>
+ * Date : 2017-2-16<br>
+ */
 public class Jxls2FileEMExcelExporterDelegate implements IExcelExporterDelegate {
 
     @Override
@@ -35,7 +44,9 @@ public class Jxls2FileEMExcelExporterDelegate implements IExcelExporterDelegate 
             return false;
         } else {
             Context context = new Context();
-            context.putVar(ExcelComponentConfig.getParamObjectVarName(), param);
+            if (null != param) {
+                context.putVar(ExcelComponentConfig.getParamObjectVarName(), param);
+            }
             context.putVar(ExcelComponentConfig.getDataObjectVarName(), data);
             for (Area xlsArea : xlsAreaList) {
                 xlsArea.applyAt(new CellRef(xlsArea.getStartCellRef().getCellName()), context);
