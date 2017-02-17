@@ -21,6 +21,7 @@ import com.forms.beneform4j.excel.core.model.em.tree.impl.TreeEMSheet;
 import com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoaderConfig;
 import com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoaderConsts;
 import com.forms.beneform4j.excel.core.model.loader.xml.text.TextWorkbookParser;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -137,7 +138,7 @@ public class TreeWorkbookParserDelegate {
         String type = getParserType(region);
         ITreeEMComponentParser parser = XmlEMLoaderConfig.getTreeEMComponentParser(type);
         if (null == parser) {
-            Throw.throwRuntimeException("没有找到类型为" + type + "的区域解析器");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS26, type);
         }
         ITreeEMComponent component = parser.parse(modelId, region);
         if (null != component) {

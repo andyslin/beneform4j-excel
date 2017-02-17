@@ -14,6 +14,7 @@ import com.forms.beneform4j.excel.core.exports.base.AbstractWorkbookExcelExporte
 import com.forms.beneform4j.excel.core.model.em.IEM;
 import com.forms.beneform4j.excel.core.model.em.dynamic.IDynamicTreeEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -41,7 +42,7 @@ public abstract class AbstractTreeEMExcelExporter extends AbstractWorkbookExcelE
         } else if (model instanceof IDynamicTreeEM) {
             tem = ((IDynamicTreeEM) model).apply(param, data);
         } else {
-            Throw.throwRuntimeException("不支持的Excel模型");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS08, model);
         }
         IDataAccessor accessor = getDataAccessor(param, data);
         export(tem, accessor, workbook);

@@ -11,6 +11,7 @@ import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMComponent;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.component.grid.Grid;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.component.grid.Td;
 import com.forms.beneform4j.excel.core.model.loader.xml.tree.ITreeEMComponentParser;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -34,7 +35,7 @@ public class GridParser implements ITreeEMComponentParser {
             grid.build(tds);
             return grid;
         } else {
-            throw Throw.createRuntimeException("配置文件中id为" + modelId + "的节点没有有效的<" + TD + ">子节点（集）");
+            throw Throw.createRuntimeException(ExcelExceptionCodes.BF0XLS27, modelId);
         }
     }
 

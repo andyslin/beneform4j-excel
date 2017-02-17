@@ -1,9 +1,13 @@
 package com.forms.beneform4j.excel.core;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PushbackInputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
@@ -12,10 +16,14 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.DVConstraint;
 import org.apache.poi.hssf.usermodel.HSSFDataValidation;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.poifs.filesystem.DocumentFactoryHelper;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -41,6 +49,9 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.forms.beneform4j.core.util.CoreUtils;
+import com.forms.beneform4j.core.util.exception.Throw;
+import com.forms.beneform4j.excel.ExcelComponentConfig;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -58,16 +69,27 @@ public class ExcelUtils {
     private static final int MIN_COLUMN_WIDTH = 512 * 10; // Excel的最小列宽,10个中文
 
     private static final List<String> POS = Arrays.asList( // Excel位置
-            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ", "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BK", "BL", "BM", "BN", "BO", "BP", "BQ", "BR", "BS", "BT", "BU", "BV", "BW", "BX", "BY", "BZ", "CA", "CB", "CC", "CD", "CE", "CF", "CG", "CH", "CI", "CJ", "CK", "CL", "CM", "CN", "CO", "CP", "CQ", "CR", "CS", "CT", "CU", "CV", "CW", "CX", "CY", "CZ", "DA", "DB", "DC", "DD", "DE", "DF", "DG", "DH", "DI", "DJ", "DK", "DL", "DM", "DN", "DO", "DP", "DQ", "DR", "DS", "DT", "DU", "DV", "DW", "DX", "DY", "DZ", "EA", "EB", "EC", "ED", "EE", "EF", "EG", "EH", "EI", "EJ", "EK", "EL", "EM", "EN", "EO", "EP", "EQ", "ER", "ES", "ET", "EU", "EV", "EW", "EX", "EY", "EZ", "FA", "FB", "FC", "FD", "FE", "FF", "FG", "FH", "FI", "FJ", "FK", "FL", "FM",
-            "FN", "FO", "FP", "FQ", "FR", "FS", "FT", "FU", "FV", "FW", "FX", "FY", "FZ", "GA", "GB", "GC", "GD", "GE", "GF", "GG", "GH", "GI", "GJ", "GK", "GL", "GM", "GN", "GO", "GP", "GQ", "GR", "GS", "GT", "GU", "GV", "GW", "GX", "GY", "GZ", "HA", "HB", "HC", "HD", "HE", "HF", "HG", "HH", "HI", "HJ", "HK", "HL", "HM", "HN", "HO", "HP", "HQ", "HR", "HS", "HT", "HU", "HV", "HW", "HX", "HY", "HZ", "IA", "IB", "IC", "ID", "IE", "IF", "IG", "IH", "II", "IJ", "IK", "IL", "IM", "IN", "IO", "IP", "IQ", "IR", "IS", "IT", "IU", "IV");
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", //
+            "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ", //A
+            "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BK", "BL", "BM", "BN", "BO", "BP", "BQ", "BR", "BS", "BT", "BU", "BV", "BW", "BX", "BY", "BZ", //B
+            "CA", "CB", "CC", "CD", "CE", "CF", "CG", "CH", "CI", "CJ", "CK", "CL", "CM", "CN", "CO", "CP", "CQ", "CR", "CS", "CT", "CU", "CV", "CW", "CX", "CY", "CZ", //C
+            "DA", "DB", "DC", "DD", "DE", "DF", "DG", "DH", "DI", "DJ", "DK", "DL", "DM", "DN", "DO", "DP", "DQ", "DR", "DS", "DT", "DU", "DV", "DW", "DX", "DY", "DZ", //D
+            "EA", "EB", "EC", "ED", "EE", "EF", "EG", "EH", "EI", "EJ", "EK", "EL", "EM", "EN", "EO", "EP", "EQ", "ER", "ES", "ET", "EU", "EV", "EW", "EX", "EY", "EZ", //E
+            "FA", "FB", "FC", "FD", "FE", "FF", "FG", "FH", "FI", "FJ", "FK", "FL", "FM", "FN", "FO", "FP", "FQ", "FR", "FS", "FT", "FU", "FV", "FW", "FX", "FY", "FZ", //F
+            "GA", "GB", "GC", "GD", "GE", "GF", "GG", "GH", "GI", "GJ", "GK", "GL", "GM", "GN", "GO", "GP", "GQ", "GR", "GS", "GT", "GU", "GV", "GW", "GX", "GY", "GZ", //G
+            "HA", "HB", "HC", "HD", "HE", "HF", "HG", "HH", "HI", "HJ", "HK", "HL", "HM", "HN", "HO", "HP", "HQ", "HR", "HS", "HT", "HU", "HV", "HW", "HX", "HY", "HZ", //H
+            "IA", "IB", "IC", "ID", "IE", "IF", "IG", "IH", "II", "IJ", "IK", "IL", "IM", "IN", "IO", "IP", "IQ", "IR", "IS", "IT", "IU", "IV");
 
-    // public static void autoSizeColumn(Workbook wb){
-    // try{
-    // for(int i = wb.getNumberOfSheets(); i >= 0; i--){
-    // Sheet sheet = wb.getSheetAt(i);
-    // }
-    // }catch(Throwable t){}
-    // }
+    /**
+     * 计算公式
+     */
+    public static class CellFormula {
+        private final String formula;
+
+        private CellFormula(String formula) {
+            this.formula = formula;
+        }
+    }
 
     /**
      * 创建流式POI-Excel对象
@@ -85,7 +107,7 @@ public class ExcelUtils {
      * @return
      */
     public static Workbook newStreamWorkbook(XSSFWorkbook workbook) {
-        return newStreamWorkbook(workbook, 1000);
+        return newStreamWorkbook(workbook, ExcelComponentConfig.getDefaultRowAccessWindowSize());
     }
 
     /**
@@ -506,7 +528,7 @@ public class ExcelUtils {
      */
     public static String getColumnPosition(int columnIndex) {
         if (columnIndex < 0 || columnIndex >= POS.size()) {
-            throw new RuntimeException("Excel列索引" + columnIndex + "无效");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS03, columnIndex);
         }
         String p = POS.get(columnIndex);
         return p;
@@ -722,12 +744,13 @@ public class ExcelUtils {
     /**
      * 获取校验信息
      * 
-     * @param cell
-     * @param msg
-     * @return
+     * @param cell 被校验的表格
+     * @param msg 校验信息
+     * @return 包含表格位置的校验信息
      */
     public static String getValidateMsg(Cell cell, String msg) {
-        return "表单[" + cell.getSheet().getSheetName() + "]第[" + (cell.getRowIndex() + 1) + "]行第[" + (cell.getColumnIndex() + 1) + "]列:" + msg;
+        String info = Throw.getExceptionLocalMessage(ExcelExceptionCodes.BF0XLS05, cell.getSheet().getSheetName(), cell.getRowIndex() + 1, cell.getColumnIndex() + 1, msg);
+        return info;
     }
 
     /**
@@ -742,7 +765,7 @@ public class ExcelUtils {
             stream = new BufferedOutputStream(new FileOutputStream(file));
             write(workbook, stream);
         } catch (IOException e) {
-            throw new RuntimeException("创建文件流异常", e);
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS02, e, file);
         } finally {
             CoreUtils.closeQuietly(stream);
         }
@@ -758,7 +781,7 @@ public class ExcelUtils {
         try {
             workbook.write(stream);
         } catch (IOException e) {
-            throw new RuntimeException("将Excel对象写入流异常", e);
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS02, e);
         }
     }
 
@@ -783,13 +806,72 @@ public class ExcelUtils {
     }
 
     /**
-     * 计算公式
+     * 是否2007版的Excel
+     * 
+     * @param input
+     * @return
      */
-    public static class CellFormula {
-        private final String formula;
-
-        private CellFormula(String formula) {
-            this.formula = formula;
+    public static boolean isXlsx2007(InputStream input) {
+        try {
+            ExcelVersion version = autoExcelVersion(input);
+            return ExcelVersion.V_2007.equals(version);
+        } catch (Exception e) {
+            throw Throw.createRuntimeException(ExcelExceptionCodes.BF0XLS06, e);
         }
+    }
+
+    /**
+     * 是否2007版的Excel
+     * 
+     * @param filename 文件名
+     * @param bySuffix 是否通过后缀判断
+     * @return
+     */
+    public static boolean isXlsx2007(String filename, boolean bySuffix) {
+        if (bySuffix) {
+            String suffix = FilenameUtils.getExtension(filename);
+            if ("xlsx".equalsIgnoreCase(suffix)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            InputStream input = null;
+            try {
+                input = new BufferedInputStream(new FileInputStream(filename));
+                return isXlsx2007(input);
+            } catch (Exception e) {
+                throw Throw.createRuntimeException(ExcelExceptionCodes.BF0XLS06, e, filename);
+            } finally {
+                CoreUtils.closeQuietly(input);
+            }
+        }
+    }
+
+    /**
+     * 侦测Excel文件的版本
+     * 
+     * @param inp
+     * @return
+     * @throws IOException
+     * @throws InvalidFormatException
+     */
+    private static ExcelVersion autoExcelVersion(InputStream inp) throws IOException, InvalidFormatException {
+        // If clearly doesn't do mark/reset, wrap up
+        if (!inp.markSupported()) {
+            inp = new PushbackInputStream(inp, 8);
+        }
+
+        if (POIFSFileSystem.hasPOIFSHeader(inp)) {
+            return ExcelVersion.V_2003;
+        }
+        if (DocumentFactoryHelper.hasOOXMLHeader(inp)) {
+            return ExcelVersion.V_2007;
+        }
+        throw new IllegalArgumentException("Your InputStream was neither an OLE2 stream, nor an OOXML stream");
+    }
+
+    private enum ExcelVersion {
+        V_2003, V_2007;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource;
 import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.core.model.em.base.BaseEM;
 import com.forms.beneform4j.excel.core.model.em.file.IFileEM;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -41,7 +42,7 @@ public class ResourceFileEM extends BaseEM implements IFileEM {
         try {
             return this.resource.getInputStream();
         } catch (IOException e) {
-            throw Throw.createRuntimeException("读取文件模型异常", e);
+            throw Throw.createRuntimeException(ExcelExceptionCodes.BF0XLS01, e);
         }
     }
 

@@ -6,7 +6,9 @@ import java.io.OutputStream;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
+import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.core.model.em.IEM;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -51,7 +53,7 @@ public abstract class AbstractWorkbookExcelExporter extends AbstractDataExcelExp
             try {
                 workbook.write(output);
             } catch (IOException e) {
-                e.printStackTrace();
+                Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS02);
             } finally {
                 if (workbook instanceof SXSSFWorkbook) {
                     ((SXSSFWorkbook) workbook).dispose();

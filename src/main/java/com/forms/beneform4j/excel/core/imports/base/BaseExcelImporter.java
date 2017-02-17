@@ -27,6 +27,7 @@ import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMProperty;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMValidator;
 import com.forms.beneform4j.excel.core.model.em.text.ITextEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -48,7 +49,7 @@ public class BaseExcelImporter extends AbstractResourceExcelImporter {
         } else if (model instanceof ITreeEM) {
             return doImportsWithTreeEM(resource, (ITreeEM) model);
         } else {
-            throw Throw.createRuntimeException("不支持的Excel模型");
+            throw Throw.createRuntimeException(ExcelExceptionCodes.BF0XLS08, model);
         }
     }
 
@@ -84,7 +85,7 @@ public class BaseExcelImporter extends AbstractResourceExcelImporter {
             }
             return extract(workbook, model);
         } catch (Exception e) {
-            throw Throw.createRuntimeException(e);
+            throw Throw.createRuntimeException(ExcelExceptionCodes.BF0XLS01, e);
         }
     }
 

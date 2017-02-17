@@ -10,6 +10,7 @@ import com.forms.beneform4j.excel.core.model.em.IEM;
 import com.forms.beneform4j.excel.core.model.em.dynamic.IDynamicTreeEM;
 import com.forms.beneform4j.excel.core.model.em.file.IFileEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -62,12 +63,12 @@ public class BaseExcelExporter extends AbstractOutputStreamExcelExporter {
 
     protected IExcelExporter getExporter(IEM model) {
         if (null == model) {
-            throw Throw.createRuntimeException("Excel模型为空");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS07);
         } else if (model instanceof ITreeEM || model instanceof IDynamicTreeEM) {
             return treeExporter;
         } else if (model instanceof IFileEM) {
             return fileExporter;
         }
-        throw Throw.createRuntimeException("不支持的Excel模型");
+        throw Throw.createRuntimeException(ExcelExceptionCodes.BF0XLS08, model);
     }
 }

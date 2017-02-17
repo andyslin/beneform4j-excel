@@ -2,7 +2,6 @@ package com.forms.beneform4j.excel.core.exports.base;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,10 +10,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import com.forms.beneform4j.core.util.CoreUtils;
+import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.core.model.em.IEM;
 import com.forms.beneform4j.excel.core.model.em.dynamic.IDynamicTreeEM;
 import com.forms.beneform4j.excel.core.model.em.file.IFileEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -55,10 +56,8 @@ public abstract class AbstractOutputStreamExcelExporter extends AbstractModelExc
             FileUtils.forceMkdir(file.getParentFile());
             os = new BufferedOutputStream(new FileOutputStream(filename));
             callback.callback(os);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS02, e, filename);
         } finally {
             CoreUtils.closeQuietly(os);
         }

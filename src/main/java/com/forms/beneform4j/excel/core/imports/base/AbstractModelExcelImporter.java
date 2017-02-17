@@ -8,6 +8,7 @@ import com.forms.beneform4j.excel.core.imports.IExcelImporter;
 import com.forms.beneform4j.excel.core.model.em.EMManager;
 import com.forms.beneform4j.excel.core.model.em.IEM;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEM;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -120,9 +121,9 @@ public abstract class AbstractModelExcelImporter implements IExcelImporter {
         }
 
         if (null == em) {
-            Throw.throwRuntimeException("Excel模型为空");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS07);
         } else if (null != cls && !String.class.isAssignableFrom(cls) && !(em instanceof IBeanEM)) {//返回的不是字符串，并且不是Bean模型
-            Throw.throwRuntimeException("不支持的Excel模型");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS08, em);
         }
         return callback.callback(em);
     }

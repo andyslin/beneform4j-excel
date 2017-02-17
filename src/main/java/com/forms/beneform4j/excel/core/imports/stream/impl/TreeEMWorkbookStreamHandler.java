@@ -9,6 +9,7 @@ import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMComponent;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMRegion;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMSheet;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.component.grid.Grid;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -47,17 +48,17 @@ public class TreeEMWorkbookStreamHandler extends TextEMWorkbookStreamHandler {
     private void initializeWithTreeEM(ITreeEM em) {
         List<ITreeEMSheet> sheets = em.getSheets();
         if (null == sheets || sheets.isEmpty()) {
-            Throw.throwRuntimeException("目前树型模型导入只支持单个Grid组件的模型");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS32, em);
         }
 
         List<ITreeEMRegion> regions = sheets.get(0).getRegions();
         if (null == regions || regions.isEmpty()) {
-            Throw.throwRuntimeException("目前树型模型导入只支持单个Grid组件的模型");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS32, em);
         }
 
         ITreeEMComponent component = regions.get(0).getComponent();
         if (!(component instanceof Grid)) {
-            Throw.throwRuntimeException("目前树型模型导入只支持单个Grid组件的模型");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS32, em);
         }
 
         Grid grid = (Grid) component;

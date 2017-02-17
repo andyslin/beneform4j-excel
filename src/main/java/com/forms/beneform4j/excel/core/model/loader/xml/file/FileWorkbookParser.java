@@ -11,6 +11,7 @@ import com.forms.beneform4j.excel.core.model.em.EMType;
 import com.forms.beneform4j.excel.core.model.em.base.BaseEM;
 import com.forms.beneform4j.excel.core.model.loader.IResourceEMLoadContext;
 import com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoaderConsts;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -32,13 +33,13 @@ public class FileWorkbookParser extends AbstractFileWorkbookParser {
     public void parse(IResourceEMLoadContext context, Element ele) {
         String location = ele.getAttribute(LOCATION);
         if (CoreUtils.isBlank(location)) {
-            Throw.throwRuntimeException("资源位置不能为空");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS22);
         }
 
         ResourcePatternResolver loader = BaseConfig.getResourcePatternResolver();
         Resource resource = loader.getResource(location);
         if (null == resource || !resource.exists()) {
-            Throw.throwRuntimeException("资源不存在:" + location);
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS23, location);
         }
 
         String filename = resource.getFilename();

@@ -33,6 +33,7 @@ import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMExtractor;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMMatcher;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMProperty;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMValidator;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -53,19 +54,19 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
     @Override
     public BeanEMExtractResult extract(IBeanEMProperty property, Cell cell, Class<?> type) {
         BeanEMExtractResult result = newExtractResult();
-        try {
-            if (null == type) {
-                extractValue(result, property, cell, type);
-            } else {
-                IBeanEM innerBeanEM = property.getInnerBeanEM();
-                if (null != innerBeanEM) {
+        if (null == type) {
+            extractValue(result, property, cell, type);
+        } else {
+            IBeanEM innerBeanEM = property.getInnerBeanEM();
+            if (null != innerBeanEM) {
+                try {
                     extractInnerValue(result, property, cell, type);
-                } else {
-                    extractValue(result, property, cell, type);
+                } catch (Exception e) {
+                    Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS09, e, type + "(" + property.getName() + ")");
                 }
+            } else {
+                extractValue(result, property, cell, type);
             }
-        } catch (Exception e) {
-            Throw.throwRuntimeException(e);
         }
         return result;
     }
@@ -297,7 +298,7 @@ public class DefaultBeanEMExtractor extends AbstractBeanEMExtractor {
             try {
                 return (Collection) collectionType.newInstance();
             } catch (Exception e) {
-                e.printStackTrace();
+                // ignore e.printStackTrace();
             }
         }
         return new ArrayList();

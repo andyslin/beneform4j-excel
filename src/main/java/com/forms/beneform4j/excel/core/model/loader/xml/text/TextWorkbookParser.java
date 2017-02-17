@@ -11,6 +11,7 @@ import com.forms.beneform4j.excel.core.model.em.text.impl.TextEM;
 import com.forms.beneform4j.excel.core.model.loader.IResourceEMLoadContext;
 import com.forms.beneform4j.excel.core.model.loader.xml.IEMTopElementParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoaderConsts;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -48,7 +49,7 @@ public class TextWorkbookParser implements IEMTopElementParser {
         TextEM em = new TextEM();
         String id = ele.getAttribute(XmlEMLoaderConsts.ID_PROPERTY);
         if (CoreUtils.isBlank(id)) {
-            Throw.throwRuntimeException("模型ID不能为空");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS24);
         }
         em.setId(id);
         em.setType(EMType.TEXT);
@@ -75,7 +76,7 @@ public class TextWorkbookParser implements IEMTopElementParser {
             if (Charset.isSupported(charset)) {
                 em.setCharset(charset);
             } else {
-                Throw.throwRuntimeException("不支持的字符集" + charset);
+                Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS25, id, charset);
             }
         }
 

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.core.imports.stream.IWorkbookStreamHandler;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -314,7 +315,7 @@ public class WorkbookStreamHandlerSupport implements IWorkbookStreamHandler {
                 int randomLength = Integer.parseInt(matcher.group(3));
                 return new BatchNoFormat(dateFormat, type, randomLength);
             } else {
-                Throw.throwRuntimeException("批次号的格式不符合要求");
+                Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS31, format);
             }
         }
         return DEFAULT_BATCH_NO_FORMAT;

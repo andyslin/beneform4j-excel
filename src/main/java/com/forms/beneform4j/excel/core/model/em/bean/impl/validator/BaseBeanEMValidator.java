@@ -8,6 +8,7 @@ import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.core.ExcelUtils;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMValidator;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -65,14 +66,17 @@ public class BaseBeanEMValidator implements IBeanEMValidator {
 
     @Override
     public void validate(Cell cell, Class<?> fieldType) {
+        String sheetName = cell.getSheet().getSheetName();
         Cell mCell = ExcelUtils.getOffsetCell(cell, getOffsetX(), getOffsetY());
         if (null == mCell && !isAllowEmpty()) {
-            Throw.throwRuntimeException("需校验的单元格不允许为空");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS11, sheetName, cell.getRowIndex() + 1, cell.getColumnIndex() + 1, getOffsetX(), getOffsetY());
         }
 
+        int rowIndex = mCell.getRowIndex() + 1;
+        int cellIndex = mCell.getColumnIndex() + 1;
         String val = ExcelUtils.getCellValue(mCell);
         if (CoreUtils.isBlank(val) && !isAllowEmpty()) {
-            Throw.throwRuntimeException(getValidMsg(mCell, "不允许为空"));
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS12, sheetName, rowIndex, cellIndex);
         } else {
             val = val.trim();
         }
@@ -82,11 +86,11 @@ public class BaseBeanEMValidator implements IBeanEMValidator {
             value = value.trim();
             if (isIgnoreCase()) {
                 if (!value.equalsIgnoreCase(val)) {
-                    Throw.throwRuntimeException(getValidMsg(mCell, "只能等于" + value + "(忽略大小写)"));
+                    Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS13, sheetName, rowIndex, cellIndex, value);
                 }
             } else {
                 if (!value.equals(val)) {
-                    Throw.throwRuntimeException(getValidMsg(mCell, "只能等于" + value));
+                    Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS14, sheetName, rowIndex, cellIndex, value);
                 }
             }
         }
@@ -96,11 +100,11 @@ public class BaseBeanEMValidator implements IBeanEMValidator {
             pattern = pattern.trim();
             if (isIgnoreCase()) {
                 if (Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(val).find()) {
-                    Throw.throwRuntimeException(getValidMsg(mCell, "不符合格式(忽略大小写)：" + pattern));
+                    Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS15, sheetName, rowIndex, cellIndex, pattern);
                 }
             } else {
                 if (Pattern.compile(pattern).matcher(val).find()) {
-                    Throw.throwRuntimeException(getValidMsg(mCell, "不符合格式：" + pattern));
+                    Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS16, sheetName, rowIndex, cellIndex, pattern);
                 }
             }
         }
@@ -112,10 +116,6 @@ public class BaseBeanEMValidator implements IBeanEMValidator {
 
     public void setAllowEmpty(boolean allowEmpty) {
         this.allowEmpty = allowEmpty;
-    }
-
-    private String getValidMsg(Cell cell, String msg) {
-        return ExcelUtils.getValidateMsg(cell, msg);
     }
 
     public int getOffsetX() {

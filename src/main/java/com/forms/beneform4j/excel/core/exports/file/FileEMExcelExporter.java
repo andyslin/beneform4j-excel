@@ -15,6 +15,7 @@ import com.forms.beneform4j.excel.core.exports.file.impl.Jxls2FileEMExcelExporte
 import com.forms.beneform4j.excel.core.model.em.EMType;
 import com.forms.beneform4j.excel.core.model.em.IEM;
 import com.forms.beneform4j.excel.core.model.em.file.IFileEM;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -59,23 +60,27 @@ public class FileEMExcelExporter extends AbstractWorkbookExcelExporter {
 
     @Override
     protected void export(IEM model, Object param, Object data, Workbook workbook) {
-        try {
-            EMType type = model.getType();
-            if (EMType.EXCEL.equals(type)) {//自动侦测
-                type = autoEMType(model, param, data, workbook);
-                model.setType(type);
-                if (EMType.JXLS2_EXCEL.equals(type)) {//如果是jxls2，说明已经导出，这里直接返回
-                    return;
-                }
+        EMType type = model.getType();
+        if (EMType.EXCEL.equals(type)) {//自动侦测
+            type = autoEMType(model, param, data, workbook);
+            model.setType(type);
+            if (EMType.JXLS2_EXCEL.equals(type)) {//如果是jxls2，说明已经导出，这里直接返回
+                return;
             }
+        }
 
-            if (EMType.JETT_EXCEL.equals(type)) {
+        if (EMType.JETT_EXCEL.equals(type)) {
+            try {
                 jettExporterDelegate.export(param, data, workbook);
-            } else if (EMType.JXLS2_EXCEL.equals(type)) {
-                jxls2ExporterDelegate.export(param, data, workbook);
+            } catch (Exception e) {
+                Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS29, model);
             }
-        } catch (Exception e) {
-            Throw.throwRuntimeException(e);
+        } else if (EMType.JXLS2_EXCEL.equals(type)) {
+            try {
+                jxls2ExporterDelegate.export(param, data, workbook);
+            } catch (Exception e) {
+                Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS28, model);
+            }
         }
     }
 
@@ -88,13 +93,13 @@ public class FileEMExcelExporter extends AbstractWorkbookExcelExporter {
             Workbook workbook = WorkbookFactory.create(is);
             return workbook;
         } catch (Exception e) {
-            throw Throw.createRuntimeException(e);
+            throw Throw.createRuntimeException(ExcelExceptionCodes.BF0XLS01, e);
         } finally {
             CoreUtils.closeQuietly(is);
         }
     }
 
-    private EMType autoEMType(IEM model, Object param, Object data, Workbook workbook) throws Exception {
+    private EMType autoEMType(IEM model, Object param, Object data, Workbook workbook) {
         EMType type = EMType.JETT_EXCEL;
         if (null != defaultJxls2ExporterDelegate) {//存在jxls2，则用jxls2测试
             try {
@@ -102,7 +107,7 @@ public class FileEMExcelExporter extends AbstractWorkbookExcelExporter {
                 type = isJxls2 ? EMType.JXLS2_EXCEL : EMType.JETT_EXCEL;
             } catch (Exception e) {//出现异常，表示是jxls2模板，只是导出时出错
                 model.setType(EMType.JXLS2_EXCEL);
-                throw e;
+                Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS28, e, model);
             }
         }
         return type;
@@ -113,7 +118,7 @@ public class FileEMExcelExporter extends AbstractWorkbookExcelExporter {
         if (model instanceof IFileEM) {
             fem = (IFileEM) model;
         } else {
-            Throw.throwRuntimeException("不支持的Excel模型");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS08, model);
         }
         return fem;
     }

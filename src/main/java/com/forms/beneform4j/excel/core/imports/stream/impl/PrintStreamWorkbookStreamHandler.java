@@ -4,7 +4,6 @@ import java.io.PrintStream;
 import java.util.List;
 
 import com.forms.beneform4j.core.util.CoreUtils;
-import com.forms.beneform4j.core.util.exception.Throw;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -25,7 +24,7 @@ public class PrintStreamWorkbookStreamHandler extends WorkbookStreamHandlerSuppo
     public void initialize() {
         PrintStream ps = getPrintStream();
         if (null == ps) {
-            Throw.throwRuntimeException("PrintStream is null.");
+            throw new IllegalArgumentException("PrintStream is null.");
         }
 
         String separator = getSeparator();

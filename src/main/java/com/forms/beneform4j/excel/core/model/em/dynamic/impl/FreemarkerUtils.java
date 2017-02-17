@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 
 import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.ExcelComponentConfig;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
@@ -39,13 +40,15 @@ import freemarker.template.Template;
             Configuration conf = config.get();
             conf.setTemplateLoader(new ResourceTemplateLoader(resource));
             Template template = conf.getTemplate("resourceTemplate");
-            conf.setSharedVariable(ExcelComponentConfig.getParamObjectVarName(), param);
+            if (null != param) {
+                conf.setSharedVariable(ExcelComponentConfig.getParamObjectVarName(), param);
+            }
             conf.setSharedVariable(ExcelComponentConfig.getDataObjectVarName(), data);
             StringWriter result = new StringWriter();
             template.process(param, result);
             return result.toString();
         } catch (Exception e) {
-            throw Throw.createRuntimeException(e);
+            throw Throw.createRuntimeException(ExcelExceptionCodes.BF0XLS10, e, resource);
         }
     }
 
@@ -68,7 +71,7 @@ import freemarker.template.Template;
             try {
                 return new InputStreamReader(resource.getInputStream(), encoding);
             } catch (IOException ex) {
-                throw Throw.createRuntimeException(ex);
+                throw Throw.createRuntimeException(ExcelExceptionCodes.BF0XLS10, ex, resource);
             }
         }
 

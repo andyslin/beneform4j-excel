@@ -16,6 +16,7 @@ import com.forms.beneform4j.excel.core.model.em.EMType;
 import com.forms.beneform4j.excel.core.model.em.base.BaseEM;
 import com.forms.beneform4j.excel.core.model.loader.IEMLoadContext;
 import com.forms.beneform4j.excel.core.model.loader.IResourceEMLoadContext;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -38,7 +39,7 @@ public class FileWorkbookGroupParser extends AbstractFileWorkbookParser {
     public void parse(IResourceEMLoadContext context, Element ele) {
         String locations = ele.getAttribute(LOCATION_PATTERNS);
         if (CoreUtils.isBlank(locations)) {
-            Throw.throwRuntimeException("资源匹配模式不能为空");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS21);
         }
         String[] locationPatterns = splitByBlank(locations);
 
@@ -60,53 +61,52 @@ public class FileWorkbookGroupParser extends AbstractFileWorkbookParser {
         Set<String> suffixs = getSuffixs(suffixss);
 
         parseResources(context, locationPatterns, idPrefix, prior, excludes, suffixs);
-
     }
 
     private void parseResources(IEMLoadContext context, String[] locationPatterns, String idPrefix, int prior, Set<Resource> excludes, Set<String> suffixs) {
-        try {
-            ResourcePatternResolver loader = BaseConfig.getResourcePatternResolver();
-            for (String location : locationPatterns) {
-                for (Resource resource : loader.getResources(location)) {
-                    String filename = resource.getFilename();
-                    if (!excludes.contains(resource) && checkSuffix(suffixs, filename)) {
-                        String id = idPrefix + resolveFileWorkbookId(location, filename);
-                        EMType type = getEMTypeByFilename(filename);
-                        BaseEM em = super.getBaseWorkbookEM(resource, type);
-                        em.setId(id);
-                        em.setDesc(resource.getDescription());
-                        em.setName(filename);
-                        em.setPrior(prior);
-                        context.register(em);
-                    }
-                    excludes.add(resource);
+        ResourcePatternResolver loader = BaseConfig.getResourcePatternResolver();
+        for (String location : locationPatterns) {
+            for (Resource resource : loadResources(loader, location)) {
+                String filename = resource.getFilename();
+                if (!excludes.contains(resource) && checkSuffix(suffixs, filename)) {
+                    String id = idPrefix + resolveFileWorkbookId(location, filename);
+                    EMType type = getEMTypeByFilename(filename);
+                    BaseEM em = super.getBaseWorkbookEM(resource, type);
+                    em.setId(id);
+                    em.setDesc(resource.getDescription());
+                    em.setName(filename);
+                    em.setPrior(prior);
+                    context.register(em);
                 }
+                excludes.add(resource);
             }
+        }
+    }
+
+    private Resource[] loadResources(ResourcePatternResolver loader, String location) {
+        try {
+            return loader.getResources(location);
         } catch (IOException e) {
-            Throw.throwRuntimeException(e);
+            throw Throw.createRuntimeException(ExcelExceptionCodes.BF0XLS01, e, location);
         }
     }
 
     private Set<Resource> parseExcludes(String excludess) {
-        try {
-            Set<Resource> resources = new HashSet<Resource>();
-            if (!CoreUtils.isBlank(excludess)) {
-                ResourcePatternResolver loader = BaseConfig.getResourcePatternResolver();
-                for (String location : splitByBlank(excludess)) {
-                    int prefixEnd = location.indexOf(":") + 1;
-                    String path = location.substring(prefixEnd);
-                    if (path.indexOf('*') == -1 && path.indexOf('?') == -1) {
-                        location += "*";
-                    }
-                    for (Resource resource : loader.getResources(location)) {
-                        resources.add(resource);
-                    }
+        Set<Resource> resources = new HashSet<Resource>();
+        if (!CoreUtils.isBlank(excludess)) {
+            ResourcePatternResolver loader = BaseConfig.getResourcePatternResolver();
+            for (String location : splitByBlank(excludess)) {
+                int prefixEnd = location.indexOf(":") + 1;
+                String path = location.substring(prefixEnd);
+                if (path.indexOf('*') == -1 && path.indexOf('?') == -1) {
+                    location += "*";
+                }
+                for (Resource resource : loadResources(loader, location)) {
+                    resources.add(resource);
                 }
             }
-            return resources;
-        } catch (IOException e) {
-            throw Throw.createRuntimeException(e);
         }
+        return resources;
     }
 
     private boolean checkSuffix(Set<String> suffixs, String filename) {

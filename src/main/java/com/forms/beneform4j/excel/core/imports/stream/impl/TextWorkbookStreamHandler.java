@@ -8,7 +8,6 @@ import java.io.PrintStream;
 import org.apache.commons.io.FileUtils;
 
 import com.forms.beneform4j.core.util.CoreUtils;
-import com.forms.beneform4j.core.util.exception.Throw;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -29,7 +28,7 @@ public class TextWorkbookStreamHandler extends PrintStreamWorkbookStreamHandler 
     public void initialize() {
         String filename = getFilename();
         if (CoreUtils.isBlank(filename)) {
-            Throw.throwRuntimeException("filename is null.");
+            throw new IllegalArgumentException("filename is null.");
         }
 
         try {
@@ -45,7 +44,7 @@ public class TextWorkbookStreamHandler extends PrintStreamWorkbookStreamHandler 
             }
             super.initialize();
         } catch (Exception e) {
-            Throw.throwRuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 

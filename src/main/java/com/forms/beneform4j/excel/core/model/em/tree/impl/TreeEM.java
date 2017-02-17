@@ -10,6 +10,7 @@ import com.forms.beneform4j.excel.core.model.em.base.BaseEM;
 import com.forms.beneform4j.excel.core.model.em.text.ITextEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMSheet;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -53,9 +54,9 @@ public class TreeEM extends BaseEM implements ITreeEM {
                 if (null == textWorkbook && null != textWorkbookRef) {
                     IEM textEM = EMManager.load(textWorkbookRef);
                     if (null == textEM) {
-                        Throw.throwRuntimeException("未找到ID为" + textWorkbookRef + "的文本转换配置");
+                        Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS07, textWorkbookRef);
                     } else if (!(textEM instanceof ITextEM)) {
-                        Throw.throwRuntimeException("模型" + textEM + "不是有效的文本转换配置");
+                        Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS08, textEM);
                     } else {
                         this.textWorkbook = (ITextEM) textEM;
                     }

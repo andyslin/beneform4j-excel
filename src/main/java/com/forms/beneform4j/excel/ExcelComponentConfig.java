@@ -61,6 +61,11 @@ public class ExcelComponentConfig {
     private static IExcelImporter excelImporter;
 
     /**
+     * 流式处理器的默认处理记录数
+     */
+    private static int defaultRowAccessWindowSize;
+
+    /**
      * 获取模型加载器列表
      * 
      * @return
@@ -190,4 +195,23 @@ public class ExcelComponentConfig {
      * @param xmlEMLoaderConfig
      */
     public void setXmlEMLoaderConfig(XmlEMLoaderConfig xmlEMLoaderConfig) {}
+
+    /**
+     * 获取默认的流式API一次处理的行数大小
+     * 
+     * @return
+     */
+    public static int getDefaultRowAccessWindowSize() {
+        return ConfigHelper.getValue(defaultRowAccessWindowSize, "default_row_access_window_size");
+    }
+
+    /**
+     * 注入默认的流式API一次处理的行数大小
+     * 
+     * @param defaultRowAccessWindowSize
+     */
+    public void setDefaultRowAccessWindowSize(int defaultRowAccessWindowSize) {
+        ExcelComponentConfig.defaultRowAccessWindowSize = defaultRowAccessWindowSize;
+    }
+
 }

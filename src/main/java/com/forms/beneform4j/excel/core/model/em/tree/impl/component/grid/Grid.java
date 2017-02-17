@@ -42,9 +42,6 @@ public class Grid extends AbstractTreeEMComponent {
      * @param list
      */
     public void build(List<Td> list) {
-        if (null == list || list.isEmpty()) {
-            throw new RuntimeException("没有域信息，请检查数据是否正确！");
-        }
         this.setRowspan(list);
         this.setTh();
         this.setSpan();

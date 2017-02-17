@@ -8,6 +8,7 @@ import com.forms.beneform4j.excel.core.model.em.EMType;
 import com.forms.beneform4j.excel.core.model.em.IEM;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEM;
 import com.forms.beneform4j.excel.core.model.em.bean.IBeanEMProperty;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -39,10 +40,12 @@ public class BeanEMProxy implements IBeanEM {
             synchronized (this) {
                 if (null == proxy) {
                     IEM em = EMManager.load(proxyId);
-                    if (em instanceof IBeanEM) {
+                    if (null == em) {
+                        Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS07, proxyId);
+                    } else if (em instanceof IBeanEM) {
                         proxy = (IBeanEM) em;
                     } else {
-                        Throw.throwRuntimeException("未找到id为" + proxyId + "的模型");
+                        Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS08, em);
                     }
                 }
             }

@@ -3,7 +3,61 @@
 	xmlns="http://www.formssi.com/schema/beneform4j/exception"
 	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/exception beneform4j-exception.xsd">
 	
-	<exception code="BF110000" description="Excel组件异常" messageKey="beneform4j.excel">
-	
+	<exception code="BF0XLS00" description="Excel组件异常" messageKey="beneform4j.excel">
+		<exception code="BF0XLS01" description="读取Excel文件异常" messageKey="beneform4j.excel.read.exception"/>
+		<exception code="BF0XLS02" description="写入Excel文件异常" messageKey="beneform4j.excel.write.exception"/>
+		<exception code="BF0XLS03" description="Excel列位置错误" messageKey="beneform4j.excel.cell.position"/>
+		<exception code="BF0XLS04" description="Excel行位置错误" messageKey="beneform4j.excel.row.position"/>
+		<exception code="BF0XLS05" description="Excel校验信息" messageKey="beneform4j.excel.validation.msg"/>
+		<exception code="BF0XLS06" description="判断Excel版本信息异常" messageKey="beneform4j.excel.detect.version"/>
+		<exception code="BF0XLS07" description="未找到Excel配置模型" messageKey="beneform4j.excel.not_found.em"/>
+		<exception code="BF0XLS08" description="不支持的Excel配置模型" messageKey="beneform4j.excel.not_supported.em"/>
+		<exception code="BF0XLS09" description="提取Excel数据至JavaBean出现异常" messageKey="beneform4j.excel.extractor.field"/>
+		<exception code="BF0XLS10" description="将资源文件应用Freemarker模板异常" messageKey="beneform4j.excel.freemarker.resource"/>
+		
+		<exception code="BF0XLS11" description="偏移后位置的单元格为空" messageKey="beneform4j.excel.offset.cell.empty"/>
+		<exception code="BF0XLS12" description="单元格内容为空" messageKey="beneform4j.excel.cell.emtpy"/>
+		<exception code="BF0XLS13" description="只能等于某个值(忽略大小写)" messageKey="beneform4j.excel.cell.only.equal"/>
+		<exception code="BF0XLS14" description="只能等于某个值" messageKey="beneform4j.excel.cell.only.equal.case"/>
+		<exception code="BF0XLS15" description="不符合格式(忽略大小写)" messageKey="beneform4j.excel.cell.pattern.match"/>
+		<exception code="BF0XLS16" description="不符合格式" messageKey="beneform4j.excel.cell.pattern.match.case"/>
+		
+		<exception code="BF0XLS17" description="Bean模型配置-属性名称不能为空" messageKey="beneform4j.excel.em.xml.loader.property.empty"/>
+		<exception code="BF0XLS18" description="Bean模型配置-属性不存在" messageKey="beneform4j.excel.em.xml.loader.property.not.exists"/>
+		<exception code="BF0XLS19" description="Bean模型配置-属性类型不匹配" messageKey="beneform4j.excel.em.xml.loader.property.type.error"/>
+		<exception code="BF0XLS20" description="Bean模型配置-id和beanType属性不能同时为空" messageKey="beneform4j.excel.em.xml.loader.id.beanType.error"/>
+		<exception code="BF0XLS21" description="file-workbook-group元素资源模式为空" messageKey="beneform4j.excel.em.xml.loader.location.patterns.empty"/>
+		<exception code="BF0XLS22" description="file-workbook元素资源位置为空" messageKey="beneform4j.excel.em.xml.loader.location.empty"/>
+		<exception code="BF0XLS23" description="file-workbook元素资源不存在" messageKey="beneform4j.excel.em.xml.loader.location.not.exists"/>
+		<exception code="BF0XLS24" description="text-workbook元素ID为空" messageKey="beneform4j.excel.em.xml.loader.id.empty"/>
+		<exception code="BF0XLS25" description="text-workbook元素字符集不支持" messageKey="beneform4j.excel.em.xml.loader.charset.not.support"/>
+		<exception code="BF0XLS26" description="没有找到tree-workbook子组件解析器" messageKey="beneform4j.excel.em.xml.loader.not.found.component"/>
+		<exception code="BF0XLS27" description="tree-workbook元素无有效的子节点" messageKey="beneform4j.excel.em.xml.loader.tree.workbook.invalid"/>
+		
+		<exception code="BF0XLS28" description="使用jxls2类库导出Excel异常" messageKey="beneform4j.excel.exports.jxls2"/>
+		<exception code="BF0XLS29" description="使用jett类库导出Excel异常" messageKey="beneform4j.excel.exports.jett"/>
+		<exception code="BF0XLS30" description="tree-workbook导出时绘制器与组件不匹配" messageKey="beneform4j.excel.exports.component.painter.not.match"/>
+		
+		<exception code="BF0XLS31" description="批次号格式不符合要求" messageKey="beneform4j.excel.imports.batch.no.pattern"/>
+		<exception code="BF0XLS32" description="tree-workbook导入只能含单个grid组件" messageKey="beneform4j.excel.imports.single.grid"/>
+		<exception code="BF0XLS33" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS34" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS35" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS36" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS37" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS38" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS39" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS40" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		
+		<exception code="BF0XLS41" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS42" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS43" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS44" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS45" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS46" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS47" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS48" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS49" description="Excel组件异常" messageKey="beneform4j.excel"/>
+		<exception code="BF0XLS50" description="Excel组件异常" messageKey="beneform4j.excel"/>
 	</exception>
 </exception-config>

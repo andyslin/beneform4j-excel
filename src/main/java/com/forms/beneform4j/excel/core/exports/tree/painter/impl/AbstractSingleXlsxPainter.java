@@ -7,6 +7,7 @@ import com.forms.beneform4j.excel.core.exports.tree.painter.POIExcelContext;
 import com.forms.beneform4j.excel.core.exports.tree.painter.Scope;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMComponent;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMRegion;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -32,7 +33,7 @@ public abstract class AbstractSingleXlsxPainter<C extends ITreeEMComponent> impl
         try {
             c = (C) component;
         } catch (Exception e) {
-            Throw.throwRuntimeException("不支持");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS30);
         }
         ITreeEMRegion region = component.getRegion();
         Scope scope = context.getBaseScope(region.getOffsetName());

@@ -29,6 +29,7 @@ import com.forms.beneform4j.excel.core.model.em.bean.impl.matcher.SheetBeanEMMat
 import com.forms.beneform4j.excel.core.model.loader.IResourceEMLoadContext;
 import com.forms.beneform4j.excel.core.model.loader.xml.IEMTopElementParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoaderConsts;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -69,9 +70,9 @@ public class BeanWorkbookParser implements IEMTopElementParser {
                 if ("property".equalsIgnoreCase(name)) {
                     String fieldName = ele.getAttribute("name");
                     if (CoreUtils.isBlank(fieldName)) {
-                        Throw.throwRuntimeException("属性名称不能为空");
+                        Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS17);
                     } else if (null != fields && !fields.containsKey(fieldName)) {
-                        Throw.throwRuntimeException("类中" + beanType + "找不到属性" + fieldName);
+                        Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS18, fieldName);
                     }
 
                     Field field = null == fields ? null : fields.get(fieldName);
@@ -163,7 +164,7 @@ public class BeanWorkbookParser implements IEMTopElementParser {
                 cls = CoreUtils.forName(type);
             }
             if (null != field && !field.getType().isAssignableFrom(cls)) {
-                Throw.throwRuntimeException(fieldName + "配置的类型不匹配:" + type);
+                Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS19, fieldName + "<!==!>" + type);
             } else {
                 property.setType(cls);
             }
@@ -236,14 +237,14 @@ public class BeanWorkbookParser implements IEMTopElementParser {
         boolean beanTypeIsEmpty = CoreUtils.isBlank(beanType);
 
         if (!inner && idIsEmpty && beanTypeIsEmpty) {//顶层配置，id和beanType不能同时为空
-            Throw.throwRuntimeException("id和beanType属性不能同时为空");
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS20);
         }
 
         Class<?> cls = null;
         if (!beanTypeIsEmpty) {//配置了类型
             cls = CoreUtils.forName(beanType);
             if (null != fieldType && !fieldType.isAssignableFrom(cls)) {
-                Throw.throwRuntimeException("配置的类型不匹配:" + cls);
+                Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS19, beanType);
             }
         } else if (null != fieldType) {
             cls = fieldType;

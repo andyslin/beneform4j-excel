@@ -6,6 +6,7 @@ import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.core.exports.IExcelExporter;
 import com.forms.beneform4j.excel.core.model.em.EMManager;
 import com.forms.beneform4j.excel.core.model.em.IEM;
+import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -63,7 +64,7 @@ public abstract class AbstractModelExcelExporter implements IExcelExporter {
     private String exportsInModel(String modelId, ExportModelCallback callback) {
         IEM model = EMManager.load(modelId);
         if (null == model) {
-            Throw.throwRuntimeException("没找到Excel模型:" + modelId);
+            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS07, modelId);
         }
         return callback.callback(model);
     }

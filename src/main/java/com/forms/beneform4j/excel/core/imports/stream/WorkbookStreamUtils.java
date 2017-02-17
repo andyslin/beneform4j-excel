@@ -4,13 +4,11 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PushbackInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.eventusermodel.EventWorkbookBuilder.SheetRecordCollectingListener;
 import org.apache.poi.hssf.eventusermodel.FormatTrackingHSSFListener;
 import org.apache.poi.hssf.eventusermodel.HSSFEventFactory;
@@ -34,10 +32,8 @@ import org.apache.poi.hssf.record.Record;
 import org.apache.poi.hssf.record.SSTRecord;
 import org.apache.poi.hssf.record.StringRecord;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.poifs.filesystem.DocumentFactoryHelper;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.util.CellAddress;
@@ -59,6 +55,7 @@ import org.xml.sax.XMLReader;
 
 import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.exception.Throw;
+import com.forms.beneform4j.excel.core.ExcelUtils;
 
 /**
  * Copy Right Information : Forms Syntron <br>
@@ -80,20 +77,18 @@ public class WorkbookStreamUtils {
     public static void parse(Resource resource, IWorkbookStreamHandler handler) {
         try {
             File file = resource.getFile();
-            String suffix = FilenameUtils.getExtension(resource.getFilename());
-            if ("xls".equalsIgnoreCase(suffix)) {
-                XLS2CSVmra xls2csv = new XLS2CSVmra(new POIFSFileSystem(file), handler);
-                xls2csv.process();
-                return;
-            } else if ("xlsx".equalsIgnoreCase(suffix)) {
+            if (ExcelUtils.isXlsx2007(resource.getFilename(), true)) {
                 XLSX2CSV xlsx2csv = new XLSX2CSV(OPCPackage.open(file), handler);
                 xlsx2csv.process();
+                return;
+            } else {
+                XLS2CSVmra xls2csv = new XLS2CSVmra(new POIFSFileSystem(file), handler);
+                xls2csv.process();
                 return;
             }
         } catch (Exception e) {
             // ignore
         }
-
         parseResourceStream(resource, handler);
     }
 
@@ -116,33 +111,17 @@ public class WorkbookStreamUtils {
      */
     public static void parse(InputStream input, IWorkbookStreamHandler handler) {
         try {
-            ExcelVersion version = autoExcelVersion(input);
-            if (ExcelVersion.V_2003.equals(version)) {
-                XLS2CSVmra xls2csv = new XLS2CSVmra(new POIFSFileSystem(input), handler);
-                xls2csv.process();
-            } else {
+            if (ExcelUtils.isXlsx2007(input)) {
                 XLSX2CSV xlsx2csv = new XLSX2CSV(OPCPackage.open(input), handler);
                 xlsx2csv.process();
+            } else {
+                XLS2CSVmra xls2csv = new XLS2CSVmra(new POIFSFileSystem(input), handler);
+                xls2csv.process();
             }
         } catch (IOException ie) {
             Throw.throwRuntimeException("文件读写异常", ie);
         } catch (Exception e) {
             Throw.throwRuntimeException("解析Excel文件时出现异常", e);
-        }
-    }
-
-    /**
-     * 是否2007版的Excel
-     * 
-     * @param input
-     * @return
-     */
-    public static boolean isXlsx2007(InputStream input) {
-        try {
-            ExcelVersion version = autoExcelVersion(input);
-            return ExcelVersion.V_2007.equals(version);
-        } catch (Exception e) {
-            throw Throw.createRuntimeException("判断Excel版本时出现异常", e);
         }
     }
 
@@ -156,33 +135,6 @@ public class WorkbookStreamUtils {
         } finally {
             CoreUtils.closeQuietly(input);
         }
-    }
-
-    /**
-     * 侦测Excel文件的版本
-     * 
-     * @param inp
-     * @return
-     * @throws IOException
-     * @throws InvalidFormatException
-     */
-    private static ExcelVersion autoExcelVersion(InputStream inp) throws IOException, InvalidFormatException {
-        // If clearly doesn't do mark/reset, wrap up
-        if (!inp.markSupported()) {
-            inp = new PushbackInputStream(inp, 8);
-        }
-
-        if (POIFSFileSystem.hasPOIFSHeader(inp)) {
-            return ExcelVersion.V_2003;
-        }
-        if (DocumentFactoryHelper.hasOOXMLHeader(inp)) {
-            return ExcelVersion.V_2007;
-        }
-        throw new IllegalArgumentException("Your InputStream was neither an OLE2 stream, nor an OOXML stream");
-    }
-
-    private enum ExcelVersion {
-        V_2003, V_2007;
     }
 
     private static class ProcessFinishException extends RuntimeException {
