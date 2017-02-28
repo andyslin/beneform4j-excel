@@ -13,6 +13,10 @@ public class XmlEMLoaderConsts {
 
     // ===== 公共 =====
     /**
+     * 命名空间
+     */
+    public static final String DEFAULT_NAMESPACE = "http://www.formssi.com/schema/beneform4j/excel";
+    /**
      * 表示导入其它配置文件的元素
      */
     public static final String IMPORT_ELEMENT_NAME = "import";

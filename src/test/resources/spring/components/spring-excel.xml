@@ -19,6 +19,13 @@
 				</bean>
 			</list>
 		</property>
+		
+		<property name="initializeComponents">
+			<list>
+				<!-- XML配置 -->
+				<bean class="com.forms.beneform4j.excel.db.DbInitializeComponent"/>
+			</list>
+		</property>
 	</bean>
 	
 </beans>

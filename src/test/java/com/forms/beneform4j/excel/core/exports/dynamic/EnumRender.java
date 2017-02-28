@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author lenovo
  *
  */
-@Component("enum")
+@Component("excelenum")
 public class EnumRender {
 
     private static final Map<String, String> datas = new HashMap<String, String>();

@@ -418,7 +418,7 @@ public class TreeWorkbookParserDelegate {
     }
 
     /**
-     * 获取解析器类型，先根据region元素的type属性，如果type属性未设置，并且第一个子元素为region元素，则
+     * 获取解析器类型
      * <ul>
      * <li>根据region元素的type属性确定组件类型
      * <li>如果type属性为空，并且第一个子元素也是region元素，则做为嵌套组件类型

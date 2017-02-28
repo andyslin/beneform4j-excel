@@ -3,6 +3,7 @@ package com.forms.beneform4j.excel.core.model.loader.xml;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.excel.core.model.loader.xml.bean.BeanEMExtractorParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.bean.BeanEMMatcherParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.bean.BeanEMValidatorParser;
@@ -90,6 +91,20 @@ public class XmlEMLoaderConfig {
     }
 
     /**
+     * 根据一级元素名称获取元素解析器
+     * 
+     * @param namespace
+     * @param name
+     * @return
+     */
+    public static IEMTopElementParser getEMTopElementParser(String namespace, String name) {
+        if (isDefaultNamespace(namespace)) {
+            return topElementParserMapping.get(name);
+        }
+        return topElementParserMapping.get(namespace + ":" + name);
+    }
+
+    /**
      * 注册一级元素的名称及其相应的解析器
      * 
      * @param name
@@ -97,6 +112,21 @@ public class XmlEMLoaderConfig {
      */
     public static void registerTopElementParser(String name, IEMTopElementParser parser) {
         topElementParserMapping.put(name, parser);
+    }
+
+    /**
+     * 注册一级元素的名称及其相应的解析器
+     * 
+     * @param namespace
+     * @param name
+     * @param parser
+     */
+    public static void registerTopElementParser(String namespace, String name, IEMTopElementParser parser) {
+        if (isDefaultNamespace(namespace)) {
+            topElementParserMapping.put(name, parser);
+        } else {
+            topElementParserMapping.put(namespace + ":" + name, parser);
+        }
     }
 
     /**
@@ -108,5 +138,15 @@ public class XmlEMLoaderConfig {
         if (null != topElementParserMapping) {
             XmlEMLoaderConfig.topElementParserMapping.putAll(topElementParserMapping);
         }
+    }
+
+    /**
+     * 是否默认命名空间
+     * 
+     * @param namespace
+     * @return
+     */
+    public static boolean isDefaultNamespace(String namespace) {
+        return XmlEMLoaderConsts.DEFAULT_NAMESPACE.equalsIgnoreCase(namespace) || CoreUtils.isBlank(namespace);
     }
 }

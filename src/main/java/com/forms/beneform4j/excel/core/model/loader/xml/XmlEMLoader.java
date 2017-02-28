@@ -35,7 +35,7 @@ public class XmlEMLoader extends AbstractResourceEMLoader {
     /**
      * 是否校验XML配置文件
      */
-    private boolean validation;
+    private boolean validation = true;
 
     @Override
     protected void loadResourceEM(IResourceEMLoadContext context) {
@@ -60,6 +60,7 @@ public class XmlEMLoader extends AbstractResourceEMLoader {
                         parser.parse(context, ele);
                     } else {
                         CommonLogger.warn("未找到" + ele + "元素的解析器，忽略该配置");
+                        getWorkbookParser(ele);
                     }
                 }
             }
@@ -73,8 +74,9 @@ public class XmlEMLoader extends AbstractResourceEMLoader {
      * @return
      */
     protected IEMTopElementParser getWorkbookParser(Element element) {
+        String namespace = element.getNamespaceURI();
         String name = XmlHelper.getLocalName(element);
-        return XmlEMLoaderConfig.getEMTopElementParser(name);
+        return XmlEMLoaderConfig.getEMTopElementParser(namespace, name);
     }
 
     private void loadImportResourceEM(IResourceEMLoadContext context, Element ele) {

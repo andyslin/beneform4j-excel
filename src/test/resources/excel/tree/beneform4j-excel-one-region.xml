@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <excel-config xmlns="http://www.formssi.com/schema/beneform4j/excel"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd">
+	xmlns:db="http://www.formssi.com/schema/beneform4j/excel-db"
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd
+		http://www.formssi.com/schema/beneform4j/excel-db http://www.formssi.com/schema/beneform4j/excel-db.xsd">
+
+	<db:data-source id="aa" username="linjisong" password="aaaa"/>
 
 	<tree-workbook id="oneRegion1" name="单个Region测试一">
 		<region>
@@ -14,7 +18,7 @@
 			<td text="百分数" expression="percentagData" dataType="PERCENTAG"/>
 			<td text="普通隐藏" expression="normalHiddenData" showType="INIT_HIDDEN" desc="普通区域隐藏"/>
 			<td text="跨多列">
-				<td text="子列1" expression="subData1"/>
+				<td text="子列1" expression="subData1" />
 				<td text="子列2" expression="subData2"/>
 				<td text="子列3" expression="subData3"/>
 			</td>

@@ -19,7 +19,7 @@ public class LoadDetailsMatcher implements IBeanEMMatcher {
         if ("产品简称".equals(value)) {
             return false;
         }
-        Cell vCell = ExcelUtils.getMergetCell(sheet, cell.getRowIndex(), 0);
+        Cell vCell = ExcelUtils.getMergetCell(cell.getSheet(), cell.getRowIndex(), 0);
         if (null == vCell) {
             return false;
         }

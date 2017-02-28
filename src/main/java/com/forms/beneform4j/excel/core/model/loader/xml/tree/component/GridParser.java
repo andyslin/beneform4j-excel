@@ -31,7 +31,7 @@ public class GridParser implements ITreeEMComponentParser {
         List<Td> tds = new ArrayList<Td>();
         parseTd(modelId, -1, container, tds);
         if (!tds.isEmpty()) {
-            Grid grid = new Grid();
+            Grid grid = newGrid();
             grid.build(tds);
             return grid;
         } else {
@@ -39,19 +39,12 @@ public class GridParser implements ITreeEMComponentParser {
         }
     }
 
-    private void parseTd(String modelId, int parentFieldSeqno, Element ele, List<Td> tds) {
-        int fieldSeqno = 0;
-        if (parentFieldSeqno >= 0) {
-            Td td = new Td();
-            tds.add(td);
-            fieldSeqno = tds.size();
-            td.setModelId(modelId);
-            td.setFieldSeqno(fieldSeqno);
-            td.setSeqno(fieldSeqno);
-            td.setParentFieldSeqno(parentFieldSeqno);
-            setTdProperties(modelId, ele, td);
-        }
-        parseSubTds(modelId, ele, tds, fieldSeqno);
+    protected Grid newGrid() {
+        return new Grid();
+    }
+
+    protected Td newTd() {
+        return new Td();
     }
 
     protected void setTdProperties(String modelId, Element ele, Td td) {
@@ -69,6 +62,21 @@ public class GridParser implements ITreeEMComponentParser {
         td.setColumnWidth(ele.getAttribute("width"));//宽度
         td.setHeaderCls(ele.getAttribute("headerCls"));//表头样式
         td.setDataCls(ele.getAttribute("dataCls"));//数据样式
+    }
+
+    private void parseTd(String modelId, int parentFieldSeqno, Element ele, List<Td> tds) {
+        int fieldSeqno = 0;
+        if (parentFieldSeqno >= 0) {
+            Td td = newTd();
+            tds.add(td);
+            fieldSeqno = tds.size();
+            td.setModelId(modelId);
+            td.setFieldSeqno(fieldSeqno);
+            td.setSeqno(fieldSeqno);
+            td.setParentFieldSeqno(parentFieldSeqno);
+            setTdProperties(modelId, ele, td);
+        }
+        parseSubTds(modelId, ele, tds, fieldSeqno);
     }
 
     private void parseSubTds(String modelId, Element parent, List<Td> tds, int fieldSeqno) {

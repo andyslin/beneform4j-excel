@@ -28,7 +28,7 @@
 					<xsd:element name="bean-workbook-extractor" type="beanWorkbookExtractorType"/>
 					
 					<xsd:element name="text-workbook" type="textWorkbookType"/>
-					<xsd:any namespace="##other" processContents="lax"/>
+					<xsd:any namespace="##other" processContents="strict"/>
 				</xsd:choice>
 			</xsd:sequence>
 			
@@ -157,6 +157,7 @@
 				]]></xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
+		<xsd:anyAttribute namespace="##other" processContents="strict"/>
 	</xsd:complexType>
 	
 	<xsd:complexType name="treeWorkbookSheetType">
@@ -508,6 +509,7 @@
 <!-- 		 ]]></xsd:documentation> -->
 <!-- 			</xsd:annotation> -->
 <!-- 		</xsd:attribute> -->
+		<xsd:anyAttribute namespace="##other" processContents="strict"/>
 	</xsd:complexType>
 	
 	<xsd:complexType name="beanWorkbookType">

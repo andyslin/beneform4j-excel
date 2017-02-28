@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.InitializingBean;
+
 import com.forms.beneform4j.core.util.config.ConfigHelper;
 import com.forms.beneform4j.excel.core.exports.IExcelExporter;
 import com.forms.beneform4j.excel.core.exports.tree.painter.ITreeEMComponentXlsxPainter;
@@ -25,7 +27,7 @@ import com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoaderConfig;
  * Since : 1.0.0 <br>
  * Date : 2016-12-22<br>
  */
-public class ExcelComponentConfig {
+public class ExcelComponentConfig implements InitializingBean {
 
     private static final Map<Class<? extends ITreeEMComponent>, ITreeEMComponentXlsxPainter> xlsxPainters = new HashMap<Class<? extends ITreeEMComponent>, ITreeEMComponentXlsxPainter>();
 
@@ -64,6 +66,20 @@ public class ExcelComponentConfig {
      * 流式处理器的默认处理记录数
      */
     private static int defaultRowAccessWindowSize;
+
+    /**
+     * 初始化组件
+     */
+    private static List<InitializeComponent> initializeComponents;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (null != initializeComponents) {
+            for (InitializeComponent initializeComponent : initializeComponents) {
+                initializeComponent.initialize();
+            }
+        }
+    }
 
     /**
      * 获取模型加载器列表
@@ -197,6 +213,15 @@ public class ExcelComponentConfig {
     public void setXmlEMLoaderConfig(XmlEMLoaderConfig xmlEMLoaderConfig) {}
 
     /**
+     * 设置初始化组件
+     * 
+     * @param initializeComponents
+     */
+    public void setInitializeComponents(List<InitializeComponent> initializeComponents) {
+        ExcelComponentConfig.initializeComponents = initializeComponents;
+    }
+
+    /**
      * 获取默认的流式API一次处理的行数大小
      * 
      * @return
@@ -213,5 +238,4 @@ public class ExcelComponentConfig {
     public void setDefaultRowAccessWindowSize(int defaultRowAccessWindowSize) {
         ExcelComponentConfig.defaultRowAccessWindowSize = defaultRowAccessWindowSize;
     }
-
 }
