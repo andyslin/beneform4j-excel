@@ -92,12 +92,27 @@ public class WorkbookStreamHandlerSupport implements IWorkbookStreamHandler {
 
     @Override
     public boolean row(List<String> cells, int rowIndex) {
+        if (this.preHandleRow(cells, rowIndex)) {
+            int insertColumns = insertColumns(cells);
+            return handleRow(status, cells, insertColumns);
+        }
+        return true;
+    }
+
+    /**
+     * 处理一行数据前的预处理
+     * 
+     * @param cells
+     * @param rowIndex
+     * @return 是否需要继续处理该行数据
+     */
+    protected boolean preHandleRow(List<String> cells, int rowIndex) {
         if (rowIndex < getSkipRows()) {// 跳过前面多少行
-            return true;
+            return false;
         }
         boolean isEmptyRow = cells.isEmpty();
         if (isIgnoreEmptyRow() && isEmptyRow) {// 忽略空行
-            return true;
+            return false;
         } else {
             status.rowIndex = rowIndex + 1;
             status.dataIndex++;
@@ -109,28 +124,55 @@ public class WorkbookStreamHandlerSupport implements IWorkbookStreamHandler {
                 cells.add(getDefaultCellValue());
             }
         }
-
-        if (this.isAddRowIndex()) {
-            cells.add(0, (status.rowIndex) + "");
-        }
-        if (this.isAddDataIndex()) {
-            cells.add(0, (status.dataIndex) + "");
-        }
-        if (this.isAddBatchNo()) {
-            cells.add(0, status.batchNo);
-        }
-        return handleRow(status, cells, rowIndex, isEmptyRow);
-    }
-
-    protected boolean handleRow(HandlerStatus status, List<String> cells, int rowIndex, boolean isEmptyRow) {
         return true;
     }
 
+    /**
+     * 添加额外的列数据
+     * 
+     * @param cells
+     * @return 添加的列数
+     */
+    protected int insertColumns(List<String> cells) {
+        int insertColumns = 0;
+        if (this.isAddRowIndex()) {
+            cells.add(0, status.rowIndex + "");
+            insertColumns++;
+        }
+        if (this.isAddDataIndex()) {
+            cells.add(0, status.dataIndex + "");
+            insertColumns++;
+        }
+        if (this.isAddBatchNo()) {
+            cells.add(0, status.batchNo);
+            insertColumns++;
+        }
+        return insertColumns;
+    }
+
+    /**
+     * 处理一行数据，返回是否结束整个解析
+     * 
+     * @param status 当前解析状态
+     * @param cells 行数据
+     * @param insertColumns 在原数据前已插入了多少列数据
+     * @return 是否结束整个解析
+     */
+    protected boolean handleRow(HandlerStatus status, List<String> cells, int insertColumns) {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean endSheet(int sheetIndex, String sheetName) {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void end() {}
 

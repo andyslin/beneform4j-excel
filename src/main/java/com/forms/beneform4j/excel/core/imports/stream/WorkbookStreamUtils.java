@@ -75,8 +75,15 @@ public class WorkbookStreamUtils {
      * @param handler 回调处理器
      */
     public static void parse(Resource resource, IWorkbookStreamHandler handler) {
+        File file = null;
         try {
-            File file = resource.getFile();
+            file = resource.getFile();
+        } catch (IOException e1) {
+            parseResourceStream(resource, handler);
+            return;
+        }
+
+        try {
             if (ExcelUtils.isXlsx2007(resource.getFilename(), true)) {
                 XLSX2CSV xlsx2csv = new XLSX2CSV(OPCPackage.open(file), handler);
                 xlsx2csv.process();
@@ -87,9 +94,8 @@ public class WorkbookStreamUtils {
                 return;
             }
         } catch (Exception e) {
-            // ignore
+            Throw.throwRuntimeException(e);
         }
-        parseResourceStream(resource, handler);
     }
 
     /**

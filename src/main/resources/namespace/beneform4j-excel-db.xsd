@@ -1,44 +1,160 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns="http://www.formssi.com/schema/beneform4j/excel-db" 
-	targetNamespace="http://www.formssi.com/schema/beneform4j/excel-db" 
+	xmlns="http://www.formssi.com/schema/beneform4j/excel-db"
+	targetNamespace="http://www.formssi.com/schema/beneform4j/excel-db"
 	elementFormDefault="qualified" version="1.0">
-	
-	<xsd:attribute name="uploadMidTable" type="xsd:string">
-		<xsd:annotation>
-			<xsd:documentation><![CDATA[
-			上传中间表
-		]]></xsd:documentation>
-		</xsd:annotation>
-	</xsd:attribute>
-	
-	<xsd:attribute name="columnName" type="xsd:string">
-		<xsd:annotation>
-			<xsd:documentation><![CDATA[
-			列名
-		]]></xsd:documentation>
-		</xsd:annotation>
-	</xsd:attribute>
-	
+
 	<xsd:element name="data-source">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			数据源配置
+		]]></xsd:documentation>
+		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:attribute name="id" type="xsd:token" use="required"></xsd:attribute>
-			<xsd:attribute name="database">
+			<xsd:attribute name="id" type="xsd:token" use="required">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					数据源ID
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="database" use="required">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					数据源类型
+				]]></xsd:documentation>
+				</xsd:annotation>
 				<xsd:simpleType>
 					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="oracle"/>
-						<xsd:enumeration value="mysql"/>
-						<xsd:enumeration value="db2"/>
-						<xsd:enumeration value="h2"/>
-						<xsd:enumeration value="sybase ase"/>
-						<xsd:enumeration value="sybase iq"/>
+						<xsd:enumeration value="oracle" />
+						<xsd:enumeration value="mysql" />
+						<xsd:enumeration value="db2" />
+						<xsd:enumeration value="h2" />
+						<xsd:enumeration value="sybase ase" />
+						<xsd:enumeration value="sybase iq" />
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
-			<xsd:attribute name="username" type="xsd:string"></xsd:attribute>
-			<xsd:attribute name="password" type="xsd:string"></xsd:attribute>
-			<xsd:attribute name="tnsname" type="xsd:string"></xsd:attribute>
-			<xsd:attribute name="encoding" type="xsd:string" use="optional"></xsd:attribute>
+			<xsd:attribute name="shell" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					执行的Shell命令路径
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="username" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					用户名
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="password" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					密码
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="encrypt" type="xsd:boolean" use="optional">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					密码是否加密
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="tnsname" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					Oracle中的tnsname名
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="encoding" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					字符集
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="load">
+		<xsd:complexType>
+			<xsd:attribute name="dataSource-ref" type="xsd:string" use="required"></xsd:attribute>
+			<xsd:attribute name="table" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					上传中间表名
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="loadType" use="optional">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					数据加载方式
+				]]></xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="APPEND" >
+							<xsd:annotation>
+								<xsd:documentation><![CDATA[
+								原先的表有数据 就加在后面
+							]]></xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="INSERT" >
+							<xsd:annotation>
+								<xsd:documentation><![CDATA[
+								装载空表 如果原先的表有数据 sqlloader会停止 默认值
+							]]></xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="REPLACE" >
+							<xsd:annotation>
+								<xsd:documentation><![CDATA[
+								原先的表有数据 原先的数据会全部删除
+							]]></xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="TRUNCATE" >
+							<xsd:annotation>
+								<xsd:documentation><![CDATA[
+								指定的内容和replace的相同 会用truncate语句删除现存数
+							]]></xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="sqlScript" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					上传后须执行的SQL脚本
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="load-td">
+		<xsd:complexType>
+			<xsd:attribute name="columnName" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					列名
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="convert" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					转换表达式
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
 </xsd:schema>

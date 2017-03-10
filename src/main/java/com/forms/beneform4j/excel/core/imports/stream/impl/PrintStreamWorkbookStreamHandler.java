@@ -35,10 +35,9 @@ public class PrintStreamWorkbookStreamHandler extends WorkbookStreamHandlerSuppo
     }
 
     @Override
-    protected boolean handleRow(HandlerStatus status, List<String> cells, int rowIndex, boolean isEmptyRow) {
+    protected boolean handleRow(HandlerStatus status, List<String> cells, int insertColumns) {
         PrintStream ps = getPrintStream();
         String spearator = getSeparator();
-        this.beforeHandleRow(ps, spearator, cells, rowIndex);
         if (null != cells && !cells.isEmpty()) {
             ps.print(cells.get(0));
             for (int i = 1, l = cells.size(); i < l; i++) {
@@ -46,17 +45,8 @@ public class PrintStreamWorkbookStreamHandler extends WorkbookStreamHandlerSuppo
                 ps.print(cells.get(i));
             }
         }
-        this.afterHandleRow(ps, spearator, cells, rowIndex);
         ps.println();
-        return super.handleRow(status, cells, rowIndex, isEmptyRow);
-    }
-
-    protected void beforeHandleRow(PrintStream printStream, String spearator, List<String> cells, int rowIndex) {
-
-    }
-
-    protected void afterHandleRow(PrintStream printStream, String spearator, List<String> cells, int rowIndex) {
-
+        return super.handleRow(status, cells, insertColumns);
     }
 
     public PrintStream getPrintStream() {

@@ -5,8 +5,8 @@
 	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd
 		http://www.formssi.com/schema/beneform4j/excel-db http://www.formssi.com/schema/beneform4j/excel-db.xsd">
 
-	<db:data-source id="aa" username="linjisong" password="aaaa"/>
-
+	<db:data-source id="beneform4j" encrypt="false" username="beneform4j" password="beneform4j" database="oracle" tnsname="//192.168.22.190/beneform4j"/>
+	
 	<tree-workbook id="oneRegion1" name="单个Region测试一">
 		<region>
 			<td text="定长文本，如客户号" expression="charData" showType="LOCK_SHOW" desc="冻结区域显示" dataType="CHAR"/>
@@ -14,7 +14,9 @@
 			<td text="隐藏文本，如区域" expression="hiddenData" showType="LOCK_HIDDEN" desc="冻结区域隐藏"/>
 			<td text="整型" expression="intData" dataType="INTEGER"/>
 			<td text="实型" expression="doubleData" dataType="DECIMAL"/>
-			<td text="实型，保留四位小数" expression="doubleData" dataType="DECIMAL" format="#,##0.0000"/>
+			<td text="实型，保留四位小数" expression="doubleData" dataType="DECIMAL" format="#,##0.0000">
+				<db:load-td columnName="DOUBLE_DATA" convert="AA"/>
+			</td>
 			<td text="百分数" expression="percentagData" dataType="PERCENTAG"/>
 			<td text="普通隐藏" expression="normalHiddenData" showType="INIT_HIDDEN" desc="普通区域隐藏"/>
 			<td text="跨多列">
@@ -23,6 +25,7 @@
 				<td text="子列3" expression="subData3"/>
 			</td>
 		</region>
+		<db:load table="TABLE_NAME" dataSource-ref="beneform4j" loadType="APPEND"/>
 	</tree-workbook>
 	
 	<tree-workbook id="oneRegion2" name="单个Region测试二，横向偏移1个位置">

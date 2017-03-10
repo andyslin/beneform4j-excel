@@ -141,6 +141,7 @@
 				</xsd:element>
 			</xsd:choice>
 			<xsd:element name="text-workbook" type="textWorkbookType" minOccurs="0" maxOccurs="1"/>
+			<xsd:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 		<xsd:attribute name="id" type="xsd:ID" use="required">
 			<xsd:annotation>
@@ -157,7 +158,6 @@
 				]]></xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<xsd:anyAttribute namespace="##other" processContents="strict"/>
 	</xsd:complexType>
 	
 	<xsd:complexType name="treeWorkbookSheetType">
@@ -339,6 +339,7 @@
 		</xsd:annotation>
 		<xsd:sequence>
 			<xsd:element name="td" type="treeWorkbookTdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 		<xsd:attribute name="text" type="xsd:string" use="required">
 			<xsd:annotation>
@@ -481,35 +482,6 @@
 				]]></xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-<!-- 		<xsd:attribute name="formula" use="optional" type="xsd:string"> -->
-<!-- 			<xsd:annotation> -->
-<!-- 				<xsd:documentation><![CDATA[ -->
-<!-- 		 计算公式  -->
-<!-- 		 ]]></xsd:documentation> -->
-<!-- 			</xsd:annotation> -->
-<!-- 		</xsd:attribute> -->
-<!-- 		<xsd:attribute name="stat" use="optional" type="xsd:string"> -->
-<!-- 			<xsd:annotation> -->
-<!-- 				<xsd:documentation><![CDATA[ -->
-<!-- 		 统计方法 -->
-<!-- 		 ]]></xsd:documentation> -->
-<!-- 			</xsd:annotation> -->
-<!-- 		</xsd:attribute> -->
-<!-- 		<xsd:attribute name="headerCls" use="optional" type="xsd:string"> -->
-<!-- 			<xsd:annotation> -->
-<!-- 				<xsd:documentation><![CDATA[ -->
-<!-- 		 表头区域样式  -->
-<!-- 		 ]]></xsd:documentation> -->
-<!-- 			</xsd:annotation> -->
-<!-- 		</xsd:attribute> -->
-<!-- 		<xsd:attribute name="dataCls" use="optional" type="xsd:string"> -->
-<!-- 			<xsd:annotation> -->
-<!-- 				<xsd:documentation><![CDATA[ -->
-<!-- 		 数据区域样式 -->
-<!-- 		 ]]></xsd:documentation> -->
-<!-- 			</xsd:annotation> -->
-<!-- 		</xsd:attribute> -->
-		<xsd:anyAttribute namespace="##other" processContents="strict"/>
 	</xsd:complexType>
 	
 	<xsd:complexType name="beanWorkbookType">

@@ -9,6 +9,8 @@ import com.forms.beneform4j.excel.core.model.em.IEM;
 import com.forms.beneform4j.excel.core.model.em.base.BaseEM;
 import com.forms.beneform4j.excel.core.model.em.text.ITextEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
+import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMComponent;
+import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMRegion;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMSheet;
 import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
@@ -45,6 +47,14 @@ public class TreeEM extends BaseEM implements ITreeEM {
 
     public void setSheets(List<ITreeEMSheet> sheets) {
         this.sheets = sheets;
+    }
+
+    @Override
+    public ITreeEMComponent getFirstComponent() {
+        List<ITreeEMSheet> sheets = getSheets();
+        List<ITreeEMRegion> regions = sheets.get(0).getRegions();
+        ITreeEMComponent component = regions.get(0).getComponent();
+        return component;
     }
 
     @Override

@@ -12,6 +12,8 @@ import com.forms.beneform4j.excel.core.model.loader.xml.file.FileWorkbookGroupPa
 import com.forms.beneform4j.excel.core.model.loader.xml.file.FileWorkbookParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.text.TextWorkbookParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.tree.ITreeEMComponentParser;
+import com.forms.beneform4j.excel.core.model.loader.xml.tree.ITreeEMDecorator;
+import com.forms.beneform4j.excel.core.model.loader.xml.tree.ITreeEMTdDecorator;
 import com.forms.beneform4j.excel.core.model.loader.xml.tree.TreeWorkbookParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.tree.component.GridParser;
 import com.forms.beneform4j.excel.core.model.loader.xml.tree.component.NestedRegionParser;
@@ -30,6 +32,10 @@ public class XmlEMLoaderConfig {
     private static final Map<String, IEMTopElementParser> topElementParserMapping = new HashMap<String, IEMTopElementParser>();
 
     private static final Map<String, ITreeEMComponentParser> treeComponentParserMapping = new HashMap<String, ITreeEMComponentParser>();
+
+    private static final Map<String, ITreeEMDecorator> decoratorMapping = new HashMap<String, ITreeEMDecorator>();
+
+    private static final Map<String, ITreeEMTdDecorator> tdDecoratorMapping = new HashMap<String, ITreeEMTdDecorator>();
 
     static {
         // 注册一级子元素（主要是workbook元素）及其解析器
@@ -138,6 +144,86 @@ public class XmlEMLoaderConfig {
         if (null != topElementParserMapping) {
             XmlEMLoaderConfig.topElementParserMapping.putAll(topElementParserMapping);
         }
+    }
+
+    /**
+     * 注册TreeEM元素的装饰器
+     * 
+     * @param namespace
+     * @param name
+     * @param decorator
+     */
+    public static void registerTreeEMDecorator(String namespace, String name, ITreeEMDecorator decorator) {
+        if (isDefaultNamespace(namespace)) {
+            decoratorMapping.put(name, decorator);
+        } else {
+            decoratorMapping.put(namespace + ":" + name, decorator);
+        }
+    }
+
+    /**
+     * 获取TreeEM元素的装饰器
+     * 
+     * @param namespace
+     * @param name
+     * @return
+     */
+    public static ITreeEMDecorator getTreeEMDecorator(String namespace, String name) {
+        if (isDefaultNamespace(namespace)) {
+            return decoratorMapping.get(name);
+        }
+        return decoratorMapping.get(namespace + ":" + name);
+    }
+
+    /**
+     * 注入TreeEM元素的装饰器
+     * 
+     * @param treeEMDecoratorMapping
+     */
+    public void setTreeEMDecoratorMapping(Map<String, ITreeEMDecorator> treeEMDecoratorMapping) {
+        if (null != treeEMDecoratorMapping) {
+            XmlEMLoaderConfig.decoratorMapping.putAll(treeEMDecoratorMapping);
+        }
+    }
+
+    /**
+     * 注入Td元素的装饰器
+     * 
+     * @param treeEMTdDecoratorMapping
+     */
+    public void setTreeEMTdDecoratorMapping(Map<String, ITreeEMTdDecorator> treeEMTdDecoratorMapping) {
+        if (null != treeEMTdDecoratorMapping) {
+            XmlEMLoaderConfig.tdDecoratorMapping.putAll(treeEMTdDecoratorMapping);
+        }
+    }
+
+    /**
+     * 注册Td元素的装饰器
+     * 
+     * @param namespace
+     * @param name
+     * @param decorator
+     */
+    public static void registerTreeEMTdDecorator(String namespace, String name, ITreeEMTdDecorator decorator) {
+        if (isDefaultNamespace(namespace)) {
+            tdDecoratorMapping.put(name, decorator);
+        } else {
+            tdDecoratorMapping.put(namespace + ":" + name, decorator);
+        }
+    }
+
+    /**
+     * 获取Td元素的装饰器
+     * 
+     * @param namespace
+     * @param name
+     * @return
+     */
+    public static ITreeEMTdDecorator getTreeEMTdDecorator(String namespace, String name) {
+        if (isDefaultNamespace(namespace)) {
+            return tdDecoratorMapping.get(name);
+        }
+        return tdDecoratorMapping.get(namespace + ":" + name);
     }
 
     /**

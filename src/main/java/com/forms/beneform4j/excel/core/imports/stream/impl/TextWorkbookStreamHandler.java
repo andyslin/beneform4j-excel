@@ -27,25 +27,30 @@ public class TextWorkbookStreamHandler extends PrintStreamWorkbookStreamHandler 
     @Override
     public void initialize() {
         String filename = getFilename();
+        String charset = getCharset();
+        this.setPrintStream(obtainPrintStream(filename, true, charset));
+        super.initialize();
+    }
+
+    protected PrintStream obtainPrintStream(String filename, boolean autoFlush, String charset) {
         if (CoreUtils.isBlank(filename)) {
             throw new IllegalArgumentException("filename is null.");
         }
 
+        PrintStream ps = null;
         try {
             File file = new File(filename);
             FileUtils.forceMkdirParent(file);
 
-            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
-            String charset = getCharset();
             if (CoreUtils.isBlank(charset)) {
-                setPrintStream(new PrintStream(stream, true));
+                ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), autoFlush);
             } else {
-                setPrintStream(new PrintStream(stream, true, charset));
+                ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), autoFlush, charset);
             }
-            super.initialize();
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
+        return ps;
     }
 
     @Override

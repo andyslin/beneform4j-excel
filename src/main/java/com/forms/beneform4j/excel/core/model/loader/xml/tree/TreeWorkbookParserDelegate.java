@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.forms.beneform4j.core.util.CoreUtils;
 import com.forms.beneform4j.core.util.exception.Throw;
@@ -96,7 +98,21 @@ public class TreeWorkbookParserDelegate {
                 em.setTextWorkbook(textEM);
             }
         }
+        doDecorate(workbook, em);
         return em;
+    }
+
+    protected static void doDecorate(Element workbook, TreeEM em) {
+        NodeList nl = workbook.getChildNodes();
+        for (int i = 0, l = nl.getLength(); i < l; i++) {
+            Node node = nl.item(i);
+            if (node instanceof Element) {
+                ITreeEMDecorator decorator = getDecorator((Element) node);
+                if (null != decorator) {
+                    decorator.decorate(em, workbook, (Element) node);
+                }
+            }
+        }
     }
 
     /**
@@ -439,5 +455,19 @@ public class TreeWorkbookParserDelegate {
             }
         }
         return type;
+    }
+
+    /**
+     * 获取装饰器
+     * 
+     * @param ele
+     * @return
+     */
+    private static ITreeEMDecorator getDecorator(Element ele) {
+        String namespace = ele.getNamespaceURI();
+        if (!XmlEMLoaderConfig.isDefaultNamespace(namespace)) {
+            return XmlEMLoaderConfig.getTreeEMDecorator(namespace, ele.getLocalName());
+        }
+        return null;
     }
 }

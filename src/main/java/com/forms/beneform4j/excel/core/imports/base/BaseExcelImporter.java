@@ -55,16 +55,24 @@ public class BaseExcelImporter extends AbstractResourceExcelImporter {
 
     private Object doImportsWithTreeEM(Resource resource, ITreeEM model) {
         String filename = getTmpFilename(model);
-        TreeEMWorkbookStreamHandler handler = new TreeEMWorkbookStreamHandler();
+        TreeEMWorkbookStreamHandler handler = newTreeEMWorkbookStreamHandler();
         handler.setTreeEm(model);
         handler.setFilename(filename);
         super.doImports(resource, handler);
         return filename;
     }
 
+    protected TreeEMWorkbookStreamHandler newTreeEMWorkbookStreamHandler() {
+        return new TreeEMWorkbookStreamHandler();
+    }
+
+    protected TextEMWorkbookStreamHandler newTextEMWorkbookStreamHandler() {
+        return new TextEMWorkbookStreamHandler();
+    }
+
     private Object doImportsWithTextEM(Resource resource, ITextEM model) {
         String filename = getTmpFilename(model);
-        TextEMWorkbookStreamHandler handler = new TextEMWorkbookStreamHandler();
+        TextEMWorkbookStreamHandler handler = newTextEMWorkbookStreamHandler();
         handler.setTextEm(model);
         handler.setFilename(filename);
         super.doImports(resource, handler);

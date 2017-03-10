@@ -29,4 +29,11 @@ public interface ITreeEM extends IEM {
      * @return
      */
     public ITextEM getTextWorkbook();
+
+    /**
+     * 获取第一个组件
+     * 
+     * @return
+     */
+    public ITreeEMComponent getFirstComponent();
 }

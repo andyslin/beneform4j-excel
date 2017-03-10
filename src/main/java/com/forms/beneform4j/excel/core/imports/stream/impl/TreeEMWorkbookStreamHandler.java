@@ -1,13 +1,9 @@
 package com.forms.beneform4j.excel.core.imports.stream.impl;
 
-import java.util.List;
-
 import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.core.model.em.text.ITextEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEM;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMComponent;
-import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMRegion;
-import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMSheet;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.component.grid.Grid;
 import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
@@ -46,17 +42,7 @@ public class TreeEMWorkbookStreamHandler extends TextEMWorkbookStreamHandler {
     }
 
     private void initializeWithTreeEM(ITreeEM em) {
-        List<ITreeEMSheet> sheets = em.getSheets();
-        if (null == sheets || sheets.isEmpty()) {
-            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS32, em);
-        }
-
-        List<ITreeEMRegion> regions = sheets.get(0).getRegions();
-        if (null == regions || regions.isEmpty()) {
-            Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS32, em);
-        }
-
-        ITreeEMComponent component = regions.get(0).getComponent();
+        ITreeEMComponent component = em.getFirstComponent();
         if (!(component instanceof Grid)) {
             Throw.throwRuntimeException(ExcelExceptionCodes.BF0XLS32, em);
         }

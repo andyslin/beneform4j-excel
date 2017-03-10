@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.core.util.xml.XmlHelper;
 import com.forms.beneform4j.excel.core.model.em.tree.ITreeEMComponent;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.component.grid.Grid;
 import com.forms.beneform4j.excel.core.model.em.tree.impl.component.grid.Td;
+import com.forms.beneform4j.excel.core.model.loader.xml.XmlEMLoaderConfig;
 import com.forms.beneform4j.excel.core.model.loader.xml.tree.ITreeEMComponentParser;
+import com.forms.beneform4j.excel.core.model.loader.xml.tree.ITreeEMTdDecorator;
 import com.forms.beneform4j.excel.exception.ExcelExceptionCodes;
 
 /**
@@ -62,6 +66,21 @@ public class GridParser implements ITreeEMComponentParser {
         td.setColumnWidth(ele.getAttribute("width"));//宽度
         td.setHeaderCls(ele.getAttribute("headerCls"));//表头样式
         td.setDataCls(ele.getAttribute("dataCls"));//数据样式
+
+        doDecorate(ele, td);
+    }
+
+    protected void doDecorate(Element ele, Td td) {
+        NodeList nl = ele.getChildNodes();
+        for (int i = 0, l = nl.getLength(); i < l; i++) {
+            Node node = nl.item(i);
+            if (node instanceof Element) {
+                ITreeEMTdDecorator decorator = getDecorator((Element) node);
+                if (null != decorator) {
+                    decorator.decorate(td, ele, (Element) node);
+                }
+            }
+        }
     }
 
     private void parseTd(String modelId, int parentFieldSeqno, Element ele, List<Td> tds) {
@@ -86,5 +105,19 @@ public class GridParser implements ITreeEMComponentParser {
                 parseTd(modelId, fieldSeqno, sub, tds);
             }
         }
+    }
+
+    /**
+     * 获取装饰器
+     * 
+     * @param ele
+     * @return
+     */
+    private ITreeEMTdDecorator getDecorator(Element ele) {
+        String namespace = ele.getNamespaceURI();
+        if (!XmlEMLoaderConfig.isDefaultNamespace(namespace)) {
+            return XmlEMLoaderConfig.getTreeEMTdDecorator(namespace, ele.getLocalName());
+        }
+        return null;
     }
 }

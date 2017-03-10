@@ -15,9 +15,9 @@ public enum EMType {
 
     TEXT("text", "导入-文本模型"),
 
-    TREE("tree", "导出-树型结构模型"),
+    TREE("tree", "导入导出-树型结构模型"),
 
-    FREEMARKER_TREE("freemarker-tree", "导出-使用Freemarker模板定义的属性结构模型"),
+    FREEMARKER_TREE("freemarker-tree", "导出-使用Freemarker模板定义的树型结构模型"),
 
     EXCEL("excel", "导出-Excel模板文件"),
 
