@@ -5,8 +5,6 @@
 	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd
 		http://www.formssi.com/schema/beneform4j/excel-db http://www.formssi.com/schema/beneform4j/excel-db.xsd">
 
-	<db:data-source id="beneform4j" encrypt="false" username="beneform4j" password="beneform4j" database="oracle" tnsname="//192.168.22.190/beneform4j"/>
-	
 	<tree-workbook id="oneRegion1" name="单个Region测试一">
 		<region>
 			<td text="定长文本，如客户号" expression="charData" showType="LOCK_SHOW" desc="冻结区域显示" dataType="CHAR"/>

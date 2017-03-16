@@ -36,9 +36,9 @@ public class LoadTreeEMDecorator implements ITreeEMDecorator {
         String dataSourceRef = decorator.getAttribute("dataSource-ref");
         if (!CoreUtils.isBlank(dataSourceRef)) {
             grid.setDataSourceRef(dataSourceRef);
-        } else {
-            Throw.throwRuntimeException("未配置数据源引用");
-        }
+        } /*
+           * else { Throw.throwRuntimeException("未配置数据源引用"); }
+           */
 
         String table = decorator.getAttribute("table");
         if (!CoreUtils.isBlank(table)) {

@@ -24,6 +24,11 @@ public class DsTopElementParser implements IEMTopElementParser {
         String id = element.getAttribute("id");
         DataSourceConfig ds = new DataSourceConfig();
 
+        String beanName = element.getAttribute("beanName");
+        if (!CoreUtils.isBlank(beanName)) {
+            ds.setBeanName(beanName);
+        }
+
         String username = element.getAttribute("username");
         if (!CoreUtils.isBlank(username)) {
             ds.setUsername(username);
@@ -52,6 +57,11 @@ public class DsTopElementParser implements IEMTopElementParser {
         String encrypt = element.getAttribute("encrypt");
         if (!CoreUtils.isBlank(encrypt)) {
             ds.setEncrypt(CoreUtils.string2Boolean(encrypt));
+        }
+
+        String useJdbc = element.getAttribute("useJdbc");
+        if (!CoreUtils.isBlank(useJdbc)) {
+            ds.setUseJdbc(CoreUtils.string2Boolean(useJdbc));
         }
 
         String encoding = element.getAttribute("encoding");

@@ -68,22 +68,19 @@ public class DbExcelImporters {
             Throw.throwRuntimeException("未找到目标数据源");
         }
 
-        IWorkbookStreamHandler handler = null;
-        String database = dataSource.getDatabase();
-        if (!CoreUtils.isBlank(database)) {
-            database = database.toLowerCase();
-            handler = newWorkbookStreamHandler(grid, database);
-        }
-        return handler;
+        return newWorkbookStreamHandler(grid, dataSource);
     }
 
-    private static IWorkbookStreamHandler newWorkbookStreamHandler(LoadDbGrid grid, String database) {
-        Class<? extends AbstractDbWorkbookStreamHandler> cls = handlers.get(database);
-        if (null == cls) {
-            cls = defaultHandler;
-        }
-        if (null == cls) {
-            throw Throw.createRuntimeException("未找到和数据库" + database + "对应的导入回调类");
+    private static IWorkbookStreamHandler newWorkbookStreamHandler(LoadDbGrid grid, DataSourceConfig dataSource) {
+        Class<? extends AbstractDbWorkbookStreamHandler> cls = defaultHandler;
+        if (!dataSource.isUseJdbc()) {
+            String database = dataSource.getDatabase();
+            if (!CoreUtils.isBlank(database)) {
+                cls = handlers.get(database.toLowerCase());
+            }
+            if (null == cls) {
+                cls = defaultHandler;
+            }
         }
 
         try {

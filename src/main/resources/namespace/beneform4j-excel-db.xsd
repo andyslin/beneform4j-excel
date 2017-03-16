@@ -35,6 +35,13 @@
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
+			<xsd:attribute name="beanName" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					表示Spring中配置的数据库的Bean名称
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
 			<xsd:attribute name="shell" type="xsd:string" use="optional">
 				<xsd:annotation>
 					<xsd:documentation><![CDATA[
@@ -42,14 +49,14 @@
 				]]></xsd:documentation>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="username" type="xsd:string" use="required">
+			<xsd:attribute name="username" type="xsd:string" use="optional">
 				<xsd:annotation>
 					<xsd:documentation><![CDATA[
 					用户名
 				]]></xsd:documentation>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="password" type="xsd:string" use="required">
+			<xsd:attribute name="password" type="xsd:string" use="optional">
 				<xsd:annotation>
 					<xsd:documentation><![CDATA[
 					密码
@@ -63,7 +70,14 @@
 				]]></xsd:documentation>
 				</xsd:annotation>
 			</xsd:attribute>
-			<xsd:attribute name="tnsname" type="xsd:string" use="required">
+			<xsd:attribute name="useJdbc" type="xsd:boolean" use="optional">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+					是否使用JDBC导入
+				]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="tnsname" type="xsd:string" use="optional">
 				<xsd:annotation>
 					<xsd:documentation><![CDATA[
 					Oracle中的tnsname名
@@ -82,7 +96,7 @@
 
 	<xsd:element name="load">
 		<xsd:complexType>
-			<xsd:attribute name="dataSource-ref" type="xsd:string" use="required"></xsd:attribute>
+			<xsd:attribute name="dataSource-ref" type="xsd:string" use="optional"></xsd:attribute>
 			<xsd:attribute name="table" type="xsd:string" use="required">
 				<xsd:annotation>
 					<xsd:documentation><![CDATA[

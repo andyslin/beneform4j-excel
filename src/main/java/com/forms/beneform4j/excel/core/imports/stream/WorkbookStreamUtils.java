@@ -170,25 +170,28 @@ public class WorkbookStreamUtils {
         }
 
         public void process() throws IOException {
-            handler.initialize();
-            MissingRecordAwareHSSFListener listener = new MissingRecordAwareHSSFListener(this);
-            formatListener = new FormatTrackingHSSFListener(listener);
-
-            HSSFEventFactory factory = new HSSFEventFactory();
-            HSSFRequest request = new HSSFRequest();
-
-            if (outputFormulaValues) {
-                request.addListenerForAllRecords(formatListener);
-            } else {
-                workbookBuildingListener = new SheetRecordCollectingListener(formatListener);
-                request.addListenerForAllRecords(workbookBuildingListener);
-            }
-
             try {
-                factory.processWorkbookEvents(request, fs);
-            } catch (ProcessFinishException e) {
+                handler.initialize();
+                MissingRecordAwareHSSFListener listener = new MissingRecordAwareHSSFListener(this);
+                formatListener = new FormatTrackingHSSFListener(listener);
+
+                HSSFEventFactory factory = new HSSFEventFactory();
+                HSSFRequest request = new HSSFRequest();
+
+                if (outputFormulaValues) {
+                    request.addListenerForAllRecords(formatListener);
+                } else {
+                    workbookBuildingListener = new SheetRecordCollectingListener(formatListener);
+                    request.addListenerForAllRecords(workbookBuildingListener);
+                }
+
+                try {
+                    factory.processWorkbookEvents(request, fs);
+                } catch (ProcessFinishException e) {
+                }
+            } finally {
+                handler.end();
             }
-            handler.end();
         }
 
         @Override
@@ -399,37 +402,40 @@ public class WorkbookStreamUtils {
         }
 
         public void process() throws IOException, OpenXML4JException, ParserConfigurationException, SAXException {
-            handler.initialize();
-            ReadOnlySharedStringsTable strings = new ReadOnlySharedStringsTable(this.xlsxPackage);
-            XSSFReader xssfReader = new XSSFReader(this.xlsxPackage);
-            StylesTable styles = xssfReader.getStylesTable();
-            XSSFReader.SheetIterator iter = (XSSFReader.SheetIterator) xssfReader.getSheetsData();
-            int sheetIndex = 0;
-            while (iter.hasNext()) {
-                InputStream stream = null;
-                try {
-                    stream = iter.next();
-                    String sheetName = iter.getSheetName();
-                    // 开始处理当前表单
-                    if (!handler.startSheet(sheetIndex, sheetName)) {
-                        break;
-                    }
+            try {
+                handler.initialize();
+                ReadOnlySharedStringsTable strings = new ReadOnlySharedStringsTable(this.xlsxPackage);
+                XSSFReader xssfReader = new XSSFReader(this.xlsxPackage);
+                StylesTable styles = xssfReader.getStylesTable();
+                XSSFReader.SheetIterator iter = (XSSFReader.SheetIterator) xssfReader.getSheetsData();
+                int sheetIndex = 0;
+                while (iter.hasNext()) {
+                    InputStream stream = null;
+                    try {
+                        stream = iter.next();
+                        String sheetName = iter.getSheetName();
+                        // 开始处理当前表单
+                        if (!handler.startSheet(sheetIndex, sheetName)) {
+                            break;
+                        }
 
-                    // 继续处理表单
-                    ExtractSheetCallbackHandler callbackHandler = new ExtractSheetCallbackHandler();
-                    if (!processSheet(styles, strings, callbackHandler, stream)) {//完成
-                        break;
-                    }
+                        // 继续处理表单
+                        ExtractSheetCallbackHandler callbackHandler = new ExtractSheetCallbackHandler();
+                        if (!processSheet(styles, strings, callbackHandler, stream)) {//完成
+                            break;
+                        }
 
-                    // 结束当前表单的处理
-                    if (!handler.endSheet(sheetIndex, sheetName)) {//完成
-                        break;
+                        // 结束当前表单的处理
+                        if (!handler.endSheet(sheetIndex, sheetName)) {//完成
+                            break;
+                        }
+                    } finally {
+                        CoreUtils.closeQuietly(stream);
                     }
-                } finally {
-                    CoreUtils.closeQuietly(stream);
                 }
+            } finally {
+                handler.end();
             }
-            handler.end();
         }
     }
 }

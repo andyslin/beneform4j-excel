@@ -1,22 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <excel-config xmlns="http://www.formssi.com/schema/beneform4j/excel"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd">
+	xmlns:db="http://www.formssi.com/schema/beneform4j/excel-db"
+	xsi:schemaLocation="http://www.formssi.com/schema/beneform4j/excel http://www.formssi.com/schema/beneform4j/excel.xsd
+		http://www.formssi.com/schema/beneform4j/excel-db http://www.formssi.com/schema/beneform4j/excel-db.xsd">
+
+	<db:data-source id="beneform4j" database="oracle" useJdbc="true"/>
 	
 	<tree-workbook id="oneGrid1" name="单个Grid测试一，属性可以用表达式" desc="属性、标题、注释可以使用表达式，属性使用表达式无需添加${}，而标题和注释需要添加${}">
-		<td text="定长文本，如客户号" expression="charData" showType="LOCK_SHOW" desc="冻结区域显示" dataType="CHAR"/>
-		<td text="变长文本，如客户名称" expression="varcharData" showType="LOCK_SHOW" desc="冻结区域显示"/>
-		<td text="隐藏文本，如区域" expression="hiddenData" showType="LOCK_HIDDEN" desc="冻结区域隐藏"/>
-		<td text="整型" expression="intData" dataType="INTEGER"/>
-		<td text="实型" expression="doubleData" dataType="DECIMAL"/>
-		<td text="实型，保留四位小数" expression="doubleData" dataType="DECIMAL" format="#,##0.0000"/>
-		<td text="百分数" expression="percentagData" dataType="PERCENTAG"/>
-		<td text="普通隐藏" expression="normalHiddenData" showType="INIT_HIDDEN" desc="普通区域隐藏"/>
-		<td text="跨多列">
-			<td text="子列1" expression="subData1"/>
-			<td text="子列2" expression="subData2"/>
-			<td text="子列3" expression="subData3"/>
+		<td text="定长文本，如客户号" expression="charData" showType="LOCK_SHOW" desc="冻结区域显示" dataType="CHAR">
+			<db:load-td columnName="CHAR_DATA"/>
 		</td>
+		<td text="变长文本，如客户名称" expression="varcharData" showType="LOCK_SHOW" desc="冻结区域显示">
+			<db:load-td columnName="VARCHAR_DATA"/>
+		</td>
+		<td text="隐藏文本，如区域" expression="hiddenData" showType="LOCK_HIDDEN" desc="冻结区域隐藏">
+			<db:load-td columnName="HIDDEN_DATA"/>
+		</td>
+		<td text="整型" expression="intData" dataType="INTEGER">
+			<db:load-td columnName="INT_DATA"/>
+		</td>
+		<td text="实型" expression="doubleData" dataType="DECIMAL">
+			<db:load-td columnName="DOUBLE_DATA"/>
+		</td>
+		<td text="实型，保留四位小数" expression="doubleData" dataType="DECIMAL" format="#,##0.0000"/>
+		<td text="百分数" expression="percentagData" dataType="PERCENTAG">
+			<db:load-td columnName="PERCENTAG_DATA"/>
+		</td>
+		<td text="普通隐藏" expression="normalHiddenData" showType="INIT_HIDDEN" desc="普通区域隐藏">
+			<db:load-td columnName="NORMAL_HIDDEN_DATA"/>
+		</td>
+		<td text="跨多列">
+			<td text="子列1" expression="subData1">
+				<db:load-td columnName="SUB_DATA1"/>
+			</td>
+			<td text="子列2" expression="subData2">
+				<db:load-td columnName="SUB_DATA2"/>
+			</td>
+			<td text="子列3" expression="subData3">
+				<db:load-td columnName="SUB_DATA3"/>
+			</td>
+		</td>
+		<db:load table="EXCEL_IMPORT_TEST"/>
 	</tree-workbook>
 	
 	<tree-workbook id="paramDef" name="参数定义" desc="大数据量测试">

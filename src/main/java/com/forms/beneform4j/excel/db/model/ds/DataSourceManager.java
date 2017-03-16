@@ -3,6 +3,8 @@ package com.forms.beneform4j.excel.db.model.ds;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.forms.beneform4j.core.util.CoreUtils;
+
 /**
  * Copy Right Information : Forms Syntron <br>
  * Project : 四方精创 Java EE 开发平台 <br>
@@ -14,6 +16,8 @@ import java.util.Map;
  */
 public class DataSourceManager {
 
+    private static final DataSourceConfig DEFAULT_CONFIG = new DataSourceConfig();
+
     private static final Map<String, DataSourceConfig> map = new HashMap<String, DataSourceConfig>();
 
     public static void register(String id, DataSourceConfig ds) {
@@ -21,6 +25,9 @@ public class DataSourceManager {
     }
 
     public static DataSourceConfig getDataSource(String id) {
+        if (CoreUtils.isBlank(id)) {
+            return DEFAULT_CONFIG;
+        }
         return map.get(id);
     }
 }

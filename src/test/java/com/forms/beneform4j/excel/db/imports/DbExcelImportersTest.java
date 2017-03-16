@@ -11,7 +11,7 @@ public class DbExcelImportersTest {
 
     @Test
     public void testImport() throws Exception {
-        test("oneRegion1");
+        test("oneGrid1");
     }
 
     private void test(String modelId) {

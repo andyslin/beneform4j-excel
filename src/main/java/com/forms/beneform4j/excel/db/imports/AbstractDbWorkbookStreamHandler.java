@@ -26,7 +26,7 @@ import com.forms.beneform4j.excel.db.model.em.tree.impl.component.grid.LoadDbTd;
  */
 public abstract class AbstractDbWorkbookStreamHandler extends TreeEMWorkbookStreamHandler {
 
-    private final LoadDbGrid grid;
+    private LoadDbGrid grid;
 
     private final DataSourceConfig dataSource;
 
@@ -36,7 +36,6 @@ public abstract class AbstractDbWorkbookStreamHandler extends TreeEMWorkbookStre
         super(grid.getWorkbook());
         this.grid = grid;
         this.dataSource = DataSourceManager.getDataSource(grid.getDataSourceRef());
-        setLoadTds(loadTds, grid);
         super.setFilename(grid.getWorkbook().getId() + "-" + System.currentTimeMillis());
     }
 
@@ -55,6 +54,12 @@ public abstract class AbstractDbWorkbookStreamHandler extends TreeEMWorkbookStre
             } catch (Exception e) {
             }
         }
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        setLoadTds(loadTds, grid);
     }
 
     @Override
