@@ -6,6 +6,14 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.datasource.DataSourceUtils;
+
+import com.forms.beneform4j.core.dao.util.DBHelp;
+import com.forms.beneform4j.core.service.spring.SpringHelp;
+import com.forms.beneform4j.core.util.CoreUtils;
+import com.forms.beneform4j.core.util.exception.Throw;
 import com.forms.beneform4j.excel.db.imports.AbstractDbWorkbookStreamHandler;
 import com.forms.beneform4j.excel.db.model.ds.DataSourceConfig;
 import com.forms.beneform4j.excel.db.model.em.tree.impl.component.grid.LoadDbGrid;
@@ -25,6 +33,12 @@ public class JdbcWorkbookStreamHandler extends AbstractDbWorkbookStreamHandler {
     private static final int BATCH_SIZE = 5000;
 
     private final String sql;
+
+    private Connection conn;
+
+    private PreparedStatement ps;
+
+    //    private boolean autoCommit;
 
     public JdbcWorkbookStreamHandler(LoadDbGrid grid) {
         super(grid);
@@ -55,6 +69,46 @@ public class JdbcWorkbookStreamHandler extends AbstractDbWorkbookStreamHandler {
     @Override
     public void initialize() {
         super.initialize();
+        this.initializeConnection(getDataSource());
+    }
+
+    /**
+     * 初始化数据库连接
+     * 
+     * @param dsConfig
+     */
+    protected void initializeConnection(DataSourceConfig dsConfig) {
+        try {
+            String dsBeanId = dsConfig.getTnsname();
+            DataSource ds = null;
+            if (CoreUtils.isBlank(dsBeanId)) {
+                ds = SpringHelp.getBean(DataSource.class);
+            } else {
+                ds = SpringHelp.getBean(dsBeanId, DataSource.class);
+            }
+            this.conn = DataSourceUtils.doGetConnection(ds);
+            this.ps = conn.prepareStatement(sql);
+            //            this.autoCommit = conn.getAutoCommit();//记住之前的提交
+            //            //先提交一次
+            //            if (!this.autoCommit) {
+            //                this.conn.commit();
+            //            }
+            //            this.conn.setAutoCommit(false);
+        } catch (SQLException e) {
+            Throw.throwRuntimeException(e);
+        }
+    }
+
+    @Override
+    public void end() {
+        try {
+            //            this.conn.setAutoCommit(autoCommit);//恢复之前的提交模式
+        } catch (Exception e) {
+            // ignore
+        } finally {
+            DBHelp.Closer.close(conn, ps);
+            super.end();
+        }
     }
 
     @Override
@@ -66,32 +120,50 @@ public class JdbcWorkbookStreamHandler extends AbstractDbWorkbookStreamHandler {
 
     private void addBatch(HandlerStatus status, List<String> cells) {
         try {
-            Connection conn = null;
-            PreparedStatement ps = null;
-            String sql = null;
-
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, cells.get(0));
-            ps.setString(2, cells.get(1));
-
+            Map<Integer, LoadDbTd> tds = super.getLoadTds();
+            for (int i = 0, l = cells.size(); i < l; i++) {
+                setParam(ps, i + 1, cells.get(i), tds.get(i));
+            }
             ps.addBatch();
 
             if (status.getDataIndex() % BATCH_SIZE == 0) {//提交
                 ps.executeBatch();
             }
         } catch (SQLException e) {
-
+            Throw.throwRuntimeException(e);
         }
+    }
 
+    private void setParam(PreparedStatement ps, int index, String value, LoadDbTd td) throws SQLException {
+        switch (td.getDataTypeEnum()) {
+            case CHAR:
+                ps.setString(index, value);
+                break;
+            case VARCHAR:
+                ps.setString(index, value);
+                break;
+            case INTEGER:
+                ps.setInt(index, Integer.parseInt(value));
+                break;
+            case DECIMAL:
+                ps.setDouble(index, Double.parseDouble(value));
+                break;
+            case PERCENTAG:
+                if (value.endsWith("%")) {
+                    ps.setDouble(index, Double.parseDouble(value.replace('%', ' ')) / 100.0);
+                } else {
+                    ps.setDouble(index, Double.parseDouble(value));
+                }
+                break;
+            case UNKNOWN:
+                ps.setObject(index, value);
+                break;
+        }
     }
 
     @Override
     protected void doLoad(LoadDbGrid grid, DataSourceConfig dataSource, String filename) {
-        // TODO Auto-generated method stub
+        // empty
 
     }
-
-    //    private class JdbcBatchContext {
-    //        private String sql;
-    //    }
 }

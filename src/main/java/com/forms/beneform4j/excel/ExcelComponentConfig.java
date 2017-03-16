@@ -32,6 +32,8 @@ public class ExcelComponentConfig implements InitializingBean {
     private static final Map<Class<? extends ITreeEMComponent>, ITreeEMComponentXlsxPainter> xlsxPainters = new HashMap<Class<? extends ITreeEMComponent>, ITreeEMComponentXlsxPainter>();
 
     static {
+
+        // Test
         // 注册树型模型的组件类型及其Xlsx渲染器
         registerXlsxPainter(Grid.class, new GridXlsxPainter());
         registerXlsxPainter(NestedRegionTreeEMComponent.class, new NestedRegionXlsxPainter());
