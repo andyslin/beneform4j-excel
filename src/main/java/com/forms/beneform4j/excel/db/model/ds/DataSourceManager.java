@@ -20,6 +20,10 @@ public class DataSourceManager {
 
     private static final Map<String, DataSourceConfig> map = new HashMap<String, DataSourceConfig>();
 
+    static {
+        DEFAULT_CONFIG.setUseJdbc(true);
+    }
+
     public static void register(String id, DataSourceConfig ds) {
         map.put(id, ds);
     }

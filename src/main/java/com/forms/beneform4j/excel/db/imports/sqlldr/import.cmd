@@ -11,10 +11,10 @@ set LogFile=%path%/%batch%.log
 set BadFile=%path%/%batch%.bad
 
 rem ---清空中间文件---
-del /Q %path%/*.bad
+rem del /Q %path%/*.bad
 
 rem ---导数---
-sqlldr userid=%sid% parallel=false errors = 0 control=%CtlFile% log=%LogFile% bad=%BadFile% silent=feedback
+D:\oracle\client\product\12.1.0\client_1\BIN\sqlldr.exe userid=%sid% parallel=false errors = 0 control=%CtlFile% log=%LogFile% bad=%BadFile% silent=feedback
 
 endlocal
 
