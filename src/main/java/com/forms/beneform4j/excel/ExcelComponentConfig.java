@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.InitializingBean;
 
 import com.forms.beneform4j.core.util.config.ConfigHelper;
+import com.forms.beneform4j.core.util.logger.CommonLogger;
 import com.forms.beneform4j.excel.core.exports.IExcelExporter;
 import com.forms.beneform4j.excel.core.exports.tree.painter.ITreeEMComponentXlsxPainter;
 import com.forms.beneform4j.excel.core.exports.tree.painter.impl.GridXlsxPainter;
@@ -111,7 +112,14 @@ public class ExcelComponentConfig implements InitializingBean {
         if (null == component) {
             return null;
         }
-        return xlsxPainters.get(component.getClass());
+        for (Class<?> cls = component.getClass(); !cls.equals(Object.class); cls = cls.getSuperclass()) {
+            ITreeEMComponentXlsxPainter painter = xlsxPainters.get(cls);
+            if (null != painter) {
+                return painter;
+            }
+        }
+        CommonLogger.warn("未找到组件" + component.getClass() + "的渲染器类");
+        return null;
     }
 
     /**
